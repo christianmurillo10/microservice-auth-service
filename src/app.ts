@@ -5,9 +5,18 @@ import cookieParser from "cookie-parser";
 import bodyParser from "body-parser";
 import cors from "cors";
 import routes from "./routes";
+import UserRequestHeader from "./shared/entities/user-request-header.entity";
+import { JWT } from "./shared/types/jwt.types";
+import userRequestHeader from "./middlewares/user-request-header.middleware";
 import routeNotFoundHandler from "./middlewares/route-not-found.middleware";
 import errorHandler from "./middlewares/error.middleware";
 
+declare module "express-serve-static-core" {
+  export interface Request {
+    auth: JWT,
+    userRequestHeader: UserRequestHeader
+  }
+};
 export default class App {
   private app: Express;
   private server: Server;
@@ -29,6 +38,7 @@ export default class App {
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(bodyParser.json());
     this.app.use(cors());
+    this.app.use(userRequestHeader);
 
     // Routes Handler
     this.app.use("/", routes);

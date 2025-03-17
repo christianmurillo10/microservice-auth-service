@@ -25,24 +25,3 @@ export const login = async (
     next(error);
   };
 };
-
-export const clientLogin = async (
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) => {
-  try {
-    if (_.isEmpty(req.body)) {
-      throw new BadRequestException([MESSAGE_INVALID_BODY]);
-    };
-
-    const schema = joi.object({
-      email: joi.string().label("Email").email().required(),
-      password: joi.string().label("Password").required(),
-    });
-    req.body = await validateInput(req.body, schema);
-    next();
-  } catch (error) {
-    next(error);
-  };
-};

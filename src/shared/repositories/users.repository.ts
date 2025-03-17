@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import Users from "../entities/users.entity";
 import UsersRepositoryInterface from "../interfaces/repositories/users.interface";
-import { FindByUsernameOrEmailArgs, UpdateArgs } from "../types/common.type";
+import { FindByIdArgs, FindByUsernameOrEmailArgs, UpdateArgs } from "../types/common.type";
 import { setSelectExclude } from "../helpers/common.helper";
 import { usersSubsets } from "../helpers/select-subset.helper";
 
@@ -11,6 +11,27 @@ export default class UsersRepository implements UsersRepositoryInterface {
   constructor() {
     const prisma = new PrismaClient();
     this.client = prisma.users;
+  };
+
+  findById = async (
+    args: FindByIdArgs<string>
+  ): Promise<Users | null> => {
+    const exclude = setSelectExclude(args.exclude!);
+    const res = await this.client.findFirst({
+      select: {
+        ...usersSubsets,
+        ...exclude
+      },
+      where: {
+        id: args.id,
+        deleted_at: null,
+        ...args.condition
+      }
+    });
+
+    if (!res) return null;
+
+    return new Users(res);
   };
 
   findByUsernameOrEmail = async (

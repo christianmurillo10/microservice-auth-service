@@ -1,5 +1,5 @@
 import Users from "../../entities/users.entity";
-import { FindByIdArgs, FindByUsernameOrEmailArgs, UpdateArgs } from "../../types/common.type";
+import { FindByIdArgs, FindByUsernameOrEmailArgs, UpdateArgs } from "../common.type";
 
 export default interface UsersRepositoryInterface {
   findById: (args: FindByIdArgs<string>) => Promise<Users | null>;

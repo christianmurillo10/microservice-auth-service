@@ -2,14 +2,13 @@ import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_SIGNED_OUT } from "../../shared/constants/message.constant";
 import { ERROR_ON_LOGOUT } from "../../shared/constants/error.constant";
-import UsersRepository from "../../shared/repositories/users.repository";
+import UsersService from "../../services/users.service";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
 import UnauthorizedException from "../../shared/exceptions/unauthorized.exception";
-import NotFoundException from "../../shared/exceptions/not-found.exception";
 import { verifyToken } from "../../shared/utils/jwt";
 
 const router = Router();
-const repository = new UsersRepository();
+const service = new UsersService();
 
 const controller = async (
   req: Request,
@@ -33,18 +32,10 @@ const controller = async (
     return tokenData;
   })
   .then(async (tokenData) => {
-    const record = await repository.findById({ id: tokenData.id });
-
-    if (!record) {
-      throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
-    };
-
-    await repository.update({
-      id: tokenData.id,
-      params: {
-        ...record,
-        is_logged: false
-      }
+    const record = await service.getById(tokenData.id);
+    await service.update(tokenData.id, {
+      ...record,
+      is_logged: false
     });
   })
   .then(() => {

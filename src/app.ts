@@ -10,6 +10,7 @@ import { JWT } from "./shared/types/jwt.types";
 import userRequestHeader from "./middlewares/user-request-header.middleware";
 import routeNotFoundHandler from "./middlewares/route-not-found.middleware";
 import errorHandler from "./middlewares/error.middleware";
+import KafkaServer from "./kafka";
 
 declare module "express-serve-static-core" {
   export interface Request {
@@ -68,10 +69,16 @@ export default class App {
     };
   };
 
-  start() {
+  private onClose = () => {
+    const kafkaServer = new KafkaServer();
+    kafkaServer.disconnect();
+  };
+
+  start = async () => {
     try {
       this.server.listen(this.port, () => console.log(`Server is running on port \t\t: ${this.port}`));
       this.server.on("error", this.onError);
+      this.server.on("close", this.onClose);
     } catch (error) {
       console.error("Error on running server: ", error);
     };

@@ -1,0 +1,36 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model users {
+  id                      String    @id @default(uuid()) @db.Char(36)
+  created_at              DateTime  @db.DateTime(0)
+  updated_at              DateTime? @db.DateTime(0)
+  deleted_at              DateTime? @db.DateTime(0)
+  last_login_at           DateTime? @db.DateTime(0)
+  access_token_expired_at DateTime? @db.DateTime(0)
+  name                    String    @db.VarChar(100)
+  username                String    @db.VarChar(100)
+  email                   String    @db.VarChar(100)
+  password                String    @db.VarChar(100)
+  image_path              String?   @db.VarChar(255)
+  access_token            String?   @db.VarChar(255)
+  access_type_id          String
+  is_active               Boolean   @default(true)
+  is_role_based_access    Boolean   @default(true)
+  is_logged               Boolean   @default(false)
+}
+
+model access_types {
+  id         String    @id @db.VarChar(100)
+  created_at DateTime  @db.DateTime(0)
+  updated_at DateTime? @db.DateTime(0)
+  deleted_at DateTime? @db.DateTime(0)
+  name       String    @db.VarChar(100)
+}

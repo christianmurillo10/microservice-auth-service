@@ -19,6 +19,47 @@ export const validateInput = async <I>(input: I, schema: Schema): Promise<I> => 
   return await schema.validateAsync(input, options);
 };
 
+export const parseQueryFilters = <T>(data: T): GenericObject => {
+  return data
+    ? Object.assign({}, ...Object.entries(data)
+      .map(([key, value]) => {
+        const dateFields = [
+          "created_at",
+          "updated_at",
+          "deleted_at",
+          "last_logged_at",
+          "verified_at",
+          "date"
+        ];
+
+        if (dateFields.includes(key)) {
+          const dateTime = new Date(value as Date);
+          const dateTimeAfter = new Date(new Date(dateTime).setDate(dateTime.getDate() + 1));
+          return {
+            [key]: {
+              gte: dateTime.toISOString(),
+              lt: dateTimeAfter.toISOString()
+            }
+          };
+        };
+
+        if (typeof value === "string") {
+          return { [key]: { contains: value } };
+        };
+
+        return { [key]: value };
+      }))
+    : {};
+};
+
+export const generateNonce = (): string => {
+  return Math.floor(Math.random() * Date.now()).toString(16);
+};
+
 export const setSelectExclude = (val: string[]): GenericObject => {
   return val ? val.reduce((acc, item) => ({ ...acc, [item]: false }), {}) : {};
 };
+
+export const formatToUpperUnderscore = (val: string) => {
+  return val.split(' ').map((word: string) => word.toUpperCase()).join('_');
+}

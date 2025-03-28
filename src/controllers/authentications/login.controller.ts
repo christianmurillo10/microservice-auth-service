@@ -1,13 +1,13 @@
 import { Router, Request, Response, NextFunction } from "express";
 import _ from "lodash";
-import { apiResponse } from "../shared/utils/api-response";
-import { MESSAGE_DATA_INVALID_PASSWORD, MESSAGE_DATA_SIGNED_IN } from "../shared/constants/message.constant";
-import { ERROR_ON_LOGIN } from "../shared/constants/error.constant";
-import { login as validator } from "../validators/authentications.validator";
-import UsersService from "../services/users.service";
-import BadRequestException from "../shared/exceptions/bad-request.exception";
-import { comparePassword } from "../shared/utils/bcrypt";
-import { generateToken } from "../shared/utils/jwt";
+import { apiResponse } from "../../shared/utils/api-response";
+import { MESSAGE_DATA_INVALID_PASSWORD, MESSAGE_DATA_SIGNED_IN } from "../../shared/constants/message.constant";
+import { ERROR_ON_LOGIN } from "../../shared/constants/error.constant";
+import { login as validator } from "../../validators/authentications.validator";
+import UsersService from "../../services/users.service";
+import BadRequestException from "../../shared/exceptions/bad-request.exception";
+import { comparePassword } from "../../shared/utils/bcrypt";
+import { generateToken } from "../../shared/utils/jwt";
 
 const router = Router();
 const service = new UsersService();
@@ -32,14 +32,14 @@ const controller = async (
     const result = await service.update(record.id!, {
       ...record,
       is_logged: false,
-      last_login_at: new Date()
+      last_logged_at: new Date()
     });
 
     const data = _.omit(result, [
       "password",
       "is_active",
       "is_logged",
-      "last_login",
+      "last_logged_at",
       "created_at",
       "updated_at",
       "deleted_at",

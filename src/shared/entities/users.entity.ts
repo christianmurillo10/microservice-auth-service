@@ -5,14 +5,15 @@ export interface UsersInterface {
   created_at: Date;
   updated_at?: Date | null;
   deleted_at?: Date | null;
-  last_login_at?: Date | null;
+  last_logged_at?: Date | null;
+  access_token_expired_at?: Date | null;
   name: string;
   username: string;
   email: string;
   password?: string | null;
-  image_path?: string | null;
+  access_token?: string | null;
+  access_type_id: string;
   is_active: boolean;
-  is_role_based_access: boolean;
   is_logged: boolean;
 };
 
@@ -21,14 +22,15 @@ class Users implements UsersInterface {
   created_at: Date = new Date();
   updated_at?: Date | null = new Date();
   deleted_at?: Date | null;
-  last_login_at?: Date | null;
+  last_logged_at?: Date | null;
+  access_token_expired_at?: Date | null;
   name: string = "";
   username: string = "";
   email: string = "";
   password?: string | null;
-  image_path?: string | null;
+  access_token?: string | null;
+  access_type_id!: string;
   is_active: boolean = true;
-  is_role_based_access: boolean = true;
   is_logged: boolean = false;
 
   constructor(props: UsersInterface) {

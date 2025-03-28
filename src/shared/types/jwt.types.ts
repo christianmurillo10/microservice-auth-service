@@ -1,11 +1,9 @@
 type AuthData = {
   id: string,
-  last_login_at: string,
+  last_logged_at: string,
   name: string,
   username: string,
   email: string,
-  image_path: string,
-  is_role_based_access: number
 };
 
 export type JwtParams = {

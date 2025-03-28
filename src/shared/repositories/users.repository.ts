@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import Users from "../entities/users.entity";
 import UsersRepositoryInterface from "../types/repositories/users.interface";
-import { FindByIdArgs, FindByUsernameOrEmailArgs, UpdateArgs } from "../types/common.type";
+import { FindByIdArgs, FindByUsernameOrEmailArgs, UpdateArgs } from "../types/repository.type";
 import { setSelectExclude } from "../helpers/common.helper";
 import { usersSubsets } from "../helpers/select-subset.helper";
 

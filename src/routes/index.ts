@@ -1,9 +1,8 @@
 import { Router, Request, Response } from "express";
 import { apiResponse } from "../shared/utils/api-response";
 import config from "../config/server.config";
-import login from "../controllers/login.controller";
-import logout from "../controllers/logout.controller";
-import verify from "../controllers/verify.controller";
+import authenticationsRoute from "./authentications.route";
+import accessTypesRoute from "./access-types.route";
 
 const router = Router();
 
@@ -14,8 +13,7 @@ router.get("/", (_req: Request, res: Response) => {
   }).end();
 });
 
-router.use(login);
-router.use(logout);
-router.use(verify);
+router.use("/authentications", authenticationsRoute);
+router.use("/access-types", accessTypesRoute);
 
 export default router;

@@ -1,11 +1,11 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { apiResponse } from "../../shared/utils/api-response";
-import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_SIGNED_OUT } from "../../shared/constants/message.constant";
-import { ERROR_ON_LOGOUT } from "../../shared/constants/error.constant";
-import UsersService from "../../services/users.service";
-import BadRequestException from "../../shared/exceptions/bad-request.exception";
-import UnauthorizedException from "../../shared/exceptions/unauthorized.exception";
-import { verifyToken } from "../../shared/utils/jwt";
+import { apiResponse } from "../../../shared/utils/api-response";
+import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_SIGNED_OUT } from "../../../shared/constants/message.constant";
+import { ERROR_ON_LOGOUT } from "../../../shared/constants/error.constant";
+import UsersService from "../../../services/users.service";
+import BadRequestException from "../../../shared/exceptions/bad-request.exception";
+import UnauthorizedException from "../../../shared/exceptions/unauthorized.exception";
+import { verifyToken } from "../../../shared/utils/jwt";
 
 const router = Router();
 const service = new UsersService();

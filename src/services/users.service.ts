@@ -1,6 +1,6 @@
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
-import UsersRepository from "../shared/repositories/users.repository";
-import Users from "../shared/entities/users.entity";
+import UsersRepository from "../repositories/users.repository";
+import Users from "../entities/users.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 
 export default class UsersService {

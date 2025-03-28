@@ -1,9 +1,10 @@
 import { PrismaClient } from "@prisma/client";
 import Users from "../entities/users.entity";
-import UsersRepositoryInterface from "../types/repositories/users.interface";
-import { FindByIdArgs, FindByUsernameOrEmailArgs, UpdateArgs } from "../types/repository.type";
-import { setSelectExclude } from "../helpers/common.helper";
-import { usersSubsets } from "../helpers/select-subset.helper";
+import UsersRepositoryInterface from "../shared/types/repositories/users.interface";
+import { FindByIdArgs, FindByUsernameOrEmailArgs, UpdateArgs } from "../shared/types/repository.type";
+import { AccessType } from "../shared/types/common.type";
+import { setSelectExclude } from "../shared/helpers/common.helper";
+import { usersSubsets } from "../shared/helpers/select-subset.helper";
 
 export default class UsersRepository implements UsersRepositoryInterface {
   private client;
@@ -31,7 +32,10 @@ export default class UsersRepository implements UsersRepositoryInterface {
 
     if (!res) return null;
 
-    return new Users(res);
+    return new Users({
+      ...res,
+      access_type: res.access_type as AccessType
+    });
   };
 
   findByUsernameOrEmail = async (
@@ -63,7 +67,10 @@ export default class UsersRepository implements UsersRepositoryInterface {
 
     if (!res) return null;
 
-    return new Users(res);
+    return new Users({
+      ...res,
+      access_type: res.access_type as AccessType
+    });
   };
 
   update = async (
@@ -83,6 +90,9 @@ export default class UsersRepository implements UsersRepositoryInterface {
       }
     });
 
-    return new Users(data);
+    return new Users({
+      ...data,
+      access_type: data.access_type as AccessType
+    });
   };
 };

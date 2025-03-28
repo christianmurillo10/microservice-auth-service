@@ -1,10 +1,10 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { apiResponse } from "../../shared/utils/api-response";
-import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_VERIFIED_TOKEN } from "../../shared/constants/message.constant";
-import { ERROR_ON_VERIFY } from "../../shared/constants/error.constant";
-import BadRequestException from "../../shared/exceptions/bad-request.exception";
-import UnauthorizedException from "../../shared/exceptions/unauthorized.exception";
-import { verifyToken } from "../../shared/utils/jwt";
+import { apiResponse } from "../../../shared/utils/api-response";
+import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_VERIFIED_TOKEN } from "../../../shared/constants/message.constant";
+import { ERROR_ON_VERIFY } from "../../../shared/constants/error.constant";
+import BadRequestException from "../../../shared/exceptions/bad-request.exception";
+import UnauthorizedException from "../../../shared/exceptions/unauthorized.exception";
+import { verifyToken } from "../../../shared/utils/jwt";
 
 const router = Router();
 

@@ -10,7 +10,7 @@ export const usersSubsets = {
   email: true,
   password: true,
   access_token: true,
-  access_type_id: true,
+  access_type: true,
   is_active: true,
   is_logged: true
 };

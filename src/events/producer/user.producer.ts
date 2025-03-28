@@ -1,7 +1,7 @@
 import KafkaService from "../../services/kafka.service";
 import kafkaConfig from "../../config/kafka.config";
 import { EVENT_USER_CREATED, EVENT_USER_UPDATED } from "../../shared/constants/events.constant";
-import Users from "../../shared/entities/users.entity";
+import Users from "../../entities/users.entity";
 
 export default class UserKafkaProducer {
   private kafkaService: KafkaService;

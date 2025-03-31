@@ -18,7 +18,7 @@ const up = async () => {
         username: "superadmin",
         email: "superadmin@email.com",
         password: "$2a$12$FzZC/3mX23SoxT5y1QJxz.lWQCu9FEXQ6yBg9iHqptzMF8DfdpGlK",
-        access_type_id: "SUPERADMIN",
+        access_type: "SUPERADMIN",
         created_at: new Date(),
         updated_at: new Date(),
         deleted_at: null,

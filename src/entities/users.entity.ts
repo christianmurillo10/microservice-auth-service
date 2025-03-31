@@ -8,11 +8,6 @@ type UsersModel = UsersPrismaModel & {
 
 class Users implements UsersModel {
   id: string = uuidv4();
-  created_at: Date = new Date();
-  updated_at: Date | null = new Date();
-  deleted_at: Date | null = null;
-  last_logged_at: Date | null = null;
-  access_token_expired_at: Date | null = null;
   name: string = "";
   username: string = "";
   email: string = "";
@@ -21,6 +16,11 @@ class Users implements UsersModel {
   access_type: AccessType = "ADMIN";
   is_active: boolean = true;
   is_logged: boolean = false;
+  access_token_expired_at: Date | null = null;
+  last_logged_at: Date | null = null;
+  created_at: Date = new Date();
+  updated_at: Date | null = new Date();
+  deleted_at: Date | null = null;
 
   constructor(props: UsersModel) {
     Object.assign(this, props);

@@ -1,6 +1,7 @@
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import UsersRepository from "../repositories/users.repository";
 import Users from "../entities/users.entity";
+import { hashPassword } from "../shared/utils/bcrypt";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 
 export default class UsersService {
@@ -33,7 +34,26 @@ export default class UsersService {
     return record;
   };
 
-  update = async (id: string, data: Users): Promise<Users> => {
-    return this.repository.update({ id, params: data });
+  save = async (data: Users): Promise<Users> => {
+    let record: Users;
+    let newData = new Users(data);
+    let option = {
+      params: newData,
+      exclude: ["deleted_at"]
+    };
+
+    if (data.id) {
+      // Update
+      record = await this.repository.update({
+        id: data.id,
+        ...option
+      });
+    } else {
+      // Create
+      option.params.password = hashPassword(option.params.password as string);
+      record = await this.repository.create(option);
+    }
+
+    return record;
   };
 };

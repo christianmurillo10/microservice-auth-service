@@ -33,7 +33,7 @@ const controller = async (
   })
   .then(async (tokenData) => {
     const record = await service.getById(tokenData.id);
-    await service.update(tokenData.id, {
+    await service.save({
       ...record,
       is_logged: false
     });

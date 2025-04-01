@@ -1,7 +1,12 @@
 import { PrismaClient } from "@prisma/client";
 import Users from "../entities/users.entity";
 import UsersRepositoryInterface from "../shared/types/repositories/users.interface";
-import { FindByIdArgs, FindByUsernameOrEmailArgs, UpdateArgs } from "../shared/types/repository.type";
+import {
+  FindByIdArgs,
+  FindByUsernameOrEmailArgs,
+  CreateArgs,
+  UpdateArgs
+} from "../shared/types/repository.type";
 import { AccessType } from "../shared/types/common.type";
 import { setSelectExclude } from "../shared/helpers/common.helper";
 import { usersSubsets } from "../shared/helpers/select-subset.helper";
@@ -73,6 +78,24 @@ export default class UsersRepository implements UsersRepositoryInterface {
     });
   };
 
+  create = async (
+    args: CreateArgs<Users>
+  ): Promise<Users> => {
+    const exclude = setSelectExclude(args.exclude!);
+    const data = await this.client.create({
+      select: {
+        ...usersSubsets,
+        ...exclude
+      },
+      data: args.params
+    });
+
+    return new Users({
+      ...data,
+      access_type: data.access_type as AccessType
+    });
+  };
+
   update = async (
     args: UpdateArgs<string, Users>
   ): Promise<Users> => {
@@ -85,7 +108,6 @@ export default class UsersRepository implements UsersRepositoryInterface {
       where: { id: args.id },
       data: {
         ...args.params,
-        password: args.params.password as string,
         updated_at: new Date(),
       }
     });

@@ -8,6 +8,7 @@ import UsersService from "../../../services/users.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 import { comparePassword } from "../../../shared/utils/bcrypt";
 import { generateToken } from "../../../shared/utils/jwt";
+import UserKafkaProducer from "../../../events/producer/user.producer";
 
 const router = Router();
 const service = new UsersService();
@@ -29,11 +30,15 @@ const controller = async (
     return record;
   })
   .then(async (record) => {
-    const result = await service.update(record.id!, {
+    const result = await service.save({
       ...record,
-      is_logged: false,
+      is_logged: true,
       last_logged_at: new Date()
     });
+
+    // Execute producer
+    const userProducer = new UserKafkaProducer();
+    await userProducer.publishUserLogged(result);
 
     const data = _.omit(result, [
       "password",

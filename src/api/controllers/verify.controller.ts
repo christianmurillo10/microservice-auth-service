@@ -4,8 +4,8 @@ import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_VERIFI
 import { ERROR_ON_VERIFY } from "../../shared/constants/error.constant";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
 import UnauthorizedException from "../../shared/exceptions/unauthorized.exception";
-import JWT from "../../shared/utils/jwt";
 import { SESSION_TYPE_BUSINESS, SESSION_TYPE_PORTAL } from "../../shared/constants/sessions.constant";
+import { verifyToken } from "../../shared/helpers/common.helper";
 
 const router = Router();
 
@@ -22,7 +22,7 @@ const controller = async (
     };
 
     const token = authHeader.split(" ")[1];
-    const tokenData = JWT.verifyToken(token);
+    const tokenData = verifyToken(token);
 
     if (
       !tokenData ||

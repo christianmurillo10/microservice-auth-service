@@ -31,7 +31,7 @@ const generateAccessToken = (type: SessionsType, record: Users, exp: number) => 
     iat: Date.now() / 1000,
     aud: "Boilerplate"
   });
-  return jwt.generateToken();
+  return jwt.encodeToken();
 };
 
 const controller = async (

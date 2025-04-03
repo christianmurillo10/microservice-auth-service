@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import config from "../../config/jwt.config";
-import { JWTClient, JWTModel } from "../types/jwt.types";
+import { JWTClient, JWTModel } from "../../models/jwt.model";
 import { SESSION_TYPE_BUSINESS } from "../constants/sessions.constant";
 
 class JWT implements JWTModel {
@@ -17,9 +17,9 @@ class JWT implements JWTModel {
     Object.assign(this, props);
   };
 
-  static verifyToken = (token: string): JWT => jwt.verify(token, config.secret) as unknown as JWT;
+  static decodeToken = (token: string): JWT => jwt.verify(token, config.secret) as unknown as JWT;
 
-  generateToken = () => jwt.sign(
+  encodeToken = () => jwt.sign(
     {
       id: this.id,
       email: this.email,

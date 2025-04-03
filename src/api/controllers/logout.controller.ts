@@ -2,14 +2,14 @@ import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_SIGNED_OUT } from "../../shared/constants/message.constant";
 import { ERROR_ON_LOGOUT } from "../../shared/constants/error.constant";
-import UsersService from "../../services/users.service";
+import SessionsService from "../../services/sessions.service";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
 import UnauthorizedException from "../../shared/exceptions/unauthorized.exception";
-import JWT from "../../shared/utils/jwt";
 import { SESSION_TYPE_BUSINESS, SESSION_TYPE_PORTAL } from "../../shared/constants/sessions.constant";
+import { verifyToken } from "../../shared/helpers/common.helper";
 
 const router = Router();
-const usersService = new UsersService();
+const sessionService = new SessionsService();
 
 const controller = async (
   req: Request,
@@ -24,7 +24,7 @@ const controller = async (
     };
 
     const token = authHeader.split(" ")[1];
-    const tokenData = JWT.verifyToken(token);
+    const tokenData = verifyToken(token);
 
     if (
       !tokenData ||
@@ -34,14 +34,11 @@ const controller = async (
       throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
     };
 
-    return tokenData;
+    return token;
   })
-  .then(async (tokenData) => {
-    const record = await usersService.getById(tokenData.id as unknown as string);
-    await usersService.save({
-      ...record,
-      // is_logged: false
-    });
+  .then(async (token) => {
+    const record = await sessionService.getByAccessToken(token);
+    await sessionService.delete(record.id as string);
   })
   .then(() => {
     apiResponse(res, {

@@ -20,6 +20,16 @@ export default class SessionsService {
     return record;
   };
 
+  getByAccessToken = async (access_token: string): Promise<Sessions> => {
+    const record = await this.repository.findByAccessToken({ access_token });
+
+    if (!record) {
+      throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
+    };
+
+    return record;
+  };
+
   getByRefreshToken = async (refresh_token: string): Promise<Sessions> => {
     const record = await this.repository.findByRefreshToken({ refresh_token });
 
@@ -50,5 +60,9 @@ export default class SessionsService {
     }
 
     return record;
+  };
+
+  delete = async (id: string): Promise<Sessions> => {
+    return await this.repository.softDelete({ id: id });
   };
 };

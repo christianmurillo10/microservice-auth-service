@@ -29,6 +29,13 @@ export type FindByUsernameOrEmailArgs = {
   exclude?: string[] | undefined
 };
 
+export type FindByAccessTokenArgs = {
+  access_token: string,
+  condition?: GenericObject | undefined,
+  include?: string[] | undefined,
+  exclude?: string[] | undefined
+};
+
 export type FindByRefreshTokenArgs = {
   refresh_token: string,
   condition?: GenericObject | undefined,

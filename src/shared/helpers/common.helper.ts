@@ -1,5 +1,6 @@
 import { Schema } from "joi";
 import { GenericObject } from "../types/common.type";
+import JWT from "../utils/jwt";
 
 export const validateInput = async <I>(input: I, schema: Schema): Promise<I> => {
   const options = {
@@ -71,6 +72,15 @@ export const addMinutesToDate = (date: Date, minutes: number): Date => {
 };
 
 export const addDaysToDate = (date: Date, days: number): Date => {
-  const newDate = date.setDate(date.getDate() + days) / 1000;
+  const newDate = date.setDate(date.getDate() + days);
   return new Date(newDate);
+};
+
+
+export const verifyToken = (token: string) => {
+  try {
+    return JWT.decodeToken(token);
+  } catch (error) {
+    return null
+  }
 };

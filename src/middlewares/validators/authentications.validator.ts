@@ -22,16 +22,27 @@ export const login = async (
         .default(SESSION_TYPE_BUSINESS)
         .optional(),
       email: joi.string().email().label("Email").required(),
-      //   .when("username", {
-      //     is: joi.exist(),
-      //     then: joi.forbidden()
-      //   }),
-      // username: joi.string().label("Username").optional()
-      //   .when("email", {
-      //     is: joi.exist(),
-      //     then: joi.forbidden()
-      //   }),
       password: joi.string().label("Password").required(),
+    });
+    req.body = await validateInput(req.body, schema);
+    next();
+  } catch (error) {
+    next(error);
+  };
+};
+
+export const token = async (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (_.isEmpty(req.body)) {
+      throw new BadRequestException([MESSAGE_INVALID_BODY]);
+    };
+
+    const schema = joi.object({
+      refresh_token: joi.string().label("Refresh Token").required(),
     });
     req.body = await validateInput(req.body, schema);
     next();

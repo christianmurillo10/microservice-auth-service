@@ -6,7 +6,7 @@ import SessionsService from "../../services/sessions.service";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
 import UnauthorizedException from "../../shared/exceptions/unauthorized.exception";
 import { SESSION_TYPE_BUSINESS, SESSION_TYPE_PORTAL } from "../../shared/constants/sessions.constant";
-import { verifyToken } from "../../shared/helpers/common.helper";
+import { verifyToken } from "../../shared/helpers/jwt.helper";
 
 const router = Router();
 const sessionService = new SessionsService();

@@ -1,5 +1,4 @@
 import { Router, Request, Response, NextFunction } from "express";
-import _ from "lodash";
 import { v4 as uuidv4 } from "uuid";
 import { apiResponse } from "../../shared/utils/api-response";
 import { MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS, MESSAGE_DATA_SIGNED_IN, MESSAGE_NOT_IMPLEMENTED } from "../../shared/constants/message.constant";
@@ -8,31 +7,16 @@ import { login as validator } from "../../middlewares/validators/authentications
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
 import NotFoundException from "../../shared/exceptions/not-found.exception";
 import { comparePassword } from "../../shared/utils/bcrypt";
-import JWT from "../../shared/utils/jwt";
 import UserKafkaProducer from "../../events/producer/user.producer";
 import UsersService from "../../services/users.service";
 import Users from "../../entities/users.entity";
 import SessionsService from "../../services/sessions.service";
 import { addDaysToDate, addMinutesToDate } from "../../shared/helpers/common.helper";
-import { SessionsType } from "../../models/sessions.model";
+import { generateAccessToken } from "../../shared/helpers/jwt.helper";
 
 const router = Router();
 const service = new UsersService();
 const sessionService = new SessionsService();
-
-const generateAccessToken = (type: SessionsType, record: Users, exp: number) => {
-  const jwt = new JWT({
-    id: record.id as unknown as number,
-    email: record.email,
-    client: type,
-    scope: "*",
-    sub: record.business_id as unknown as number,
-    exp: exp,
-    iat: Date.now() / 1000,
-    aud: "Boilerplate"
-  });
-  return jwt.encodeToken();
-};
 
 const controller = async (
   req: Request,

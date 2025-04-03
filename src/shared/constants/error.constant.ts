@@ -10,6 +10,6 @@ export const ERROR_ON_CHANGE_PASSWORD = "Error on change password";
 export const ERROR_ON_INGESTION = "Error on ingestion";
 export const ERROR_ON_LOGIN = "Error on login";
 export const ERROR_ON_LOGOUT = "Error on logout";
-export const ERROR_ON_VERIFY = "Error on verify";
+export const ERROR_ON_REFRESH_TOKEN = "Error on refresh token";
 export const ERROR_ON_REPORT = "Error on report";
 export const ERROR_ON_SERVER = "Something went wrong, please contact administrator.";

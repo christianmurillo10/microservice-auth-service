@@ -1,30 +1,31 @@
 import { PrismaClient } from "@prisma/client";
-import Users from "../entities/users.entity";
-import UsersRepositoryInterface from "../shared/types/repositories/users.interface";
+import { SessionsType } from "../models/sessions.model";
+import Sessions from "../entities/sessions.entity";
+import SessionsRepositoryInterface from "../shared/types/repositories/sessions.interface";
 import {
   FindByIdArgs,
-  FindByUsernameOrEmailArgs,
+  FindByRefreshTokenArgs,
   CreateArgs,
   UpdateArgs
 } from "../shared/types/repository.type";
 import { setSelectExclude } from "../shared/helpers/common.helper";
-import { usersSubsets } from "../shared/helpers/select-subset.helper";
+import { sessionsSubsets } from "../shared/helpers/select-subset.helper";
 
-export default class UsersRepository implements UsersRepositoryInterface {
+export default class SessionsRepository implements SessionsRepositoryInterface {
   private client;
 
   constructor() {
     const prisma = new PrismaClient();
-    this.client = prisma.users;
+    this.client = prisma.sessions;
   };
 
   findById = async (
     args: FindByIdArgs<string>
-  ): Promise<Users | null> => {
+  ): Promise<Sessions | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...usersSubsets,
+        ...sessionsSubsets,
         ...exclude
       },
       where: {
@@ -36,31 +37,23 @@ export default class UsersRepository implements UsersRepositoryInterface {
 
     if (!res) return null;
 
-    return new Users(res);
+    return new Sessions({
+      ...res,
+      type: res.type as SessionsType
+    });
   };
 
-  findByUsernameOrEmail = async (
-    args: FindByUsernameOrEmailArgs
-  ): Promise<Users | null> => {
+  findByRefreshToken = async (
+    args: FindByRefreshTokenArgs
+  ): Promise<Sessions | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...usersSubsets,
+        ...sessionsSubsets,
         ...exclude
       },
       where: {
-        OR: [
-          {
-            username: {
-              equals: args.username,
-            },
-          },
-          {
-            email: {
-              equals: args.email,
-            },
-          },
-        ],
+        refresh_token: args.refresh_token,
         deleted_at: null,
         ...args.condition
       }
@@ -68,31 +61,37 @@ export default class UsersRepository implements UsersRepositoryInterface {
 
     if (!res) return null;
 
-    return new Users(res);
+    return new Sessions({
+      ...res,
+      type: res.type as SessionsType
+    });
   };
 
   create = async (
-    args: CreateArgs<Users>
-  ): Promise<Users> => {
+    args: CreateArgs<Sessions>
+  ): Promise<Sessions> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
-        ...usersSubsets,
+        ...sessionsSubsets,
         ...exclude
       },
       data: args.params
     });
 
-    return new Users(data);
+    return new Sessions({
+      ...data,
+      type: data.type as SessionsType
+    });
   };
 
   update = async (
-    args: UpdateArgs<string, Users>
-  ): Promise<Users> => {
+    args: UpdateArgs<string, Sessions>
+  ): Promise<Sessions> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
-        ...usersSubsets,
+        ...sessionsSubsets,
         ...exclude
       },
       where: { id: args.id },
@@ -102,6 +101,9 @@ export default class UsersRepository implements UsersRepositoryInterface {
       }
     });
 
-    return new Users(data);
+    return new Sessions({
+      ...data,
+      type: data.type as SessionsType
+    });
   };
 };

@@ -6,7 +6,6 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import routes from "./api/routes";
 import UserRequestHeader from "./entities/user-request-header.entity";
-import { JWT } from "./shared/types/jwt.types";
 import userRequestHeader from "./middlewares/user-request-header.middleware";
 import routeNotFoundHandler from "./middlewares/route-not-found.middleware";
 import errorHandler from "./middlewares/error.middleware";
@@ -14,7 +13,6 @@ import KafkaServer from "./events";
 
 declare module "express-serve-static-core" {
   export interface Request {
-    auth: JWT,
     userRequestHeader: UserRequestHeader
   }
 };

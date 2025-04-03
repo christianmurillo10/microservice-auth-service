@@ -1,23 +1,14 @@
 import { v4 as uuidv4 } from "uuid";
-import { users as UsersPrismaModel } from "@prisma/client";
-import { AccessType } from "../shared/types/common.type";
-
-type UsersModel = UsersPrismaModel & {
-  access_type: AccessType
-};
+import UsersModel from "../models/users.model";
 
 class Users implements UsersModel {
-  id: string = uuidv4();
+  id?: string = uuidv4();
   name: string = "";
   username: string = "";
   email: string = "";
   password: string = "";
-  access_token: string | null = null;
-  access_type: AccessType = "ADMIN";
+  business_id: number | null = null;
   is_active: boolean = true;
-  is_logged: boolean = false;
-  access_token_expired_at: Date | null = null;
-  last_logged_at: Date | null = null;
   created_at: Date = new Date();
   updated_at: Date | null = new Date();
   deleted_at: Date | null = null;

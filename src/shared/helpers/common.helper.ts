@@ -29,6 +29,7 @@ export const parseQueryFilters = <T>(data: T): GenericObject => {
           "deleted_at",
           "last_logged_at",
           "verified_at",
+          "refresh_token_expires_at",
           "date"
         ];
 
@@ -62,4 +63,14 @@ export const setSelectExclude = (val: string[]): GenericObject => {
 
 export const formatToUpperUnderscore = (val: string) => {
   return val.split(' ').map((word: string) => word.toUpperCase()).join('_');
-}
+};
+
+export const addMinutesToDate = (date: Date, minutes: number): Date => {
+  const newDate = date.setTime(date.getTime() + (minutes * 60000));
+  return new Date(newDate);
+};
+
+export const addDaysToDate = (date: Date, days: number): Date => {
+  const newDate = date.setDate(date.getDate() + days) / 1000;
+  return new Date(newDate);
+};

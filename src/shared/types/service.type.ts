@@ -15,6 +15,11 @@ export type GetByNameArgs = {
   condition?: GenericObject
 };
 
+export type GetByRefreshTokenArgs = {
+  refresh_token: string,
+  condition?: GenericObject
+};
+
 export type CountAllArgs = {
   condition?: GenericObject,
   query?: Query

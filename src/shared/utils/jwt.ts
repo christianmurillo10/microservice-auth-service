@@ -1,19 +1,37 @@
 import jwt from "jsonwebtoken";
 import config from "../../config/jwt.config";
-import { MESSAGE_DATA_TOKEN_EXPIRED } from "../constants/message.constant";
-import UnauthorizedException from "../exceptions/unauthorized.exception";
-import { JWT, JwtParams } from "../types/jwt.types";
+import { JWTClient, JWTModel } from "../types/jwt.types";
+import { SESSION_TYPE_BUSINESS } from "../constants/sessions.constant";
 
-export const generateToken = (params: JwtParams): string => {
-  const accountData = params.data || null;
-  const data = { id: params.id, type: params.type, data: accountData };
-  return jwt.sign(data, config.secret, { expiresIn: "1D" });
-};
+class JWT implements JWTModel {
+  id: number = 0;
+  email: string = "";
+  client: JWTClient = SESSION_TYPE_BUSINESS;
+  scope: string = "";
+  sub: number = 0;
+  exp: number = 0;
+  iat: number = Date.now();
+  aud: string = "Boilerplate";
 
-export const verifyToken = (token: string): JWT => {
-  try {
-    return <JWT>jwt.verify(token, config.secret);
-  } catch (error) {
-    throw new UnauthorizedException([MESSAGE_DATA_TOKEN_EXPIRED]);
+  constructor(props: JWTModel) {
+    Object.assign(this, props);
   };
+
+  static verifyToken = (token: string): JWT => jwt.verify(token, config.secret) as unknown as JWT;
+
+  generateToken = () => jwt.sign(
+    {
+      id: this.id,
+      email: this.email,
+      client: this.client,
+      scope: this.scope,
+      sub: this.sub,
+      exp: this.exp,
+      iat: this.iat,
+      aud: this.aud
+    },
+    config.secret
+  );
 };
+
+export default JWT;

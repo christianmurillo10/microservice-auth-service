@@ -24,7 +24,7 @@ model users {
 
 model sessions {
   id                       String    @id @default(uuid()) @db.Char(36)
-  access_type                     String    @db.VarChar(100)
+  access_type              String    @db.VarChar(100)
   access_token             String    @db.Text
   refresh_token            String    @db.Text
   user_id                  String    @db.Char(36)

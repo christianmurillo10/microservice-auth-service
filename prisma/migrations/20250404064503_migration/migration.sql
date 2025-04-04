@@ -17,7 +17,7 @@ CREATE TABLE `users` (
 -- CreateTable
 CREATE TABLE `sessions` (
     `id` CHAR(36) NOT NULL,
-    `type` VARCHAR(100) NOT NULL,
+    `access_type` VARCHAR(100) NOT NULL,
     `access_token` TEXT NOT NULL,
     `refresh_token` TEXT NOT NULL,
     `user_id` CHAR(36) NOT NULL,

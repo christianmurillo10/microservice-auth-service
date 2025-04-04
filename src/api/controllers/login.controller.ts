@@ -28,7 +28,7 @@ const controller = async (
     const input = body.username ?? body.email;
     let record: Users;
 
-    switch (body.type) {
+    switch (body.access_type) {
       case "APP_RECOGNIZED":
         throw new BadRequestException([MESSAGE_NOT_IMPLEMENTED]);
       default:
@@ -54,11 +54,11 @@ const controller = async (
     // Generate Access Token
     const accessTokenExpiryDate = addMinutesToDate(new Date(), 30);
     const accessTokenExpiry = accessTokenExpiryDate.getTime() / 1000;
-    const accessToken = generateAccessToken(body.type, record, accessTokenExpiry);
+    const accessToken = generateAccessToken(body.access_type, record, accessTokenExpiry);
 
     // Save data to sessions table
     const session = await sessionService.save({
-      type: body.type,
+      access_type: body.access_type,
       access_token: accessToken,
       refresh_token: uuidv4(),
       user_id: record.id as string,

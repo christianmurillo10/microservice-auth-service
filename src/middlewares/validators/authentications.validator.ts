@@ -17,7 +17,7 @@ export const login = async (
     };
 
     const schema = joi.object({
-      type: joi.string().label("Type")
+      access_type: joi.string().label("Access Type")
         .valid(SESSION_TYPE_PORTAL, SESSION_TYPE_BUSINESS, SESSION_TYPE_APP_RECOGNIZED)
         .default(SESSION_TYPE_BUSINESS)
         .optional(),

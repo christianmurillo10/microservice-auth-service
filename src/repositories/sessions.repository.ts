@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { SessionsType } from "../models/sessions.model";
+import { SessionsAccessType } from "../models/sessions.model";
 import Sessions from "../entities/sessions.entity";
 import SessionsRepositoryInterface from "../shared/types/repositories/sessions.interface";
 import {
@@ -41,7 +41,7 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...res,
-      type: res.type as SessionsType
+      access_type: res.access_type as SessionsAccessType
     });
   };
 
@@ -65,7 +65,7 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...res,
-      type: res.type as SessionsType
+      access_type: res.access_type as SessionsAccessType
     });
   };
 
@@ -89,7 +89,7 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...res,
-      type: res.type as SessionsType
+      access_type: res.access_type as SessionsAccessType
     });
   };
 
@@ -107,7 +107,7 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...data,
-      type: data.type as SessionsType
+      access_type: data.access_type as SessionsAccessType
     });
   };
 
@@ -129,7 +129,7 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...data,
-      type: data.type as SessionsType
+      access_type: data.access_type as SessionsAccessType
     });
   };
 
@@ -150,7 +150,7 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...data,
-      type: data.type as SessionsType
+      access_type: data.access_type as SessionsAccessType
     });
   };
 };

@@ -13,7 +13,7 @@ export const usersSubsets = {
 
 export const sessionsSubsets = {
   id: true,
-  type: true,
+  access_type: true,
   access_token: true,
   refresh_token: true,
   user_id: true,

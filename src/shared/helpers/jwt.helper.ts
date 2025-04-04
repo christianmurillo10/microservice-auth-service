@@ -1,12 +1,12 @@
 import Users from "../../entities/users.entity";
-import { SessionsType } from "../../models/sessions.model";
+import { SessionsAccessType } from "../../models/sessions.model";
 import JWT from "../utils/jwt";
 
-export const generateAccessToken = (type: SessionsType, record: Users, exp: number) => {
+export const generateAccessToken = (accessType: SessionsAccessType, record: Users, exp: number) => {
   const jwt = new JWT({
     id: record.id as unknown as number,
     email: record.email,
-    client: type,
+    client: accessType,
     scope: "*",
     sub: record.business_id as unknown as number,
     exp: exp,

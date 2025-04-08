@@ -80,7 +80,11 @@ const controller = async (
   .then(async ({ record, result }) => {
     // Execute producer
     const userProducer = new UserKafkaProducer();
-    await userProducer.publishUserLogged(record);
+    await userProducer.publishUserLoggedIn({
+      id: record.id!,
+      is_logged: true,
+      last_logged_at: new Date()
+    });
 
     return {
       message: MESSAGE_DATA_SIGNED_IN,

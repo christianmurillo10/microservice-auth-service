@@ -110,7 +110,11 @@ export default class KafkaService {
     eachMessageHandler: (payload: EachMessagePayload) => Promise<void>
   ) => {
     try {
-      const consumerConfig: ConsumerConfig = { groupId: groupId };
+      const consumerConfig: ConsumerConfig = {
+        groupId: groupId,
+        sessionTimeout: 30000,
+        heartbeatInterval: 10000,
+      };
       const consumer = this.kafka.consumer(consumerConfig);
 
       console.info(`Connecting Kafka consumer for topic: ${topics}`);

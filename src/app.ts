@@ -68,8 +68,7 @@ export default class App {
   };
 
   private onClose = () => {
-    const kafkaServer = new KafkaServer();
-    kafkaServer.disconnect();
+    KafkaServer.disconnect();
   };
 
   start = async () => {

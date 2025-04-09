@@ -22,13 +22,13 @@ export default class UserKafkaConsumer {
       return;
     };
 
-    if (message.key.toString() === EVENT_USER_CREATED) {
-      await subscribeUserCreated(message);
-    };
-
-
-    if (message.key.toString() === EVENT_USER_UPDATED) {
-      await subscribeUserUpdated(message);
+    switch (message.key.toString()) {
+      case EVENT_USER_CREATED:
+        await subscribeUserCreated(message);
+        break;
+      case EVENT_USER_UPDATED:
+        await subscribeUserUpdated(message);
+        break;
     };
   };
 

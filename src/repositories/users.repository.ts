@@ -9,6 +9,7 @@ import {
 } from "../shared/types/repository.type";
 import { setSelectExclude } from "../shared/helpers/common.helper";
 import { usersSubsets } from "../shared/helpers/select-subset.helper";
+import { AccessType } from "../models/users.model";
 
 export default class UsersRepository implements UsersRepositoryInterface {
   private client;
@@ -36,7 +37,10 @@ export default class UsersRepository implements UsersRepositoryInterface {
 
     if (!res) return null;
 
-    return new Users(res);
+    return new Users({
+      ...res,
+      access_type: res.access_type as AccessType
+    });
   };
 
   findByUsernameOrEmail = async (
@@ -68,7 +72,10 @@ export default class UsersRepository implements UsersRepositoryInterface {
 
     if (!res) return null;
 
-    return new Users(res);
+    return new Users({
+      ...res,
+      access_type: res.access_type as AccessType
+    });
   };
 
   create = async (
@@ -83,7 +90,10 @@ export default class UsersRepository implements UsersRepositoryInterface {
       data: args.params
     });
 
-    return new Users(data);
+    return new Users({
+      ...data,
+      access_type: data.access_type as AccessType
+    });
   };
 
   update = async (
@@ -102,6 +112,9 @@ export default class UsersRepository implements UsersRepositoryInterface {
       }
     });
 
-    return new Users(data);
+    return new Users({
+      ...data,
+      access_type: data.access_type as AccessType
+    });
   };
 };

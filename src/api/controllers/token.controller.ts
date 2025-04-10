@@ -6,7 +6,7 @@ import { ERROR_ON_REFRESH_TOKEN } from "../../shared/constants/error.constant";
 import { token as validator } from "../../middlewares/validators/authentications.validator";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
 import UnauthorizedException from "../../shared/exceptions/unauthorized.exception";
-import { SESSION_TYPE_BUSINESS, SESSION_TYPE_PORTAL } from "../../shared/constants/sessions.constant";
+import { USERS_ACCESS_TYPE_BUSINESS, USERS_ACCESS_TYPE_PORTAL } from "../../shared/constants/users.constant";
 import { generateAccessToken, verifyToken } from "../../shared/helpers/jwt.helper";
 import UsersService from "../../services/users.service";
 import SessionsService from "../../services/sessions.service";
@@ -34,8 +34,8 @@ const controller = async (
 
     if (
       !tokenData ||
-      tokenData.client !== SESSION_TYPE_PORTAL &&
-      tokenData.client !== SESSION_TYPE_BUSINESS
+      tokenData.client !== USERS_ACCESS_TYPE_PORTAL &&
+      tokenData.client !== USERS_ACCESS_TYPE_BUSINESS
     ) {
       throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
     };

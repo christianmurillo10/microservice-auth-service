@@ -1,10 +1,11 @@
 import { v4 as uuidv4 } from "uuid";
-import SessionsModel, { SessionsAccessType } from "../models/sessions.model";
-import { SESSION_TYPE_BUSINESS } from "../shared/constants/sessions.constant";
+import SessionsModel from "../models/sessions.model";
+import { USERS_ACCESS_TYPE_BUSINESS } from "../shared/constants/users.constant";
+import { AccessType } from "../models/users.model";
 
 class Sessions implements SessionsModel {
   id?: string = uuidv4();
-  access_type: SessionsAccessType = SESSION_TYPE_BUSINESS;
+  access_type: AccessType = USERS_ACCESS_TYPE_BUSINESS;
   access_token: string = "";
   refresh_token: string = "";
   user_id: string = "";

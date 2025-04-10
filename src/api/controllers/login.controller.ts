@@ -40,6 +40,7 @@ const controller = async (
 
             throw err;
           });
+        body.access_type = record.access_type;
         break;
     };
 

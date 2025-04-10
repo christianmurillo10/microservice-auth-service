@@ -5,6 +5,7 @@ CREATE TABLE `users` (
     `username` VARCHAR(100) NOT NULL,
     `email` VARCHAR(100) NOT NULL,
     `password` VARCHAR(100) NOT NULL,
+    `access_type` VARCHAR(100) NOT NULL,
     `business_id` INTEGER NULL,
     `is_active` BOOLEAN NOT NULL DEFAULT true,
     `created_at` DATETIME(0) NOT NULL,

@@ -4,6 +4,7 @@ export const usersSubsets = {
   username: true,
   email: true,
   password: true,
+  access_type: true,
   business_id: true,
   is_active: true,
   created_at: true,

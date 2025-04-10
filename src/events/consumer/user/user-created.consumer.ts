@@ -12,6 +12,7 @@ const subscribeUserCreated = async (message: Message): Promise<void> => {
     username: value.username,
     email: value.email,
     password: value.password,
+    access_type: value.access_type,
     business_id: value.business_id,
     is_active: value.is_active,
     created_at: value.created_at,

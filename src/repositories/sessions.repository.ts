@@ -1,5 +1,4 @@
 import { PrismaClient } from "@prisma/client";
-import { SessionsAccessType } from "../models/sessions.model";
 import Sessions from "../entities/sessions.entity";
 import SessionsRepositoryInterface from "../shared/types/repositories/sessions.interface";
 import {
@@ -12,6 +11,7 @@ import {
 } from "../shared/types/repository.type";
 import { setSelectExclude } from "../shared/helpers/common.helper";
 import { sessionsSubsets } from "../shared/helpers/select-subset.helper";
+import { AccessType } from "../models/users.model";
 
 export default class SessionsRepository implements SessionsRepositoryInterface {
   private client;
@@ -41,7 +41,7 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...res,
-      access_type: res.access_type as SessionsAccessType
+      access_type: res.access_type as AccessType
     });
   };
 
@@ -65,7 +65,7 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...res,
-      access_type: res.access_type as SessionsAccessType
+      access_type: res.access_type as AccessType
     });
   };
 
@@ -89,7 +89,7 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...res,
-      access_type: res.access_type as SessionsAccessType
+      access_type: res.access_type as AccessType
     });
   };
 
@@ -107,7 +107,7 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...data,
-      access_type: data.access_type as SessionsAccessType
+      access_type: data.access_type as AccessType
     });
   };
 
@@ -129,7 +129,7 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...data,
-      access_type: data.access_type as SessionsAccessType
+      access_type: data.access_type as AccessType
     });
   };
 
@@ -150,7 +150,7 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...data,
-      access_type: data.access_type as SessionsAccessType
+      access_type: data.access_type as AccessType
     });
   };
 };

@@ -1,8 +1,8 @@
-export type SessionsAccessType = "PORTAL" | "BUSINESS" | "APP_RECOGNIZED";
+import { AccessType } from "./users.model";
 
 export default interface SessionsModel {
   id?: string;
-  access_type: SessionsAccessType;
+  access_type: AccessType;
   access_token: string;
   refresh_token: string;
   user_id: string;

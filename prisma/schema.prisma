@@ -14,6 +14,7 @@ model users {
   username       String     @db.VarChar(100)
   email          String     @db.VarChar(100)
   password       String     @db.VarChar(100)
+  access_type    String     @db.VarChar(100)
   business_id    Int?
   is_active      Boolean    @default(true)
   created_at     DateTime   @db.DateTime(0)

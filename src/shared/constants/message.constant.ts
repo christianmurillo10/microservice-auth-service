@@ -3,6 +3,7 @@ export const MESSAGE_INVALID_BODY = "Invalid Body.";
 export const MESSAGE_INVALID_QUERY = "Invalid Query.";
 export const MESSAGE_INVALID_API_KEY = "Invalid API Key.";
 export const MESSAGE_REQUIRED_API_KEY = "API Key is required.";
+export const MESSAGE_REQUIRED_AUTHORIZATION = "Authorization is required.";
 export const MESSAGE_DATA_CREATED = "Successfully created data.";
 export const MESSAGE_DATA_INGESTED = "Successfully ingest data.";
 export const MESSAGE_DATA_UPDATED = "Successfully updated data.";

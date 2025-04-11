@@ -1,13 +1,12 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
-import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_SIGNED_OUT, MESSAGE_NOT_IMPLEMENTED } from "../../shared/constants/message.constant";
+import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_SIGNED_OUT, MESSAGE_NOT_IMPLEMENTED, MESSAGE_REQUIRED_AUTHORIZATION } from "../../shared/constants/message.constant";
 import { ERROR_ON_LOGOUT } from "../../shared/constants/error.constant";
 import SessionsService from "../../services/sessions.service";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
 import UnauthorizedException from "../../shared/exceptions/unauthorized.exception";
-import { USERS_ACCESS_TYPE_BUSINESS, USERS_ACCESS_TYPE_PORTAL } from "../../shared/constants/users.constant";
-import { verifyToken } from "../../shared/helpers/jwt.helper";
 import UserKafkaProducer from "../../events/producer/user.producer";
+import NotFoundException from "../../shared/exceptions/not-found.exception";
 
 const router = Router();
 const sessionService = new SessionsService();
@@ -18,35 +17,31 @@ const controller = async (
   next: NextFunction
 ) => Promise.resolve(req)
   .then(async (req) => {
-    const authHeader = req.headers.authorization;
+    const { authorization } = req.headers;
 
-    if (!authHeader) {
-      throw new BadRequestException([MESSAGE_DATA_NOT_EXIST]);
+    if (!authorization) {
+      throw new BadRequestException([MESSAGE_REQUIRED_AUTHORIZATION]);
     };
 
-    const token = authHeader.split(" ")[1];
-    const tokenData = verifyToken(token);
-
-    if (
-      !tokenData ||
-      tokenData.client !== USERS_ACCESS_TYPE_PORTAL &&
-      tokenData.client !== USERS_ACCESS_TYPE_BUSINESS
-    ) {
-      throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
-    };
-
-    return { tokenData, token };
+    return authorization.split(" ")[1];
   })
-  .then(async ({ tokenData, token }) => {
+  .then(async (token) => {
     // Delete session
-    const record = await sessionService.getByAccessToken(token);
-    await sessionService.delete(record.id as string);
-    return { tokenData, record };
-  })
-  .then(async ({ tokenData, record }) => {
-    // Execute producer
+    const record = await sessionService.getByAccessToken(token)
+      .catch(err => {
+        if (err instanceof NotFoundException) {
+          throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
+        };
 
-    switch (tokenData.client) {
+        throw err;
+      });
+    await sessionService.delete(record.id as string);
+
+    return record;
+  })
+  .then(async (record) => {
+    // Execute producer
+    switch (record.access_type) {
       case "APP_RECOGNIZED":
         throw new BadRequestException([MESSAGE_NOT_IMPLEMENTED]);
       default:

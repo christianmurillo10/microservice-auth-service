@@ -1,6 +1,6 @@
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import SessionsRepository from "../repositories/sessions.repository";
-import Sessions from "../entities/sessions.entity";
+import Sessions from "../models/sessions.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 
 export default class SessionsService {

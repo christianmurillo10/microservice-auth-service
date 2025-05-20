@@ -1,13 +1,21 @@
-import { AccessType } from "./users.model";
+import { v4 as uuidv4 } from "uuid";
+import SessionsEntity from "../entities/sessions.entity";
+import { AccessType, UserAccessType } from "../entities/users.entity";
 
-export default interface SessionsModel {
-  id?: string;
-  access_type: AccessType;
-  access_token: string;
-  refresh_token: string;
-  user_id: string;
-  refresh_token_expires_at: Date;
-  created_at: Date;
-  updated_at?: Date | null;
-  deleted_at?: Date | null;
+class Sessions implements SessionsEntity {
+  id?: string = uuidv4();
+  access_type: AccessType = UserAccessType.BUSINESS;
+  access_token: string = "";
+  refresh_token: string = "";
+  user_id: string = "";
+  refresh_token_expires_at: Date = new Date();
+  created_at: Date = new Date();
+  updated_at?: Date | null = new Date();
+  deleted_at?: Date | null = null;
+
+  constructor(props: SessionsEntity) {
+    Object.assign(this, props);
+  };
 };
+
+export default Sessions;

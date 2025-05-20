@@ -1,4 +1,4 @@
-import Sessions from "../../../entities/sessions.entity";
+import Sessions from "../../../models/sessions.model";
 import {
   FindByIdArgs,
   FindByRefreshTokenArgs,

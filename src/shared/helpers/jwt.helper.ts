@@ -1,5 +1,5 @@
-import Users from "../../entities/users.entity";
-import { AccessType } from "../../models/users.model";
+import Users from "../../models/users.model";
+import { AccessType } from "../../entities/users.entity";
 import JWT from "../utils/jwt";
 
 export const generateAccessToken = (accessType: AccessType, record: Users, exp: number) => {
@@ -11,7 +11,7 @@ export const generateAccessToken = (accessType: AccessType, record: Users, exp: 
     sub: record.business_id as unknown as number,
     exp: exp,
     iat: Date.now() / 1000,
-    aud: "Boilerplate"
+    aud: "Microservice"
   });
   return jwt.encodeToken();
 };

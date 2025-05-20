@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import Sessions from "../entities/sessions.entity";
+import Sessions from "../models/sessions.model";
 import SessionsRepositoryInterface from "../shared/types/repositories/sessions.interface";
 import {
   FindByIdArgs,
@@ -11,7 +11,7 @@ import {
 } from "../shared/types/repository.type";
 import { setSelectExclude } from "../shared/helpers/common.helper";
 import { sessionsSubsets } from "../shared/helpers/select-subset.helper";
-import { AccessType } from "../models/users.model";
+import { AccessType } from "../entities/users.entity";
 
 export default class SessionsRepository implements SessionsRepositoryInterface {
   private client;

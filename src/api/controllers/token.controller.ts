@@ -6,11 +6,11 @@ import { ERROR_ON_REFRESH_TOKEN } from "../../shared/constants/error.constant";
 import { token as validator } from "../../middlewares/validators/authentications.validator";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
 import UnauthorizedException from "../../shared/exceptions/unauthorized.exception";
-import { USERS_ACCESS_TYPE_BUSINESS, USERS_ACCESS_TYPE_PORTAL } from "../../shared/constants/users.constant";
 import { generateAccessToken, verifyToken } from "../../shared/helpers/jwt.helper";
 import UsersService from "../../services/users.service";
 import SessionsService from "../../services/sessions.service";
 import { addDaysToDate, addMinutesToDate } from "../../shared/helpers/common.helper";
+import { UserAccessType } from "../../entities/users.entity";
 
 const router = Router();
 const service = new UsersService();
@@ -34,8 +34,8 @@ const controller = async (
 
     if (
       !tokenData ||
-      tokenData.client !== USERS_ACCESS_TYPE_PORTAL &&
-      tokenData.client !== USERS_ACCESS_TYPE_BUSINESS
+      tokenData.client !== UserAccessType.PORTAL &&
+      tokenData.client !== UserAccessType.BUSINESS
     ) {
       throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
     };

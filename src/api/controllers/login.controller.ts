@@ -9,7 +9,7 @@ import NotFoundException from "../../shared/exceptions/not-found.exception";
 import { comparePassword } from "../../shared/utils/bcrypt";
 import UserKafkaProducer from "../../events/producer/user.producer";
 import UsersService from "../../services/users.service";
-import Users from "../../entities/users.entity";
+import Users from "../../models/users.model";
 import SessionsService from "../../services/sessions.service";
 import { addDaysToDate, addMinutesToDate } from "../../shared/helpers/common.helper";
 import { generateAccessToken } from "../../shared/helpers/jwt.helper";

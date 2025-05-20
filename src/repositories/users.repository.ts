@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import Users from "../entities/users.entity";
+import Users from "../models/users.model";
 import UsersRepositoryInterface from "../shared/types/repositories/users.interface";
 import {
   FindByIdArgs,
@@ -9,7 +9,7 @@ import {
 } from "../shared/types/repository.type";
 import { setSelectExclude } from "../shared/helpers/common.helper";
 import { usersSubsets } from "../shared/helpers/select-subset.helper";
-import { AccessType } from "../models/users.model";
+import { AccessType } from "../entities/users.entity";
 
 export default class UsersRepository implements UsersRepositoryInterface {
   private client;

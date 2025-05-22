@@ -1,17 +1,17 @@
 import Sessions from "../../../models/sessions.model";
 import {
-  FindByIdArgs,
-  FindByRefreshTokenArgs,
-  CreateArgs,
-  UpdateArgs
+  TFindByIdArgs,
+  TFindByRefreshTokenArgs,
+  TCreateArgs,
+  TUpdateArgs
 } from "../repository.type";
 
-export default interface SessionsRepositoryInterface {
-  findById: (args: FindByIdArgs<string>) => Promise<Sessions | null>;
+export default interface ISessionsRepository {
+  findById: (args: TFindByIdArgs<string>) => Promise<Sessions | null>;
 
-  findByRefreshToken: (args: FindByRefreshTokenArgs) => Promise<Sessions | null>;
+  findByRefreshToken: (args: TFindByRefreshTokenArgs) => Promise<Sessions | null>;
 
-  create: (args: CreateArgs<Sessions>) => Promise<Sessions>;
+  create: (args: TCreateArgs<Sessions>) => Promise<Sessions>;
 
-  update: (args: UpdateArgs<string, Sessions>) => Promise<Sessions>;
+  update: (args: TUpdateArgs<string, Sessions>) => Promise<Sessions>;
 };

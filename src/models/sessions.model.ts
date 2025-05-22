@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
 import SessionsEntity from "../entities/sessions.entity";
-import { AccessType, UserAccessType } from "../entities/users.entity";
+import { TAccessType, EAccessType } from "../entities/users.entity";
 
 class Sessions implements SessionsEntity {
   id?: string = uuidv4();
-  access_type: AccessType = UserAccessType.BUSINESS;
+  access_type: TAccessType = EAccessType.BUSINESS;
   access_token: string = "";
   refresh_token: string = "";
   user_id: string = "";

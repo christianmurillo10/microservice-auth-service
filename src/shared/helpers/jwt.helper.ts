@@ -1,8 +1,8 @@
 import Users from "../../models/users.model";
-import { AccessType } from "../../entities/users.entity";
+import { TAccessType } from "../../entities/users.entity";
 import JWT from "../utils/jwt";
 
-export const generateAccessToken = (accessType: AccessType, record: Users, exp: number) => {
+export const generateAccessToken = (accessType: TAccessType, record: Users, exp: number) => {
   const jwt = new JWT({
     id: record.id as unknown as number,
     email: record.email,

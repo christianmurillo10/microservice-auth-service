@@ -1,17 +1,17 @@
 import { PrismaClient } from "@prisma/client";
 import Users from "../models/users.model";
-import UsersRepositoryInterface from "../shared/types/repositories/users.interface";
+import IUsersRepository from "../shared/types/repositories/users.interface";
 import {
-  FindByIdArgs,
-  FindByUsernameOrEmailArgs,
-  CreateArgs,
-  UpdateArgs
+  TFindByIdArgs,
+  TFindByUsernameOrEmailArgs,
+  TCreateArgs,
+  TUpdateArgs
 } from "../shared/types/repository.type";
 import { setSelectExclude } from "../shared/helpers/common.helper";
 import { usersSubsets } from "../shared/helpers/select-subset.helper";
-import { AccessType } from "../entities/users.entity";
+import { TAccessType } from "../entities/users.entity";
 
-export default class UsersRepository implements UsersRepositoryInterface {
+export default class UsersRepository implements IUsersRepository {
   private client;
 
   constructor() {
@@ -20,7 +20,7 @@ export default class UsersRepository implements UsersRepositoryInterface {
   };
 
   findById = async (
-    args: FindByIdArgs<string>
+    args: TFindByIdArgs<string>
   ): Promise<Users | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
@@ -39,12 +39,12 @@ export default class UsersRepository implements UsersRepositoryInterface {
 
     return new Users({
       ...res,
-      access_type: res.access_type as AccessType
+      access_type: res.access_type as TAccessType
     });
   };
 
   findByUsernameOrEmail = async (
-    args: FindByUsernameOrEmailArgs
+    args: TFindByUsernameOrEmailArgs
   ): Promise<Users | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
@@ -74,12 +74,12 @@ export default class UsersRepository implements UsersRepositoryInterface {
 
     return new Users({
       ...res,
-      access_type: res.access_type as AccessType
+      access_type: res.access_type as TAccessType
     });
   };
 
   create = async (
-    args: CreateArgs<Users>
+    args: TCreateArgs<Users>
   ): Promise<Users> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
@@ -92,12 +92,12 @@ export default class UsersRepository implements UsersRepositoryInterface {
 
     return new Users({
       ...data,
-      access_type: data.access_type as AccessType
+      access_type: data.access_type as TAccessType
     });
   };
 
   update = async (
-    args: UpdateArgs<string, Users>
+    args: TUpdateArgs<string, Users>
   ): Promise<Users> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
@@ -114,7 +114,7 @@ export default class UsersRepository implements UsersRepositoryInterface {
 
     return new Users({
       ...data,
-      access_type: data.access_type as AccessType
+      access_type: data.access_type as TAccessType
     });
   };
 };

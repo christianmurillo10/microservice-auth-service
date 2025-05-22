@@ -1,19 +1,19 @@
 import { PrismaClient } from "@prisma/client";
 import Sessions from "../models/sessions.model";
-import SessionsRepositoryInterface from "../shared/types/repositories/sessions.interface";
+import ISessionsRepository from "../shared/types/repositories/sessions.interface";
 import {
-  FindByIdArgs,
-  FindByAccessTokenArgs,
-  FindByRefreshTokenArgs,
-  CreateArgs,
-  UpdateArgs,
-  SoftDeleteArgs
+  TFindByIdArgs,
+  TFindByAccessTokenArgs,
+  TFindByRefreshTokenArgs,
+  TCreateArgs,
+  TUpdateArgs,
+  TSoftDeleteArgs
 } from "../shared/types/repository.type";
 import { setSelectExclude } from "../shared/helpers/common.helper";
 import { sessionsSubsets } from "../shared/helpers/select-subset.helper";
-import { AccessType } from "../entities/users.entity";
+import { TAccessType } from "../entities/users.entity";
 
-export default class SessionsRepository implements SessionsRepositoryInterface {
+export default class SessionsRepository implements ISessionsRepository {
   private client;
 
   constructor() {
@@ -22,7 +22,7 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
   };
 
   findById = async (
-    args: FindByIdArgs<string>
+    args: TFindByIdArgs<string>
   ): Promise<Sessions | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
@@ -41,12 +41,12 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...res,
-      access_type: res.access_type as AccessType
+      access_type: res.access_type as TAccessType
     });
   };
 
   findByAccessToken = async (
-    args: FindByAccessTokenArgs
+    args: TFindByAccessTokenArgs
   ): Promise<Sessions | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
@@ -65,12 +65,12 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...res,
-      access_type: res.access_type as AccessType
+      access_type: res.access_type as TAccessType
     });
   };
 
   findByRefreshToken = async (
-    args: FindByRefreshTokenArgs
+    args: TFindByRefreshTokenArgs
   ): Promise<Sessions | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
@@ -89,12 +89,12 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...res,
-      access_type: res.access_type as AccessType
+      access_type: res.access_type as TAccessType
     });
   };
 
   create = async (
-    args: CreateArgs<Sessions>
+    args: TCreateArgs<Sessions>
   ): Promise<Sessions> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
@@ -107,12 +107,12 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...data,
-      access_type: data.access_type as AccessType
+      access_type: data.access_type as TAccessType
     });
   };
 
   update = async (
-    args: UpdateArgs<string, Sessions>
+    args: TUpdateArgs<string, Sessions>
   ): Promise<Sessions> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
@@ -129,12 +129,12 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...data,
-      access_type: data.access_type as AccessType
+      access_type: data.access_type as TAccessType
     });
   };
 
   softDelete = async (
-    args: SoftDeleteArgs<string>
+    args: TSoftDeleteArgs<string>
   ): Promise<Sessions> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
@@ -150,7 +150,7 @@ export default class SessionsRepository implements SessionsRepositoryInterface {
 
     return new Sessions({
       ...data,
-      access_type: data.access_type as AccessType
+      access_type: data.access_type as TAccessType
     });
   };
 };

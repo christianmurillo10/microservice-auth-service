@@ -1,13 +1,27 @@
 import { Message } from "kafkajs";
-import UsersRepository from "../../../repositories/users.repository";
 import Users from "../../../models/users.model";
+import UsersService from "../../../services/users.service";
+import NotFoundException from "../../../shared/exceptions/not-found.exception";
 
-const usersRepository = new UsersRepository();
+const usersService = new UsersService();
 
 const subscribeUserUpdated = async (message: Message): Promise<void> => {
   const value = JSON.parse(message.value?.toString() ?? '{}');
-  const record = await usersRepository.findById(value.id);
-  const data = new Users({
+  const record = await usersService.getById(value.id)
+    .catch(err => {
+      if (err instanceof NotFoundException) {
+        console.log(`User ${value.id} not exist!`);
+        return;
+      }
+
+      throw err;
+    });
+
+  if (!record) {
+    return;
+  }
+
+  const data = {
     ...record,
     id: value.id,
     name: value.name,
@@ -19,11 +33,12 @@ const subscribeUserUpdated = async (message: Message): Promise<void> => {
     business_id: value.business_id,
     created_at: value.created_at,
     updated_at: value.updated_at,
-  });
-  await usersRepository.update({
-    id: value.id,
-    params: data
-  });
+  } as Users;
+
+  await usersService.save(data)
+    .catch(err => {
+      console.log("Error on updating users", err);
+    });
   console.info(`Event Notification: Successfully updated user ${data.id}.`);
 };
 

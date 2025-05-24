@@ -40,16 +40,25 @@ const controller = async (
     return record;
   })
   .then(async (record) => {
+    const { userRequestHeader } = req;
+
     // Execute producer
     switch (record.access_type) {
       case "APP_RECOGNIZED":
         throw new BadRequestException([MESSAGE_NOT_IMPLEMENTED]);
       default:
         const userProducer = new UserKafkaProducer();
-        await userProducer.publishUserLoggedOut({
-          id: record.user_id,
-          is_logged: false
-        });
+        await userProducer.publishUserLoggedOut(
+          {
+            id: record.user_id,
+            is_logged: false
+          },
+          {
+            ip_address: userRequestHeader.ip_address ?? undefined,
+            host: userRequestHeader.host ?? undefined,
+            user_agent: userRequestHeader.user_agent ?? undefined
+          }
+        );
         break;
     };
   })

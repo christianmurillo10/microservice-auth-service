@@ -79,13 +79,22 @@ const controller = async (
     };
   })
   .then(async ({ record, result }) => {
+    const { userRequestHeader } = req;
+
     // Execute producer
     const userProducer = new UserKafkaProducer();
-    await userProducer.publishUserLoggedIn({
-      id: record.id!,
-      is_logged: true,
-      last_logged_at: new Date()
-    });
+    await userProducer.publishUserLoggedIn(
+      {
+        id: record.id!,
+        is_logged: true,
+        last_logged_at: new Date()
+      },
+      {
+        ip_address: userRequestHeader.ip_address ?? undefined,
+        host: userRequestHeader.host ?? undefined,
+        user_agent: userRequestHeader.user_agent ?? undefined
+      }
+    );
 
     return {
       message: MESSAGE_DATA_SIGNED_IN,

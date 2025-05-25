@@ -1,26 +1,26 @@
-import { TGenericObject, TQuery } from "./common.type";
+import { GenericObject, Query } from "./common.type";
 
-export type TGetAllArgs = {
-  condition?: TGenericObject,
-  query?: TQuery
+export type GetAllArgs = {
+  condition?: GenericObject,
+  query?: Query
 };
 
-export type TGetByIdArgs<I> = {
+export type GetByIdArgs<I> = {
   id: I,
-  condition?: TGenericObject
+  condition?: GenericObject
 };
 
-export type TGetByNameArgs = {
+export type GetByNameArgs = {
   name: string,
-  condition?: TGenericObject
+  condition?: GenericObject
 };
 
-export type TGetByRefreshTokenArgs = {
+export type GetByRefreshTokenArgs = {
   refresh_token: string,
-  condition?: TGenericObject
+  condition?: GenericObject
 };
 
-export type TCountAllArgs = {
-  condition?: TGenericObject,
-  query?: TQuery
+export type CountAllArgs = {
+  condition?: GenericObject,
+  query?: Query
 };

@@ -1,19 +1,19 @@
 import { PrismaClient } from "@prisma/client";
-import Sessions from "../models/sessions.model";
-import ISessionsRepository from "../shared/types/repositories/sessions.interface";
+import SessionsModel from "../models/sessions.model";
+import SessionsRepository from "../shared/types/repositories/sessions.interface";
 import {
-  TFindByIdArgs,
-  TFindByAccessTokenArgs,
-  TFindByRefreshTokenArgs,
-  TCreateArgs,
-  TUpdateArgs,
-  TSoftDeleteArgs
+  FindByIdArgs,
+  FindByAccessTokenArgs,
+  FindByRefreshTokenArgs,
+  CreateArgs,
+  UpdateArgs,
+  SoftDeleteArgs
 } from "../shared/types/repository.type";
 import { setSelectExclude } from "../shared/helpers/common.helper";
 import { sessionsSubsets } from "../shared/helpers/select-subset.helper";
-import { TAccessType } from "../entities/users.entity";
+import { UsersAccessTypeValue } from "../entities/users.entity";
 
-export default class SessionsRepository implements ISessionsRepository {
+export default class PrismaSessionsRepository implements SessionsRepository {
   private client;
 
   constructor() {
@@ -22,8 +22,8 @@ export default class SessionsRepository implements ISessionsRepository {
   };
 
   findById = async (
-    args: TFindByIdArgs<string>
-  ): Promise<Sessions | null> => {
+    args: FindByIdArgs<string>
+  ): Promise<SessionsModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -39,15 +39,15 @@ export default class SessionsRepository implements ISessionsRepository {
 
     if (!res) return null;
 
-    return new Sessions({
+    return new SessionsModel({
       ...res,
-      access_type: res.access_type as TAccessType
+      access_type: res.access_type as UsersAccessTypeValue
     });
   };
 
   findByAccessToken = async (
-    args: TFindByAccessTokenArgs
-  ): Promise<Sessions | null> => {
+    args: FindByAccessTokenArgs
+  ): Promise<SessionsModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -63,15 +63,15 @@ export default class SessionsRepository implements ISessionsRepository {
 
     if (!res) return null;
 
-    return new Sessions({
+    return new SessionsModel({
       ...res,
-      access_type: res.access_type as TAccessType
+      access_type: res.access_type as UsersAccessTypeValue
     });
   };
 
   findByRefreshToken = async (
-    args: TFindByRefreshTokenArgs
-  ): Promise<Sessions | null> => {
+    args: FindByRefreshTokenArgs
+  ): Promise<SessionsModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -87,15 +87,15 @@ export default class SessionsRepository implements ISessionsRepository {
 
     if (!res) return null;
 
-    return new Sessions({
+    return new SessionsModel({
       ...res,
-      access_type: res.access_type as TAccessType
+      access_type: res.access_type as UsersAccessTypeValue
     });
   };
 
   create = async (
-    args: TCreateArgs<Sessions>
-  ): Promise<Sessions> => {
+    args: CreateArgs<SessionsModel>
+  ): Promise<SessionsModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
@@ -105,15 +105,15 @@ export default class SessionsRepository implements ISessionsRepository {
       data: args.params
     });
 
-    return new Sessions({
+    return new SessionsModel({
       ...data,
-      access_type: data.access_type as TAccessType
+      access_type: data.access_type as UsersAccessTypeValue
     });
   };
 
   update = async (
-    args: TUpdateArgs<string, Sessions>
-  ): Promise<Sessions> => {
+    args: UpdateArgs<string, SessionsModel>
+  ): Promise<SessionsModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -127,15 +127,15 @@ export default class SessionsRepository implements ISessionsRepository {
       }
     });
 
-    return new Sessions({
+    return new SessionsModel({
       ...data,
-      access_type: data.access_type as TAccessType
+      access_type: data.access_type as UsersAccessTypeValue
     });
   };
 
   softDelete = async (
-    args: TSoftDeleteArgs<string>
-  ): Promise<Sessions> => {
+    args: SoftDeleteArgs<string>
+  ): Promise<SessionsModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -148,9 +148,9 @@ export default class SessionsRepository implements ISessionsRepository {
       }
     });
 
-    return new Sessions({
+    return new SessionsModel({
       ...data,
-      access_type: data.access_type as TAccessType
+      access_type: data.access_type as UsersAccessTypeValue
     });
   };
 };

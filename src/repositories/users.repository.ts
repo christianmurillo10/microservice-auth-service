@@ -1,17 +1,17 @@
 import { PrismaClient } from "@prisma/client";
-import Users from "../models/users.model";
-import IUsersRepository from "../shared/types/repositories/users.interface";
+import UserRequestHeader from "../models/users.model";
+import UsersRepository from "../shared/types/repositories/users.interface";
 import {
-  TFindByIdArgs,
-  TFindByUsernameOrEmailArgs,
-  TCreateArgs,
-  TUpdateArgs
+  FindByIdArgs,
+  FindByUsernameOrEmailArgs,
+  CreateArgs,
+  UpdateArgs
 } from "../shared/types/repository.type";
 import { setSelectExclude } from "../shared/helpers/common.helper";
 import { usersSubsets } from "../shared/helpers/select-subset.helper";
-import { TAccessType } from "../entities/users.entity";
+import { UsersAccessTypeValue } from "../entities/users.entity";
 
-export default class UsersRepository implements IUsersRepository {
+export default class PrismaUsersRepository implements UsersRepository {
   private client;
 
   constructor() {
@@ -20,8 +20,8 @@ export default class UsersRepository implements IUsersRepository {
   };
 
   findById = async (
-    args: TFindByIdArgs<string>
-  ): Promise<Users | null> => {
+    args: FindByIdArgs<string>
+  ): Promise<UserRequestHeader | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -37,15 +37,15 @@ export default class UsersRepository implements IUsersRepository {
 
     if (!res) return null;
 
-    return new Users({
+    return new UserRequestHeader({
       ...res,
-      access_type: res.access_type as TAccessType
+      access_type: res.access_type as UsersAccessTypeValue
     });
   };
 
   findByUsernameOrEmail = async (
-    args: TFindByUsernameOrEmailArgs
-  ): Promise<Users | null> => {
+    args: FindByUsernameOrEmailArgs
+  ): Promise<UserRequestHeader | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -72,15 +72,15 @@ export default class UsersRepository implements IUsersRepository {
 
     if (!res) return null;
 
-    return new Users({
+    return new UserRequestHeader({
       ...res,
-      access_type: res.access_type as TAccessType
+      access_type: res.access_type as UsersAccessTypeValue
     });
   };
 
   create = async (
-    args: TCreateArgs<Users>
-  ): Promise<Users> => {
+    args: CreateArgs<UserRequestHeader>
+  ): Promise<UserRequestHeader> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
@@ -90,15 +90,15 @@ export default class UsersRepository implements IUsersRepository {
       data: args.params
     });
 
-    return new Users({
+    return new UserRequestHeader({
       ...data,
-      access_type: data.access_type as TAccessType
+      access_type: data.access_type as UsersAccessTypeValue
     });
   };
 
   update = async (
-    args: TUpdateArgs<string, Users>
-  ): Promise<Users> => {
+    args: UpdateArgs<string, UserRequestHeader>
+  ): Promise<UserRequestHeader> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -112,9 +112,9 @@ export default class UsersRepository implements IUsersRepository {
       }
     });
 
-    return new Users({
+    return new UserRequestHeader({
       ...data,
-      access_type: data.access_type as TAccessType
+      access_type: data.access_type as UsersAccessTypeValue
     });
   };
 };

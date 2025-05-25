@@ -1,16 +1,16 @@
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
-import SessionsRepository from "../repositories/sessions.repository";
-import Sessions from "../models/sessions.model";
+import PrismaSessionsRepository from "../repositories/sessions.repository";
+import SessionsModel from "../models/sessions.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 
 export default class SessionsService {
-  private repository: SessionsRepository;
+  private repository: PrismaSessionsRepository;
 
   constructor() {
-    this.repository = new SessionsRepository();
+    this.repository = new PrismaSessionsRepository();
   };
 
-  getById = async (id: string): Promise<Sessions> => {
+  getById = async (id: string): Promise<SessionsModel> => {
     const record = await this.repository.findById({ id: id });
 
     if (!record) {
@@ -20,7 +20,7 @@ export default class SessionsService {
     return record;
   };
 
-  getByAccessToken = async (access_token: string): Promise<Sessions> => {
+  getByAccessToken = async (access_token: string): Promise<SessionsModel> => {
     const record = await this.repository.findByAccessToken({ access_token });
 
     if (!record) {
@@ -30,7 +30,7 @@ export default class SessionsService {
     return record;
   };
 
-  getByRefreshToken = async (refresh_token: string): Promise<Sessions> => {
+  getByRefreshToken = async (refresh_token: string): Promise<SessionsModel> => {
     const record = await this.repository.findByRefreshToken({ refresh_token });
 
     if (!record) {
@@ -40,9 +40,9 @@ export default class SessionsService {
     return record;
   };
 
-  save = async (data: Sessions): Promise<Sessions> => {
-    let record: Sessions;
-    let newData = new Sessions(data);
+  save = async (data: SessionsModel): Promise<SessionsModel> => {
+    let record: SessionsModel;
+    let newData = new SessionsModel(data);
     let option = {
       params: newData,
       exclude: ["deleted_at"]
@@ -62,7 +62,7 @@ export default class SessionsService {
     return record;
   };
 
-  delete = async (id: string): Promise<Sessions> => {
+  delete = async (id: string): Promise<SessionsModel> => {
     return await this.repository.softDelete({ id: id });
   };
 };

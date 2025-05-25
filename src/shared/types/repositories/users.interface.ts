@@ -1,17 +1,17 @@
-import Users from "../../../models/users.model";
+import UserRequestHeader from "../../../models/users.model";
 import {
-  TFindByIdArgs,
-  TFindByUsernameOrEmailArgs,
-  TCreateArgs,
-  TUpdateArgs
+  FindByIdArgs,
+  FindByUsernameOrEmailArgs,
+  CreateArgs,
+  UpdateArgs
 } from "../repository.type";
 
-export default interface IUsersRepository {
-  findById: (args: TFindByIdArgs<string>) => Promise<Users | null>;
+export default interface UsersRepository {
+  findById: (args: FindByIdArgs<string>) => Promise<UserRequestHeader | null>;
 
-  findByUsernameOrEmail: (args: TFindByUsernameOrEmailArgs) => Promise<Users | null>;
+  findByUsernameOrEmail: (args: FindByUsernameOrEmailArgs) => Promise<UserRequestHeader | null>;
 
-  create: (args: TCreateArgs<Users>) => Promise<Users>;
+  create: (args: CreateArgs<UserRequestHeader>) => Promise<UserRequestHeader>;
 
-  update: (args: TUpdateArgs<string, Users>) => Promise<Users>;
+  update: (args: UpdateArgs<string, UserRequestHeader>) => Promise<UserRequestHeader>;
 };

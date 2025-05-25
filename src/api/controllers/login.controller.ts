@@ -9,7 +9,7 @@ import NotFoundException from "../../shared/exceptions/not-found.exception";
 import { comparePassword } from "../../shared/utils/bcrypt";
 import UserKafkaProducer from "../../events/producer/user.producer";
 import UsersService from "../../services/users.service";
-import Users from "../../models/users.model";
+import UserRequestHeader from "../../models/users.model";
 import SessionsService from "../../services/sessions.service";
 import { addDaysToDate, addMinutesToDate } from "../../shared/helpers/common.helper";
 import { generateAccessToken } from "../../shared/helpers/jwt.helper";
@@ -26,7 +26,7 @@ const controller = async (
   .then(async (req) => {
     const { body } = req;
     const input = body.username ?? body.email;
-    let record: Users;
+    let record: UserRequestHeader;
 
     switch (body.access_type) {
       case "APP_RECOGNIZED":

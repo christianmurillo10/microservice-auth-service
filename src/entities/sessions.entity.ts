@@ -1,8 +1,8 @@
-import { TAccessType } from "./users.entity";
+import { UsersAccessTypeValue } from "./users.entity";
 
-export default interface ISessionsEntity {
+export default interface Sessions {
   id?: string;
-  access_type: TAccessType;
+  access_type: UsersAccessTypeValue;
   access_token: string;
   refresh_token: string;
   user_id: string;

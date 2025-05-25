@@ -10,7 +10,7 @@ import { generateAccessToken, verifyToken } from "../../shared/helpers/jwt.helpe
 import UsersService from "../../services/users.service";
 import SessionsService from "../../services/sessions.service";
 import { addDaysToDate, addMinutesToDate } from "../../shared/helpers/common.helper";
-import { EAccessType } from "../../entities/users.entity";
+import { UsersAccessType } from "../../entities/users.entity";
 
 const router = Router();
 const service = new UsersService();
@@ -34,8 +34,8 @@ const controller = async (
 
     if (
       !tokenData ||
-      tokenData.client !== EAccessType.PORTAL &&
-      tokenData.client !== EAccessType.BUSINESS
+      tokenData.client !== UsersAccessType.Portal &&
+      tokenData.client !== UsersAccessType.Business
     ) {
       throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
     };

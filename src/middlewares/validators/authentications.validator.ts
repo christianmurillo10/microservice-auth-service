@@ -4,7 +4,7 @@ import _ from "lodash";
 import { validateInput } from "../../shared/helpers/common.helper";
 import { MESSAGE_INVALID_BODY } from "../../shared/constants/message.constant";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
-import { EAccessType } from "../../entities/users.entity";
+import { UsersAccessType } from "../../entities/users.entity";
 
 export const login = async (
   req: Request,
@@ -18,7 +18,7 @@ export const login = async (
 
     const schema = joi.object({
       access_type: joi.string().label("Access Type")
-        .valid(EAccessType.PORTAL, EAccessType.BUSINESS, EAccessType.APP_RECOGNIZED)
+        .valid(UsersAccessType.Portal, UsersAccessType.Business, UsersAccessType.AppRecognized)
         .optional(),
       email: joi.string().email().label("Email").required(),
       password: joi.string().label("Password").required(),

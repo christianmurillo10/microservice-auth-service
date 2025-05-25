@@ -1,9 +1,9 @@
-import Users from "../../models/users.model";
-import { TAccessType } from "../../entities/users.entity";
-import JWT from "../utils/jwt";
+import UserRequestHeader from "../../models/users.model";
+import JWTModel from "../../models/jwt.model";
+import { UsersAccessTypeValue } from "../../entities/users.entity";
 
-export const generateAccessToken = (accessType: TAccessType, record: Users, exp: number) => {
-  const jwt = new JWT({
+export const generateAccessToken = (accessType: UsersAccessTypeValue, record: UserRequestHeader, exp: number) => {
+  const jwt = new JWTModel({
     id: record.id as unknown as number,
     email: record.email,
     client: accessType,
@@ -18,7 +18,7 @@ export const generateAccessToken = (accessType: TAccessType, record: Users, exp:
 
 export const verifyToken = (token: string) => {
   try {
-    return JWT.decodeToken(token);
+    return JWTModel.decodeToken(token);
   } catch (error) {
     return null;
   }

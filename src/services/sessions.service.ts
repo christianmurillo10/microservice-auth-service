@@ -1,5 +1,5 @@
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
-import PrismaSessionsRepository from "../repositories/sessions.repository";
+import PrismaSessionsRepository from "../repositories/prisma/sessions.repository";
 import SessionsModel from "../models/sessions.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 

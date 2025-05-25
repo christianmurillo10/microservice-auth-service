@@ -1,10 +1,10 @@
-import SessionsModel from "../../../models/sessions.model";
+import SessionsModel from "../models/sessions.model";
 import {
   FindByIdArgs,
   FindByRefreshTokenArgs,
   CreateArgs,
   UpdateArgs
-} from "../repository.type";
+} from "../shared/types/repository.type";
 
 export default interface SessionsRepository {
   findById: (args: FindByIdArgs<string>) => Promise<SessionsModel | null>;

@@ -1,5 +1,5 @@
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
-import PrismaUsersRepository from "../repositories/users.repository";
+import PrismaUsersRepository from "../repositories/prisma/users.repository";
 import UserRequestHeader from "../models/users.model";
 import { hashPassword } from "../shared/utils/bcrypt";
 import NotFoundException from "../shared/exceptions/not-found.exception";

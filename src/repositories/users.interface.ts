@@ -1,10 +1,10 @@
-import UserRequestHeader from "../../../models/users.model";
+import UserRequestHeader from "../models/users.model";
 import {
   FindByIdArgs,
   FindByUsernameOrEmailArgs,
   CreateArgs,
   UpdateArgs
-} from "../repository.type";
+} from "../shared/types/repository.type";
 
 export default interface UsersRepository {
   findById: (args: FindByIdArgs<string>) => Promise<UserRequestHeader | null>;

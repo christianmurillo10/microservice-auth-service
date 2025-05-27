@@ -5,8 +5,8 @@ import { ERROR_ON_LOGOUT } from "../../shared/constants/error.constant";
 import SessionsService from "../../services/sessions.service";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
 import UnauthorizedException from "../../shared/exceptions/unauthorized.exception";
-import UserKafkaProducer from "../../events/producer/user.producer";
 import NotFoundException from "../../shared/exceptions/not-found.exception";
+import UserKafkaProducer from "../../events/producer/user.producer";
 
 const router = Router();
 const sessionService = new SessionsService();

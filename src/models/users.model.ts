@@ -10,6 +10,8 @@ class UsersModel implements Users {
   access_type: UsersAccessTypeValue = UsersAccessType.Business;
   business_id: number | null = null;
   is_active: boolean = true;
+  is_logged: boolean = false;
+  last_logged_at?: Date | null = null;
   created_at: Date = new Date();
   updated_at: Date | null = new Date();
   deleted_at: Date | null = null;

@@ -7,6 +7,8 @@ export const usersSubsets = {
   access_type: true,
   business_id: true,
   is_active: true,
+  is_logged: true,
+  last_logged_at: true,
   created_at: true,
   updated_at: true,
   deleted_at: true

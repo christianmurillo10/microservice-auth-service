@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import UserRequestHeader from "../../models/users.model";
+import UsersModel from "../../models/users.model";
 import UsersRepository from "../users.interface";
 import {
   FindByIdArgs,
@@ -21,7 +21,7 @@ export default class PrismaUsersRepository implements UsersRepository {
 
   findById = async (
     args: FindByIdArgs<string>
-  ): Promise<UserRequestHeader | null> => {
+  ): Promise<UsersModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -37,7 +37,7 @@ export default class PrismaUsersRepository implements UsersRepository {
 
     if (!res) return null;
 
-    return new UserRequestHeader({
+    return new UsersModel({
       ...res,
       access_type: res.access_type as UsersAccessTypeValue
     });
@@ -45,7 +45,7 @@ export default class PrismaUsersRepository implements UsersRepository {
 
   findByUsernameOrEmail = async (
     args: FindByUsernameOrEmailArgs
-  ): Promise<UserRequestHeader | null> => {
+  ): Promise<UsersModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -72,15 +72,15 @@ export default class PrismaUsersRepository implements UsersRepository {
 
     if (!res) return null;
 
-    return new UserRequestHeader({
+    return new UsersModel({
       ...res,
       access_type: res.access_type as UsersAccessTypeValue
     });
   };
 
   create = async (
-    args: CreateArgs<UserRequestHeader>
-  ): Promise<UserRequestHeader> => {
+    args: CreateArgs<UsersModel>
+  ): Promise<UsersModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
@@ -90,15 +90,15 @@ export default class PrismaUsersRepository implements UsersRepository {
       data: args.params
     });
 
-    return new UserRequestHeader({
+    return new UsersModel({
       ...data,
       access_type: data.access_type as UsersAccessTypeValue
     });
   };
 
   update = async (
-    args: UpdateArgs<string, UserRequestHeader>
-  ): Promise<UserRequestHeader> => {
+    args: UpdateArgs<string, UsersModel>
+  ): Promise<UsersModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -112,7 +112,7 @@ export default class PrismaUsersRepository implements UsersRepository {
       }
     });
 
-    return new UserRequestHeader({
+    return new UsersModel({
       ...data,
       access_type: data.access_type as UsersAccessTypeValue
     });

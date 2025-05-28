@@ -1,6 +1,6 @@
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaUsersRepository from "../repositories/prisma/users.repository";
-import UserRequestHeader from "../models/users.model";
+import UsersModel from "../models/users.model";
 import { hashPassword } from "../shared/utils/bcrypt";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 
@@ -11,7 +11,7 @@ export default class UsersService {
     this.repository = new PrismaUsersRepository();
   };
 
-  getById = async (id: string): Promise<UserRequestHeader> => {
+  getById = async (id: string): Promise<UsersModel> => {
     const record = await this.repository.findById({ id: id });
 
     if (!record) {
@@ -21,7 +21,7 @@ export default class UsersService {
     return record;
   };
 
-  getByUsernameOrEmail = async (username_or_email: string): Promise<UserRequestHeader> => {
+  getByUsernameOrEmail = async (username_or_email: string): Promise<UsersModel> => {
     const record = await this.repository.findByUsernameOrEmail({
       username: username_or_email,
       email: username_or_email,
@@ -34,9 +34,9 @@ export default class UsersService {
     return record;
   };
 
-  save = async (data: UserRequestHeader): Promise<UserRequestHeader> => {
-    let record: UserRequestHeader;
-    let newData = new UserRequestHeader(data);
+  save = async (data: UsersModel): Promise<UsersModel> => {
+    let record: UsersModel;
+    let newData = new UsersModel(data);
     let option = {
       params: newData,
       exclude: ["deleted_at"]

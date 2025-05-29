@@ -4,6 +4,11 @@ export type UserLoggedIn = {
   last_logged_at: Date
 };
 
+export type UserLoggedInData = {
+  old_details: UserLoggedIn,
+  new_details: UserLoggedIn
+};
+
 export type UserLoggedOut = {
   id: string,
   is_logged: boolean

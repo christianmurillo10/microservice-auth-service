@@ -17,6 +17,7 @@ type Input = {
 
 type Output = {
   record: UsersModel,
+  newRecord: UsersModel,
   result: {
     user_id: string,
     token: string,
@@ -28,6 +29,8 @@ type Output = {
 export default class LoginService {
   private input: Input;
   private record: UsersModel | undefined;
+  private newRecord: UsersModel | undefined;
+  private recordService: UsersService | undefined;
 
   constructor(input: Input) {
     this.input = input;
@@ -38,8 +41,8 @@ export default class LoginService {
       case "APP_RECOGNIZED":
         throw new BadRequestException([MESSAGE_NOT_IMPLEMENTED]);
       default:
-        const usersService = new UsersService();
-        this.record = await usersService.getByUsernameOrEmail(this.input.email)
+        this.recordService = new UsersService();
+        const record = await this.recordService.getByUsernameOrEmail(this.input.email)
           .catch(err => {
             if (err instanceof NotFoundException) {
               throw new BadRequestException([MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS]);
@@ -47,15 +50,17 @@ export default class LoginService {
 
             throw err;
           });
-        this.input.access_type = this.record.access_type;
+        this.record = record;
+        this.newRecord = record;
+        this.input.access_type = record.access_type;
         break;
     };
   };
 
-  private saveSession = async (access_token: string, user_id: string) => {
-    const sessionService = new SessionsService();
-    return await sessionService.save({
-      access_type: this.record!.access_type,
+  private createSession = async (access_token: string, user_id: string) => {
+    const sessionsService = new SessionsService();
+    return await sessionsService.save({
+      access_type: this.newRecord!.access_type,
       access_token,
       refresh_token: uuidv4(),
       user_id,
@@ -65,10 +70,26 @@ export default class LoginService {
     });
   };
 
+  private updateRecord = async (last_logged_at: Date) => {
+    if (!this.record || !this.recordService) {
+      throw new BadRequestException([MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS]);
+    };
+
+    this.newRecord = await this.recordService.save({
+      ...this.record,
+      is_logged: true,
+      last_logged_at: last_logged_at
+    });
+  };
+
   execute = async (): Promise<Output> => {
     await this.setRecord();
-    
-    if (!this.record) {
+
+    if (
+      this.record === undefined ||
+      this.newRecord === undefined ||
+      this.recordService === undefined
+    ) {
       throw new BadRequestException([MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS]);
     };
 
@@ -78,13 +99,16 @@ export default class LoginService {
     };
 
     // Generate Access Token
-    const accessTokenExpiryDate = addMinutesToDate(new Date(), 30);
+    const loggedDate = new Date();
+    const accessTokenExpiryDate = addMinutesToDate(loggedDate, 30);
     const accessTokenExpiry = accessTokenExpiryDate.getTime() / 1000;
     const accessToken = generateAccessToken(this.record.access_type, this.record, accessTokenExpiry);
-    const session = await this.saveSession(accessToken, this.record.id as string);
+    const session = await this.createSession(accessToken, this.record.id as string);
+    await this.updateRecord(loggedDate);
 
     return {
       record: this.record,
+      newRecord: this.newRecord,
       result: {
         user_id: session.user_id,
         token: session.access_token,

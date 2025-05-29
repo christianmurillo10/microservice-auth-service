@@ -19,7 +19,7 @@ const controller = async (
     const loginService = new LoginService(body);
     return await loginService.execute();
   })
-  .then(async ({ record, result }) => {
+  .then(async ({ record, newRecord, result }) => {
     const { userRequestHeader } = req;
 
     // Execute producer
@@ -30,9 +30,16 @@ const controller = async (
         const userProducer = new UserKafkaProducer();
         await userProducer.publishUserLoggedIn(
           {
-            id: record.id!,
-            is_logged: true,
-            last_logged_at: new Date()
+            old_details: {
+              id: record.id!,
+              is_logged: record.is_logged,
+              last_logged_at: record.last_logged_at!
+            },
+            new_details: {
+              id: record.id!,
+              is_logged: newRecord.is_logged,
+              last_logged_at: newRecord.last_logged_at!
+            }
           },
           {
             ip_address: userRequestHeader.ip_address ?? undefined,

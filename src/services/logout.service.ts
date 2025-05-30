@@ -1,0 +1,67 @@
+import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_NOT_IMPLEMENTED } from "../shared/constants/message.constant";
+import SessionsService from "./sessions.service";
+import NotFoundException from "../shared/exceptions/not-found.exception";
+import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
+import UserRequestHeaderModel from "../models/user-request-header.model";
+import SessionsModel from "../models/sessions.model";
+import BadRequestException from "../shared/exceptions/bad-request.exception";
+import UserKafkaProducer from "../events/producer/user.producer";
+
+type Input = {
+  token: string,
+  userRequestHeader: UserRequestHeaderModel
+};
+
+export default class LogoutService {
+  private input: Input;
+  private sessionsService: SessionsService;
+
+  constructor(input: Input) {
+    this.input = input;
+    this.sessionsService = new SessionsService();
+  };
+
+  private getSession = async (token: string) => {
+    return await this.sessionsService.getByAccessToken(token)
+      .catch(err => {
+        if (err instanceof NotFoundException) {
+          throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
+        };
+
+        throw err;
+      });
+  };
+
+  private executeProducer = async (session: SessionsModel) => {
+    switch (session.access_type) {
+      case "APP_RECOGNIZED":
+        throw new BadRequestException([MESSAGE_NOT_IMPLEMENTED]);
+      default:
+        const userProducer = new UserKafkaProducer();
+        await userProducer.publishUserLoggedOut(
+          {
+            old_details: {
+              id: session.user_id,
+              is_logged: true
+            },
+            new_details: {
+              id: session.user_id,
+              is_logged: false
+            }
+          },
+          {
+            ip_address: this.input.userRequestHeader.ip_address ?? undefined,
+            host: this.input.userRequestHeader.host ?? undefined,
+            user_agent: this.input.userRequestHeader.user_agent ?? undefined
+          }
+        );
+        break;
+    };
+  };
+
+  execute = async (): Promise<void> => {
+    const session = await this.getSession(this.input.token);
+    await this.sessionsService.delete(session.id as string);
+    await this.executeProducer(session);
+  };
+};

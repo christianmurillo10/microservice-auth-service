@@ -76,7 +76,6 @@ export default class LoginService {
       subject,
       accessTokenExpiry
     );
-
     return { accessTokenExpiryDate, accessToken };
   };
 

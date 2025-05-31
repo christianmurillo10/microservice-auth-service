@@ -1,14 +1,19 @@
-import UserRequestHeader from "../../models/users.model";
 import JWTModel from "../../models/jwt.model";
 import { UsersAccessTypeValue } from "../../entities/users.entity";
 
-export const generateAccessToken = (accessType: UsersAccessTypeValue, record: UserRequestHeader, exp: number) => {
+export const generateAccessToken = (
+  id: number,
+  email: string,
+  accessType: UsersAccessTypeValue,
+  subject: number,
+  exp: number
+) => {
   const jwt = new JWTModel({
-    id: record.id as unknown as number,
-    email: record.email,
+    id: id as unknown as number,
+    email: email,
     client: accessType,
     scope: "*",
-    sub: record.business_id as unknown as number,
+    sub: subject,
     exp: exp,
     iat: Date.now() / 1000,
     aud: "Microservice"

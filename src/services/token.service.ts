@@ -63,7 +63,13 @@ export default class TokenService {
     const record = await this.usersService.getById(tokenData.id as unknown as string);
     const accessTokenExpiryDate = addMinutesToDate(new Date(), 30);
     const accessTokenExpiry = accessTokenExpiryDate.getTime() / 1000;
-    const accessToken = generateAccessToken(tokenData.client, record, accessTokenExpiry);
+    const accessToken = generateAccessToken(
+      record.id as unknown as number,
+      record.email,
+      tokenData.client,
+      record.business_id as unknown as number,
+      accessTokenExpiry
+    );
 
     // Save data to sessions table
     session.access_token = accessToken;

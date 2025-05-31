@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import UsersModel from "../models/users.model";
+import UserRequestHeaderModel from "../models/user-request-header.model";
 import { MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS, MESSAGE_NOT_IMPLEMENTED } from "../shared/constants/message.constant";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
 import NotFoundException from "../shared/exceptions/not-found.exception";
@@ -8,59 +9,85 @@ import { generateAccessToken } from "../shared/helpers/jwt.helper";
 import { comparePassword } from "../shared/utils/bcrypt";
 import SessionsService from "./sessions.service";
 import UsersService from "./users.service";
+import { UsersAccessTypeValue } from "../entities/users.entity";
+import UserKafkaProducer from "../events/producer/user.producer";
 
 type Input = {
-  access_type?: string,
-  email: string,
-  password: string
+  body: {
+    access_type?: string,
+    email: string,
+    password: string,
+  }
+  userRequestHeader: UserRequestHeaderModel
 };
 
 type Output = {
-  record: UsersModel,
-  newRecord: UsersModel,
-  result: {
-    user_id: string,
-    token: string,
-    expiration: Date,
-    refresh_token: string
-  }
+  user_id: string,
+  token: string,
+  expiration: Date,
+  refresh_token: string
 };
 
 export default class LoginService {
   private input: Input;
-  private record: UsersModel | undefined;
-  private newRecord: UsersModel | undefined;
-  private recordService: UsersService | undefined;
 
   constructor(input: Input) {
     this.input = input;
   };
 
-  private setRecord = async () => {
-    switch (this.input.access_type) {
-      case "APP_RECOGNIZED":
-        throw new BadRequestException([MESSAGE_NOT_IMPLEMENTED]);
-      default:
-        this.recordService = new UsersService();
-        const record = await this.recordService.getByUsernameOrEmail(this.input.email)
-          .catch(err => {
-            if (err instanceof NotFoundException) {
-              throw new BadRequestException([MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS]);
-            }
+  private validatePassword = async (password: string, hashPassword: string) => {
+    const validatePassword = comparePassword(password, hashPassword);
 
-            throw err;
-          });
-        this.record = record;
-        this.newRecord = record;
-        this.input.access_type = record.access_type;
-        break;
+    if (!validatePassword) {
+      throw new BadRequestException([MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS]);
     };
   };
 
-  private createSession = async (access_token: string, user_id: string) => {
+  private getUser = async (usersService: UsersService, email: string): Promise<UsersModel> => usersService
+    .getByUsernameOrEmail(email)
+    .catch(err => {
+      if (err instanceof NotFoundException) {
+        throw new BadRequestException([MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS]);
+      }
+
+      throw err;
+    });
+
+  private updateUser = async (usersService: UsersService, user: UsersModel, loggedDate: Date) => usersService
+    .save({
+      ...user,
+      is_logged: true,
+      last_logged_at: loggedDate
+    });
+
+  private getAccessToken = (
+    id: number,
+    email: string,
+    accessType: UsersAccessTypeValue,
+    subject: number,
+    loggedDate: Date
+  ) => {
+    const accessTokenExpiryDate = addMinutesToDate(loggedDate, 30);
+    const accessTokenExpiry = accessTokenExpiryDate.getTime() / 1000;
+    const accessToken = generateAccessToken(
+      id,
+      email,
+      accessType,
+      subject,
+      accessTokenExpiry
+    );
+
+    return { accessTokenExpiryDate, accessToken };
+  };
+
+  private createSession = async (
+    access_token: string,
+    access_type: UsersAccessTypeValue,
+    user_id: string
+  ) => {
     const sessionsService = new SessionsService();
     return await sessionsService.save({
-      access_type: this.newRecord!.access_type,
+      access_type: access_type,
       access_token,
       refresh_token: uuidv4(),
       user_id,
@@ -70,51 +97,65 @@ export default class LoginService {
     });
   };
 
-  private updateRecord = async (last_logged_at: Date) => {
-    if (!this.record || !this.recordService) {
-      throw new BadRequestException([MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS]);
-    };
+  private userUpdates = async (): Promise<Output> => {
+    const { body, userRequestHeader } = this.input;
+    const { email, password } = body;
+    const loggedDate = new Date();
+    const usersService = new UsersService();
+    const record = await this.getUser(usersService, email);
 
-    this.newRecord = await this.recordService.save({
-      ...this.record,
-      is_logged: true,
-      last_logged_at: last_logged_at
-    });
+    // Validate password
+    await this.validatePassword(password, record.password as string);
+
+    // Users updates
+    const newRecord = await this.updateUser(usersService, record, loggedDate);
+
+    // Generate access token and create session
+    const { accessTokenExpiryDate, accessToken } = this.getAccessToken(
+      newRecord.id as unknown as number,
+      newRecord.email,
+      newRecord.access_type,
+      newRecord.business_id as unknown as number,
+      loggedDate
+    );
+    const session = await this.createSession(accessToken, record.access_type, record.id as string);
+
+    // Execute producer
+    const userProducer = new UserKafkaProducer();
+    await userProducer.publishUserLoggedIn(
+      {
+        old_details: {
+          id: record.id!,
+          is_logged: record.is_logged,
+          last_logged_at: record.last_logged_at!
+        },
+        new_details: {
+          id: record.id!,
+          is_logged: newRecord.is_logged,
+          last_logged_at: newRecord.last_logged_at!
+        }
+      },
+      {
+        ip_address: userRequestHeader.ip_address ?? undefined,
+        host: userRequestHeader.host ?? undefined,
+        user_agent: userRequestHeader.user_agent ?? undefined
+      }
+    );
+
+    return {
+      user_id: session.user_id,
+      token: session.access_token,
+      expiration: accessTokenExpiryDate,
+      refresh_token: session.refresh_token
+    };
   };
 
   execute = async (): Promise<Output> => {
-    await this.setRecord();
-
-    if (
-      this.record === undefined ||
-      this.newRecord === undefined ||
-      this.recordService === undefined
-    ) {
-      throw new BadRequestException([MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS]);
-    };
-
-    const validatePassword = comparePassword(this.input.password, this.record.password as string);
-    if (!validatePassword) {
-      throw new BadRequestException([MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS]);
-    };
-
-    // Generate Access Token
-    const loggedDate = new Date();
-    const accessTokenExpiryDate = addMinutesToDate(loggedDate, 30);
-    const accessTokenExpiry = accessTokenExpiryDate.getTime() / 1000;
-    const accessToken = generateAccessToken(this.record.access_type, this.record, accessTokenExpiry);
-    const session = await this.createSession(accessToken, this.record.id as string);
-    await this.updateRecord(loggedDate);
-
-    return {
-      record: this.record,
-      newRecord: this.newRecord,
-      result: {
-        user_id: session.user_id,
-        token: session.access_token,
-        expiration: accessTokenExpiryDate,
-        refresh_token: session.refresh_token
-      }
+    switch (this.input.body.access_type) {
+      case "APP_RECOGNIZED":
+        throw new BadRequestException([MESSAGE_NOT_IMPLEMENTED]);
+      default:
+        return await this.userUpdates();
     };
   };
 };

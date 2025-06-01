@@ -1,5 +1,5 @@
 import { Message } from "kafkajs";
-import UserRequestHeader from "../../../models/users.model";
+import UsersModel from "../../../models/users.model";
 import UsersService from "../../../services/users.service";
 
 const usersService = new UsersService();
@@ -17,7 +17,7 @@ const subscribeUserCreated = async (message: Message): Promise<void> => {
     is_active: value.is_active,
     created_at: value.created_at,
     updated_at: value.updated_at,
-  } as UserRequestHeader;
+  } as UsersModel;
 
   await usersService.save(data)
     .catch(err => {

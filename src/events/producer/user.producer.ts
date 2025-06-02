@@ -2,7 +2,8 @@ import { IHeaders } from "kafkajs";
 import KafkaService from "../../services/kafka.service";
 import kafkaConfig from "../../config/kafka.config";
 import { EVENT_USER, EVENT_USER_LOGGED_IN, EVENT_USER_LOGGED_OUT } from "../../shared/constants/events.constant";
-import { UserLoggedInData, UserLoggedOutData } from "../../shared/types/events/users.type";
+import { EventMessageData } from "../../shared/types/common.type";
+import { UserLoggedIn, UserLoggedOut } from "../../shared/types/events/users.type";
 
 export default class UserKafkaProducer {
   private kafkaService: KafkaService;
@@ -14,13 +15,13 @@ export default class UserKafkaProducer {
     });
   };
 
-  publishUserLoggedIn = async (data: UserLoggedInData, headers?: IHeaders): Promise<void> => {
+  publishUserLoggedIn = async (data: EventMessageData<UserLoggedIn>, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_LOGGED_IN, data, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  publishUserLoggedOut = async (data: UserLoggedOutData, headers?: IHeaders): Promise<void> => {
+  publishUserLoggedOut = async (data: EventMessageData<UserLoggedOut>, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
     await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_LOGGED_OUT, data, headers);
     await this.kafkaService.disconnectProducer();

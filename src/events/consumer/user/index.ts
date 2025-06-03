@@ -4,6 +4,7 @@ import kafkaConfig from "../../../config/kafka.config";
 import { EVENT_USER, EVENT_USER_CREATED, EVENT_USER_DELETED, EVENT_USER_UPDATED } from "../../../shared/constants/events.constant";
 import subscribeUserCreated from "./user-created.consumer";
 import subscribeUserUpdated from "./user-updated.consumer";
+import subscribeUserDeleted from "./user-deleted.consumer";
 
 export default class UserKafkaConsumer {
   private kafkaService: KafkaService;
@@ -30,6 +31,7 @@ export default class UserKafkaConsumer {
         await subscribeUserUpdated(message);
         break;
       case EVENT_USER_DELETED:
+        await subscribeUserDeleted(message);
         break;
     };
 

@@ -5,7 +5,7 @@ import NotFoundException from "../../../shared/exceptions/not-found.exception";
 
 const usersService = new UsersService();
 
-const subscribeUserUpdated = async (message: Message): Promise<void> => {
+const subscribeUserDeleted = async (message: Message): Promise<void> => {
   const value: UsersModel = JSON.parse(message.value?.toString() ?? '{}');
   const userId = value.id!;
   const record = await usersService.getById(userId)
@@ -24,12 +24,12 @@ const subscribeUserUpdated = async (message: Message): Promise<void> => {
 
   await usersService.save({
     ...record,
-    ...value,
+    ...value
   })
     .catch(err => {
-      console.log("Error on updating users", err);
+      console.log("Error on deleting users", err);
     });
-  console.info(`Event Notification: Successfully updated user ${userId}.`);
+  console.info(`Event Notification: Successfully deleted user ${userId}.`);
 };
 
-export default subscribeUserUpdated;
+export default subscribeUserDeleted;

@@ -1,13 +1,12 @@
-import { Message } from "kafkajs";
 import UsersModel from "../../../models/users.model";
 import UsersService from "../../../services/users.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
+import { EventMessageData } from "../../../shared/types/common.type";
 
 const usersService = new UsersService();
 
-const subscribeUserUpdated = async (message: Message): Promise<void> => {
-  const value = JSON.parse(message.value?.toString() ?? '{}');
-  const userId = value.new_details.id;
+const subscribeUserUpdated = async (value: EventMessageData<UsersModel>): Promise<void> => {
+  const userId = value.new_details.id!;
   const record = await usersService.getById(userId)
     .catch(err => {
       if (err instanceof NotFoundException) {

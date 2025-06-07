@@ -1,11 +1,10 @@
-import { Message } from "kafkajs";
 import UsersModel from "../../../models/users.model";
 import UsersService from "../../../services/users.service";
+import { EventMessageData } from "../../../shared/types/common.type";
 
 const usersService = new UsersService();
 
-const subscribeUserCreated = async (message: Message): Promise<void> => {
-  const value = JSON.parse(message.value?.toString() ?? '{}');
+const subscribeUserCreated = async (value: EventMessageData<UsersModel>): Promise<void> => {
   const data = {
     id: value.new_details.id,
     name: value.new_details.name,

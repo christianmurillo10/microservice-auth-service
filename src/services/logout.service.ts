@@ -68,6 +68,7 @@ export default class LogoutService {
           is_logged: newRecord.is_logged
         }
       },
+      record.id!,
       {
         ip_address: this.input.userRequestHeader.ip_address ?? undefined,
         host: this.input.userRequestHeader.host ?? undefined,

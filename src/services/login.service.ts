@@ -134,6 +134,7 @@ export default class LoginService {
           last_logged_at: newRecord.last_logged_at!
         }
       },
+      record.id!,
       {
         ip_address: userRequestHeader.ip_address ?? undefined,
         host: userRequestHeader.host ?? undefined,

@@ -15,15 +15,15 @@ export default class UserKafkaProducer {
     });
   };
 
-  publishUserLoggedIn = async (data: EventMessageData<UserLoggedIn>, headers?: IHeaders): Promise<void> => {
+  publishUserLoggedIn = async (data: EventMessageData<UserLoggedIn>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
-    await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_LOGGED_IN, data, headers);
+    await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_LOGGED_IN, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 
-  publishUserLoggedOut = async (data: EventMessageData<UserLoggedOut>, headers?: IHeaders): Promise<void> => {
+  publishUserLoggedOut = async (data: EventMessageData<UserLoggedOut>, userId: string, headers?: IHeaders): Promise<void> => {
     await this.kafkaService.connectProducer();
-    await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_LOGGED_OUT, data, headers);
+    await this.kafkaService.initializeProducer(EVENT_USER, EVENT_USER_LOGGED_OUT, data, userId, headers);
     await this.kafkaService.disconnectProducer();
   };
 };

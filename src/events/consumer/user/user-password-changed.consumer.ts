@@ -29,7 +29,7 @@ const subscribeUserPasswordChanged = async (value: EventMessageData<UsersModel>)
 
   await usersService.save(data)
     .catch(err => {
-      console.log("Error on change users password", err);
+      console.log("Error on changing users password", err);
     });
   console.info(`Event Notification: Successfully changed user password ${data.id}.`);
 };

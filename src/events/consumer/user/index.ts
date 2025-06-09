@@ -2,11 +2,13 @@ import { KafkaMessage } from "kafkajs";
 import {
   EVENT_USER_CREATED,
   EVENT_USER_UPDATED,
-  EVENT_USER_DELETED
+  EVENT_USER_DELETED,
+  EVENT_USER_PASSWORD_CHANGED
 } from "../../../shared/constants/events.constant";
 import subscribeUserCreated from "./user-created.consumer";
 import subscribeUserUpdated from "./user-updated.consumer";
 import subscribeUserDeleted from "./user-deleted.consumer";
+import subscribeUserPasswordChanged from "./user-password-changed.consumer";
 
 const userConsumer = async (message: KafkaMessage) => {
   const value = JSON.parse(message.value?.toString() ?? '{}');
@@ -24,6 +26,9 @@ const userConsumer = async (message: KafkaMessage) => {
       break;
     case EVENT_USER_DELETED:
       await subscribeUserDeleted(value.data);
+      break;
+    case EVENT_USER_PASSWORD_CHANGED:
+      await subscribeUserPasswordChanged(value.data);
       break;
   };
 };

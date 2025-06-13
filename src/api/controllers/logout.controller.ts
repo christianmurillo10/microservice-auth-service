@@ -11,8 +11,8 @@ const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+) => {
+  try {
     const { headers, userRequestHeader } = req;
     const { authorization } = headers;
 
@@ -23,17 +23,16 @@ const controller = async (
     const token = authorization.split(" ")[1];
     const logoutService = new LogoutService({ token, userRequestHeader });
     await logoutService.execute();
-  })
-  .then(() => {
+
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_SIGNED_OUT
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_LOGOUT}: `, err);
-    next(err)
-  });
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_LOGOUT}: `, error);
+    next(error);
+  };
+};
 
 export default router.post(
   "/logout",

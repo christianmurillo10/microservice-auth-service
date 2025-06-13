@@ -12,8 +12,8 @@ const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+) => {
+  try {
     const authHeader = req.headers.authorization;
     const { body } = req;
 
@@ -21,29 +21,22 @@ const controller = async (
       throw new BadRequestException([MESSAGE_DATA_NOT_EXIST]);
     };
 
-    return {
-      token: authHeader.split(" ")[1],
-      refreshToken: body.refresh_token
-    };
-  })
-  .then(async ({ token, refreshToken }) => {
     const tokenService = new TokenService({
-      token,
-      refresh_token: refreshToken
+      token: authHeader.split(" ")[1],
+      refresh_token: body.refresh_token
     });
-    return await tokenService.execute();
-  })
-  .then((result) => {
+    const result = await tokenService.execute();
+
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_REFRESH_TOKEN,
       result
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_REFRESH_TOKEN}: `, err);
-    next(err)
-  });
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_REFRESH_TOKEN}: `, error);
+    next(error);
+  };
+};
 
 export default router.post(
   "/token",

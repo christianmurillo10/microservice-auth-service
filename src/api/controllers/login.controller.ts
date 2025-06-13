@@ -11,24 +11,23 @@ const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => Promise.resolve(req)
-  .then(async (req) => {
+) => {
+  try {
     const { userRequestHeader } = req;
     const { body } = req;
     const loginService = new LoginService({ body, userRequestHeader });
-    return await loginService.execute();
-  })
-  .then((result) => {
+    const result = await loginService.execute();
+
     apiResponse(res, {
       status_code: 200,
       message: MESSAGE_DATA_SIGNED_IN,
       result
-    })
-  })
-  .catch(err => {
-    console.error(`${ERROR_ON_LOGIN}: `, err);
-    next(err)
-  });
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_LOGIN}: `, error);
+    next(error);
+  };
+};
 
 export default router.post(
   "/login",

@@ -11,7 +11,7 @@ const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const { userRequestHeader } = req;
     const { body } = req;

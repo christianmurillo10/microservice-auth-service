@@ -12,7 +12,7 @@ const controller = async (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): Promise<void> => {
   try {
     const authHeader = req.headers.authorization;
     const { body } = req;

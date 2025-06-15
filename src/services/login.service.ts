@@ -126,12 +126,14 @@ export default class LoginService {
         old_details: {
           id: record.id!,
           is_logged: record.is_logged,
-          last_logged_at: record.last_logged_at!
+          last_logged_at: record.last_logged_at!,
+          updated_at: record.updated_at
         },
         new_details: {
           id: record.id!,
           is_logged: newRecord.is_logged,
-          last_logged_at: newRecord.last_logged_at!
+          last_logged_at: newRecord.last_logged_at!,
+          updated_at: record.updated_at
         }
       },
       record.id!,

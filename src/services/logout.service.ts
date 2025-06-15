@@ -61,11 +61,13 @@ export default class LogoutService {
       {
         old_details: {
           id: record.id!,
-          is_logged: record.is_logged
+          is_logged: record.is_logged,
+          updated_at: record.updated_at
         },
         new_details: {
           id: record.id!,
-          is_logged: newRecord.is_logged
+          is_logged: newRecord.is_logged,
+          updated_at: record.updated_at
         }
       },
       record.id!,

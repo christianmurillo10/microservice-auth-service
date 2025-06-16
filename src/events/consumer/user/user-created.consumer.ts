@@ -5,24 +5,12 @@ import { EventMessageData } from "../../../shared/types/common.type";
 const usersService = new UsersService();
 
 const subscribeUserCreated = async (value: EventMessageData<UsersModel>): Promise<void> => {
-  const data = {
-    id: value.new_details.id,
-    name: value.new_details.name,
-    username: value.new_details.username,
-    email: value.new_details.email,
-    password: value.new_details.password,
-    access_type: value.new_details.access_type,
-    business_id: value.new_details.business_id,
-    is_active: value.new_details.is_active,
-    created_at: value.new_details.created_at,
-    updated_at: value.new_details.updated_at,
-  } as UsersModel;
-
-  await usersService.save(data)
+  const user = new UsersModel(value.new_details);
+  await usersService.save(user)
     .catch(err => {
       console.log("Error on creating users", err);
     });
-  console.info(`Event Notification: Successfully created user ${data.id}.`);
+  console.info(`Event Notification: Successfully created user ${user.id}.`);
 };
 
 export default subscribeUserCreated;

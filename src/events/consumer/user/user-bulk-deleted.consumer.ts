@@ -9,7 +9,7 @@ const subscribeUserBulkDeleted = async (value: EventMessageData<Record<string, s
   const userIds = value.new_details.ids!;
 
   for (const userId of userIds) {
-    const record = await usersService.getById(userId)
+    const existingUser = await usersService.getById(userId)
       .catch(err => {
         if (err instanceof NotFoundException) {
           console.log(`User ${userId} not exist!`);
@@ -19,16 +19,15 @@ const subscribeUserBulkDeleted = async (value: EventMessageData<Record<string, s
         throw err;
       });
 
-    if (!record) {
+    if (!existingUser) {
       return;
     }
 
-    const data = {
-      ...record,
-      deleted_at: new Date(),
-    } as UsersModel;
-
-    await usersService.save(data)
+    const user = new UsersModel({
+      ...existingUser,
+      deleted_at: new Date()
+    });
+    await usersService.save(user)
       .catch(err => {
         console.log("Error on deleting users", err);
       });

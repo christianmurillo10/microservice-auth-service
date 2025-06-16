@@ -7,7 +7,7 @@ const usersService = new UsersService();
 
 const subscribeUserUpdated = async (value: EventMessageData<UsersModel>): Promise<void> => {
   const userId = value.new_details.id!;
-  const record = await usersService.getById(userId)
+  const existingUser = await usersService.getById(userId)
     .catch(err => {
       if (err instanceof NotFoundException) {
         console.log(`User ${userId} not exist!`);
@@ -17,29 +17,19 @@ const subscribeUserUpdated = async (value: EventMessageData<UsersModel>): Promis
       throw err;
     });
 
-  if (!record) {
+  if (!existingUser) {
     return;
   }
 
-  const data = {
-    ...record,
-    id: value.new_details.id,
-    name: value.new_details.name,
-    username: value.new_details.username,
-    email: value.new_details.email,
-    password: value.new_details.password,
-    access_type: value.new_details.access_type,
-    is_active: value.new_details.is_active,
-    business_id: value.new_details.business_id,
-    created_at: value.new_details.created_at,
-    updated_at: value.new_details.updated_at,
-  } as UsersModel;
-
-  await usersService.save(data)
+  const user = new UsersModel({
+    ...existingUser,
+    ...value.new_details
+  });
+  await usersService.save(user)
     .catch(err => {
       console.log("Error on updating users", err);
     });
-  console.info(`Event Notification: Successfully updated user ${data.id}.`);
+  console.info(`Event Notification: Successfully updated user ${user.id}.`);
 };
 
 export default subscribeUserUpdated;

@@ -7,7 +7,7 @@ const usersService = new UsersService();
 
 const subscribeUserPasswordChanged = async (value: EventMessageData<UsersModel>): Promise<void> => {
   const userId = value.new_details.id!;
-  const record = await usersService.getById(userId)
+  const existingUser = await usersService.getById(userId)
     .catch(err => {
       if (err instanceof NotFoundException) {
         console.log(`User ${userId} not exist!`);
@@ -17,21 +17,20 @@ const subscribeUserPasswordChanged = async (value: EventMessageData<UsersModel>)
       throw err;
     });
 
-  if (!record) {
+  if (!existingUser) {
     return;
   }
 
-  const data = {
-    ...record,
+  const user = new UsersModel({
+    ...existingUser,
     password: value.new_details.password,
-    updated_at: value.new_details.updated_at,
-  } as UsersModel;
-
-  await usersService.save(data)
+    updated_at: value.new_details.updated_at
+  });
+  await usersService.save(user)
     .catch(err => {
       console.log("Error on changing users password", err);
     });
-  console.info(`Event Notification: Successfully changed user password ${data.id}.`);
+  console.info(`Event Notification: Successfully changed user password ${user.id}.`);
 };
 
 export default subscribeUserPasswordChanged;

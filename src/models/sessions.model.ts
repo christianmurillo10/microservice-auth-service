@@ -14,7 +14,15 @@ class SessionsModel implements SessionsEntity {
   deleted_at?: Date | null = null;
 
   constructor(props: SessionsEntity) {
-    Object.assign(this, props);
+    this.id = props.id;
+    this.access_type = props.access_type;
+    this.access_token = props.access_token;
+    this.refresh_token = props.refresh_token;
+    this.user_id = props.user_id;
+    this.refresh_token_expires_at = props.refresh_token_expires_at;
+    this.created_at = props.created_at;
+    this.updated_at = props.updated_at;
+    this.deleted_at = props.deleted_at;
   };
 };
 

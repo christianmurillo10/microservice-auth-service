@@ -1,3 +1,3 @@
-export default class UserEventListenerServiceAbstract {
+export default abstract class UserEventListenerServiceAbstract {
 
 };

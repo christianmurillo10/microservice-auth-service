@@ -15,7 +15,7 @@ export default class UserPasswordChangedEventListenerService extends EventListen
 
   execute = async (): Promise<void> => {
     if (!this.state) {
-      console.error("State must not be empty!");
+      console.error("State cannot be empty!");
       return;
     };
 

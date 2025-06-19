@@ -14,7 +14,7 @@ export default class UserCreatedEventListenerService extends EventListenerAbstra
 
   execute = async (): Promise<void> => {
     if (!this.state) {
-      console.error("State must not be empty!");
+      console.error("State cannot be empty!");
       return;
     };
 

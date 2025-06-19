@@ -1,5 +1,5 @@
 import { KafkaMessage } from "kafkajs";
-import UserEventListenerServiceFactory from "../../services/eventListeners/users/user-factory.service";
+import UserEventListenerServiceFactory from "../../services/eventListener/users/user-factory.service";
 
 const userConsumer = async (message: KafkaMessage) => {
   const value = JSON.parse(message.value?.toString() ?? '{}');

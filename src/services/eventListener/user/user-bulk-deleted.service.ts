@@ -1,11 +1,10 @@
-import { EventMessageData } from "../../../shared/types/common.type";
 import EventListenerAbstract from "../event-listener.abstract";
 import EventListenerService from "../event-listener.interface";
 import UsersService from "../../users.service";
 import UsersModel from "../../../models/users.model";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 
-export default class UserBulkDeletedEventListenerService extends EventListenerAbstract<EventMessageData<Record<string, string[]>>> implements EventListenerService<UsersModel> {
+export default class UserBulkDeletedEventListenerService extends EventListenerAbstract<Record<string, string[]>> implements EventListenerService<Record<string, string[]>> {
   usersService: UsersService;
 
   constructor() {

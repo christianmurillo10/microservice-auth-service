@@ -119,9 +119,9 @@ export default class LoginService {
     );
     const session = await this.createSession(accessToken, record.access_type, record.id as string);
 
-    // Execute producer
+    // Send to Kafka
     const userProducer = new UserKafkaProducer();
-    await userProducer.publishUserLoggedIn(
+    await userProducer.userLoggedInEventEmitter(
       {
         old_details: {
           id: record.id!,

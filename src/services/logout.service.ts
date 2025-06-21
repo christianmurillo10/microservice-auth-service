@@ -55,9 +55,9 @@ export default class LogoutService {
     const record = await this.getUser(usersService, session.user_id);
     const newRecord = await this.updateUser(usersService, record);
 
-    // Execute producer
+    // Send to Kafka
     const userProducer = new UserKafkaProducer();
-    await userProducer.publishUserLoggedOut(
+    await userProducer.userLoggedOutEventEmitter(
       {
         old_details: {
           id: record.id!,

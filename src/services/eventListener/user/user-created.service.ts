@@ -4,7 +4,7 @@ import EventListenerService from "../event-listener.interface";
 import UsersService from "../../users.service";
 
 export default class UserCreatedEventListenerService extends EventListenerAbstract<UsersModel> implements EventListenerService<UsersModel> {
-  usersService: UsersService;
+  private usersService: UsersService;
 
   constructor() {
     super();

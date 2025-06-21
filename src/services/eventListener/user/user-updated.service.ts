@@ -5,7 +5,7 @@ import UsersService from "../../users.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 
 export default class UserUpdatedEventListenerService extends UserEventListenerServiceAbstract<UsersModel> implements EventListenerService<UsersModel> {
-  usersService: UsersService;
+  private usersService: UsersService;
 
   constructor() {
     super();

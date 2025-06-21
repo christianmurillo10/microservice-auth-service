@@ -5,7 +5,7 @@ import UsersModel from "../../../models/users.model";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 
 export default class UserBulkDeletedEventListenerService extends EventListenerAbstract<Record<string, string[]>> implements EventListenerService<Record<string, string[]>> {
-  usersService: UsersService;
+  private usersService: UsersService;
 
   constructor() {
     super();

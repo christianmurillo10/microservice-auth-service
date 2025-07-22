@@ -21,7 +21,7 @@ type Output = {
   refresh_token: string
 };
 
-export default class TokenService {
+export default class RefreshTokenService {
   private input: Input;
   private sessionsService: SessionsService;
   private usersService: UsersService;

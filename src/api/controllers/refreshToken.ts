@@ -4,7 +4,7 @@ import { MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_REFRESH_TOKEN } from "../../shared
 import { ERROR_ON_REFRESH_TOKEN } from "../../shared/constants/error.constant";
 import { token as validator } from "../../middlewares/validators/authentications.validator";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
-import TokenService from "../../services/token.service";
+import RefreshTokenService from "../../services/refresh-token.service";
 
 const router = Router();
 
@@ -21,11 +21,11 @@ const controller = async (
       throw new BadRequestException([MESSAGE_DATA_NOT_EXIST]);
     };
 
-    const tokenService = new TokenService({
+    const refreshtokenService = new RefreshTokenService({
       token: authHeader.split(" ")[1],
       refresh_token: body.refresh_token
     });
-    const result = await tokenService.execute();
+    const result = await refreshtokenService.execute();
 
     apiResponse(res, {
       status_code: 200,
@@ -39,7 +39,7 @@ const controller = async (
 };
 
 export default router.post(
-  "/token",
+  "/refresh-token",
   validator,
   controller
 );

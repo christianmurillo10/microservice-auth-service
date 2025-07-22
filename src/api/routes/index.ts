@@ -3,7 +3,7 @@ import { apiResponse } from "../../shared/utils/api-response";
 import config from "../../config/server.config";
 import login from "../controllers/login.controller";
 import logout from "../controllers/logout.controller";
-import token from "../controllers/token.controller";
+import refreshToken from "../controllers/refreshToken";
 
 const router = Router();
 
@@ -16,6 +16,6 @@ router.get("/", (_req: Request, res: Response) => {
 
 router.use(login);
 router.use(logout);
-router.use(token);
+router.use(refreshToken);
 
 export default router;

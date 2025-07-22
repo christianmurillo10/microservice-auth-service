@@ -1,10 +1,10 @@
 import { v4 as uuidv4 } from "uuid";
-import { UsersAccessType, UsersAccessTypeValue } from "../entities/users.entity";
+import { UsersAccessTypeValue } from "../entities/users.entity";
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_TOKEN_EXPIRED } from "../shared/constants/message.constant";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { addDaysToDate, addMinutesToDate } from "../shared/helpers/common.helper";
-import { generateAccessToken, verifyToken } from "../shared/helpers/jwt.helper";
+import { generateAccessToken } from "../shared/helpers/jwt.helper";
 import SessionsService from "./sessions.service";
 import UsersService from "./users.service";
 import SessionsModel from "../models/sessions.model";
@@ -68,17 +68,8 @@ export default class TokenService {
     );
     return { accessTokenExpiryDate, accessToken };
   };
+
   execute = async (): Promise<Output> => {
-    const tokenData = verifyToken(this.input.token);
-
-    if (
-      !tokenData ||
-      tokenData.client !== UsersAccessType.Portal &&
-      tokenData.client !== UsersAccessType.Business
-    ) {
-      throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
-    };
-
     const session = await this.sessionsService.getByRefreshToken(this.input.refresh_token);
     if (session.access_token !== this.input.token) {
       throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
@@ -88,11 +79,11 @@ export default class TokenService {
     await this.validateRefreshToken(session);
 
     // Generate Access Token
-    const record = await this.getUser(tokenData.id as unknown as string);
+    const record = await this.getUser(session.user_id);
     const { accessTokenExpiryDate, accessToken } = this.getAccessToken(
       record.id as unknown as number,
       record.email,
-      tokenData.client,
+      session.access_type,
       record.business_id as unknown as number,
     );
 

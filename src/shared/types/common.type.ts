@@ -14,7 +14,7 @@ export type Query = {
 export type ApiResponseInput = {
   service?: string,
   version?: string,
-  status_code: number,
+  statusCode: number,
   status?: string,
   message?: string,
   errors?: string[],
@@ -22,6 +22,6 @@ export type ApiResponseInput = {
 };
 
 export type EventMessageData<T> = {
-  old_details: T,
-  new_details: T
+  oldDetails: T,
+  newDetails: T
 };

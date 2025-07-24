@@ -1,14 +1,14 @@
-import UsersModel from "../../../models/users.model";
+import UserModel from "../../../models/user.model";
 import EventListenerAbstract from "../event-listener.abstract";
 import EventListenerService from "../event-listener.interface";
-import UsersService from "../../users.service";
+import UserService from "../../user.service";
 
-export default class UserCreatedEventListenerService extends EventListenerAbstract<UsersModel> implements EventListenerService<UsersModel> {
-  private usersService: UsersService;
+export default class UserCreatedEventListenerService extends EventListenerAbstract<UserModel> implements EventListenerService<UserModel> {
+  private userService: UserService;
 
   constructor() {
     super();
-    this.usersService = new UsersService();
+    this.userService = new UserService();
   };
 
   execute = async (): Promise<void> => {
@@ -17,10 +17,10 @@ export default class UserCreatedEventListenerService extends EventListenerAbstra
       return;
     };
 
-    const user = new UsersModel(this.state.new_details);
-    await this.usersService.save(user)
+    const user = new UserModel(this.state.newDetails);
+    await this.userService.save(user)
       .catch(err => {
-        console.log("Error on creating users", err);
+        console.log("Error on creating user", err);
       });
 
     console.info(`Event Notification: Successfully created user ${user.id}.`);

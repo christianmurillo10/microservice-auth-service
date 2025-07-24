@@ -1,27 +1,27 @@
-export const usersSubsets = {
+export const userSubsets = {
   id: true,
   name: true,
   username: true,
   email: true,
   password: true,
-  access_type: true,
-  business_id: true,
-  is_active: true,
-  is_logged: true,
-  last_logged_at: true,
-  created_at: true,
-  updated_at: true,
-  deleted_at: true
+  accessType: true,
+  businessId: true,
+  isActive: true,
+  isLogged: true,
+  lastLoggedAt: true,
+  createdAt: true,
+  updatedAt: true,
+  deletedAt: true
 };
 
-export const sessionsSubsets = {
+export const sessionSubsets = {
   id: true,
-  access_type: true,
-  access_token: true,
-  refresh_token: true,
-  user_id: true,
-  refresh_token_expires_at: true,
-  created_at: true,
-  updated_at: true,
-  deleted_at: true
+  accessType: true,
+  accessToken: true,
+  refreshToken: true,
+  userId: true,
+  refreshTokenExpiresAt: true,
+  createdAt: true,
+  updatedAt: true,
+  deletedAt: true
 };

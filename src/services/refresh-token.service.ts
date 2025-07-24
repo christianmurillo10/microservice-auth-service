@@ -1,47 +1,47 @@
 import { v4 as uuidv4 } from "uuid";
-import { UsersAccessTypeValue } from "../entities/users.entity";
+import { UserAccessTypeValue } from "../entities/user.entity";
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_TOKEN_EXPIRED } from "../shared/constants/message.constant";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { addDaysToDate, addMinutesToDate } from "../shared/helpers/common.helper";
 import { generateAccessToken } from "../shared/helpers/jwt.helper";
-import SessionsService from "./sessions.service";
-import UsersService from "./users.service";
-import SessionsModel from "../models/sessions.model";
+import SessionService from "./session.service";
+import UserService from "./user.service";
+import SessionModel from "../models/session.model";
 
-type Input = {
+type State = {
   token: string,
-  refresh_token: string
+  refreshToken: string
 };
 
 type Output = {
-  user_id: string,
+  userId: string,
   token: string,
   expiration: Date,
-  refresh_token: string
+  refreshToken: string
 };
 
 export default class RefreshTokenService {
-  private input: Input;
-  private sessionsService: SessionsService;
-  private usersService: UsersService;
+  private state: State;
+  private sessionService: SessionService;
+  private userService: UserService;
 
-  constructor(input: Input) {
-    this.input = input;
-    this.sessionsService = new SessionsService();
-    this.usersService = new UsersService();
+  constructor(state: State) {
+    this.state = state;
+    this.sessionService = new SessionService();
+    this.userService = new UserService();
   };
 
-  private validateRefreshToken = async (session: SessionsModel) => {
-    const refreshTokenExpiryDate = new Date(session.refresh_token_expires_at);
+  private validateRefreshToken = async (session: SessionModel) => {
+    const refreshTokenExpiryDate = new Date(session.refreshTokenExpiresAt);
     const currentDate = new Date();
     if (refreshTokenExpiryDate < currentDate) {
-      await this.sessionsService.delete(session.id!);
+      await this.sessionService.delete(session.id!);
       throw new UnauthorizedException([MESSAGE_DATA_TOKEN_EXPIRED]);
     }
   };
 
-  private getUser = async (id: string) => this.usersService
+  private getUser = async (id: string) => this.userService
     .getById(id)
     .catch(err => {
       if (err instanceof NotFoundException) {
@@ -54,7 +54,7 @@ export default class RefreshTokenService {
   private getAccessToken = (
     id: number,
     email: string,
-    accessType: UsersAccessTypeValue,
+    accessType: UserAccessTypeValue,
     subject: number,
   ) => {
     const accessTokenExpiryDate = addMinutesToDate(new Date(), 30);
@@ -70,8 +70,8 @@ export default class RefreshTokenService {
   };
 
   execute = async (): Promise<Output> => {
-    const session = await this.sessionsService.getByRefreshToken(this.input.refresh_token);
-    if (session.access_token !== this.input.token) {
+    const session = await this.sessionService.getByRefreshToken(this.state.refreshToken);
+    if (session.accessToken !== this.state.token) {
       throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
     }
 
@@ -79,25 +79,25 @@ export default class RefreshTokenService {
     await this.validateRefreshToken(session);
 
     // Generate Access Token
-    const record = await this.getUser(session.user_id);
+    const record = await this.getUser(session.userId);
     const { accessTokenExpiryDate, accessToken } = this.getAccessToken(
       record.id as unknown as number,
       record.email,
-      session.access_type,
-      record.business_id as unknown as number,
+      session.accessType,
+      record.businessId as unknown as number,
     );
 
-    // Save data to sessions table
-    session.access_token = accessToken;
-    session.refresh_token = uuidv4();
-    session.refresh_token_expires_at = addDaysToDate(new Date(), 30);
-    await this.sessionsService.save(session);
+    // Save data to session table
+    session.accessToken = accessToken;
+    session.refreshToken = uuidv4();
+    session.refreshTokenExpiresAt = addDaysToDate(new Date(), 30);
+    await this.sessionService.save(session);
 
     return {
-      user_id: session.user_id,
-      token: session.access_token,
+      userId: session.userId,
+      token: session.accessToken,
       expiration: accessTokenExpiryDate,
-      refresh_token: session.refresh_token
+      refreshToken: session.refreshToken
     };
   };
 };

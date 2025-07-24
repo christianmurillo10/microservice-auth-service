@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import UsersModel from "../../models/users.model";
-import UsersRepository from "../users.interface";
+import UserModel from "../../models/user.model";
+import UserRepository from "../user.interface";
 import {
   FindByIdArgs,
   FindByUsernameOrEmailArgs,
@@ -8,48 +8,48 @@ import {
   UpdateArgs
 } from "../../shared/types/repository.type";
 import { setSelectExclude } from "../../shared/helpers/common.helper";
-import { usersSubsets } from "../../shared/helpers/select-subset.helper";
-import { UsersAccessTypeValue } from "../../entities/users.entity";
+import { userSubsets } from "../../shared/helpers/select-subset.helper";
+import { UserAccessTypeValue } from "../../entities/user.entity";
 
-export default class PrismaUsersRepository implements UsersRepository {
+export default class PrismaUserRepository implements UserRepository {
   private client;
 
   constructor() {
     const prisma = new PrismaClient();
-    this.client = prisma.users;
+    this.client = prisma.user;
   };
 
   findById = async (
     args: FindByIdArgs<string>
-  ): Promise<UsersModel | null> => {
+  ): Promise<UserModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...usersSubsets,
+        ...userSubsets,
         ...exclude
       },
       where: {
         id: args.id,
-        deleted_at: null,
+        deletedAt: null,
         ...args.condition
       }
     });
 
     if (!res) return null;
 
-    return new UsersModel({
+    return new UserModel({
       ...res,
-      access_type: res.access_type as UsersAccessTypeValue
+      accessType: res.accessType as UserAccessTypeValue
     });
   };
 
   findByUsernameOrEmail = async (
     args: FindByUsernameOrEmailArgs
-  ): Promise<UsersModel | null> => {
+  ): Promise<UserModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...usersSubsets,
+        ...userSubsets,
         ...exclude
       },
       where: {
@@ -65,56 +65,56 @@ export default class PrismaUsersRepository implements UsersRepository {
             },
           },
         ],
-        deleted_at: null,
+        deletedAt: null,
         ...args.condition
       }
     });
 
     if (!res) return null;
 
-    return new UsersModel({
+    return new UserModel({
       ...res,
-      access_type: res.access_type as UsersAccessTypeValue
+      accessType: res.accessType as UserAccessTypeValue
     });
   };
 
   create = async (
-    args: CreateArgs<UsersModel>
-  ): Promise<UsersModel> => {
+    args: CreateArgs<UserModel>
+  ): Promise<UserModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
-        ...usersSubsets,
+        ...userSubsets,
         ...exclude
       },
       data: args.params
     });
 
-    return new UsersModel({
+    return new UserModel({
       ...data,
-      access_type: data.access_type as UsersAccessTypeValue
+      accessType: data.accessType as UserAccessTypeValue
     });
   };
 
   update = async (
-    args: UpdateArgs<string, UsersModel>
-  ): Promise<UsersModel> => {
+    args: UpdateArgs<string, UserModel>
+  ): Promise<UserModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
-        ...usersSubsets,
+        ...userSubsets,
         ...exclude
       },
       where: { id: args.id },
       data: {
         ...args.params,
-        updated_at: new Date(),
+        updatedAt: new Date(),
       }
     });
 
-    return new UsersModel({
+    return new UserModel({
       ...data,
-      access_type: data.access_type as UsersAccessTypeValue
+      accessType: data.accessType as UserAccessTypeValue
     });
   };
 };

@@ -9,8 +9,8 @@ const router = Router();
 
 router.get("/", (_req: Request, res: Response) => {
   apiResponse(res, {
-    status_code: 200,
-    message: `Welcome to ${config.app_name}`
+    statusCode: 200,
+    message: `Welcome to ${config.appName}`
   }).end();
 });
 

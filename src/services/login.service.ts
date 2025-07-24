@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import UsersModel from "../models/users.model";
+import UserModel from "../models/user.model";
 import UserRequestHeaderModel from "../models/user-request-header.model";
 import { MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS, MESSAGE_NOT_IMPLEMENTED } from "../shared/constants/message.constant";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
@@ -7,14 +7,14 @@ import NotFoundException from "../shared/exceptions/not-found.exception";
 import { addDaysToDate, addMinutesToDate } from "../shared/helpers/common.helper";
 import { generateAccessToken } from "../shared/helpers/jwt.helper";
 import { comparePassword } from "../shared/utils/bcrypt";
-import SessionsService from "./sessions.service";
-import UsersService from "./users.service";
-import { UsersAccessTypeValue } from "../entities/users.entity";
+import SessionService from "./session.service";
+import UserService from "./user.service";
+import { UserAccessTypeValue } from "../entities/user.entity";
 import UserKafkaProducer from "../events/producer/user.producer";
 
-type Input = {
-  body: {
-    access_type?: string,
+type State = {
+  input: {
+    accessType?: string,
     email: string,
     password: string,
   }
@@ -22,17 +22,17 @@ type Input = {
 };
 
 type Output = {
-  user_id: string,
+  userId: string,
   token: string,
   expiration: Date,
-  refresh_token: string
+  refreshToken: string
 };
 
 export default class LoginService {
-  private input: Input;
+  private state: State;
 
-  constructor(input: Input) {
-    this.input = input;
+  constructor(state: State) {
+    this.state = state;
   };
 
   private validatePassword = async (password: string, hashPassword: string) => {
@@ -43,7 +43,7 @@ export default class LoginService {
     };
   };
 
-  private getUser = async (usersService: UsersService, email: string): Promise<UsersModel> => usersService
+  private getUser = async (userService: UserService, email: string): Promise<UserModel> => userService
     .getByUsernameOrEmail(email)
     .catch(err => {
       if (err instanceof NotFoundException) {
@@ -53,17 +53,17 @@ export default class LoginService {
       throw err;
     });
 
-  private updateUser = async (usersService: UsersService, user: UsersModel, loggedDate: Date) => usersService
+  private updateUser = async (userService: UserService, user: UserModel, loggedDate: Date) => userService
     .save({
       ...user,
-      is_logged: true,
-      last_logged_at: loggedDate
+      isLogged: true,
+      lastLoggedAt: loggedDate
     });
 
   private getAccessToken = (
     id: number,
     email: string,
-    accessType: UsersAccessTypeValue,
+    accessType: UserAccessTypeValue,
     subject: number,
     loggedDate: Date
   ) => {
@@ -80,80 +80,80 @@ export default class LoginService {
   };
 
   private createSession = async (
-    access_token: string,
-    access_type: UsersAccessTypeValue,
-    user_id: string
+    accessToken: string,
+    accessType: UserAccessTypeValue,
+    userId: string
   ) => {
-    const sessionsService = new SessionsService();
-    return await sessionsService.save({
-      access_type: access_type,
-      access_token,
-      refresh_token: uuidv4(),
-      user_id,
-      refresh_token_expires_at: addDaysToDate(new Date(), 30),
-      created_at: new Date(),
-      updated_at: new Date()
+    const sessionService = new SessionService();
+    return await sessionService.save({
+      accessType: accessType,
+      accessToken,
+      refreshToken: uuidv4(),
+      userId,
+      refreshTokenExpiresAt: addDaysToDate(new Date(), 30),
+      createdAt: new Date(),
+      updatedAt: new Date()
     });
   };
 
   private userUpdates = async (): Promise<Output> => {
-    const { body, userRequestHeader } = this.input;
-    const { email, password } = body;
+    const { input, userRequestHeader } = this.state;
+    const { email, password } = input;
     const loggedDate = new Date();
-    const usersService = new UsersService();
-    const record = await this.getUser(usersService, email);
+    const userService = new UserService();
+    const record = await this.getUser(userService, email);
 
     // Validate password
     await this.validatePassword(password, record.password as string);
 
-    // Users updates
-    const newRecord = await this.updateUser(usersService, record, loggedDate);
+    // User updates
+    const newRecord = await this.updateUser(userService, record, loggedDate);
 
     // Generate access token and create session
     const { accessTokenExpiryDate, accessToken } = this.getAccessToken(
       newRecord.id as unknown as number,
       newRecord.email,
-      newRecord.access_type,
-      newRecord.business_id as unknown as number,
+      newRecord.accessType,
+      newRecord.businessId as unknown as number,
       loggedDate
     );
-    const session = await this.createSession(accessToken, record.access_type, record.id as string);
+    const session = await this.createSession(accessToken, record.accessType, record.id as string);
 
     // Send to Kafka
     const userProducer = new UserKafkaProducer();
     await userProducer.userLoggedInEventEmitter(
       {
-        old_details: {
+        oldDetails: {
           id: record.id!,
-          is_logged: record.is_logged,
-          last_logged_at: record.last_logged_at!,
-          updated_at: record.updated_at
+          isLogged: record.isLogged,
+          lastLoggedAt: record.lastLoggedAt!,
+          updatedAt: record.updatedAt
         },
-        new_details: {
+        newDetails: {
           id: record.id!,
-          is_logged: newRecord.is_logged,
-          last_logged_at: newRecord.last_logged_at!,
-          updated_at: record.updated_at
+          isLogged: newRecord.isLogged,
+          lastLoggedAt: newRecord.lastLoggedAt!,
+          updatedAt: record.updatedAt
         }
       },
       record.id!,
       {
-        ip_address: userRequestHeader.ip_address ?? undefined,
+        ipAddress: userRequestHeader.ipAddress ?? undefined,
         host: userRequestHeader.host ?? undefined,
-        user_agent: userRequestHeader.user_agent ?? undefined
+        userAgent: userRequestHeader.userAgent ?? undefined
       }
     );
 
     return {
-      user_id: session.user_id,
-      token: session.access_token,
+      userId: session.userId,
+      token: session.accessToken,
       expiration: accessTokenExpiryDate,
-      refresh_token: session.refresh_token
+      refreshToken: session.refreshToken
     };
   };
 
   execute = async (): Promise<Output> => {
-    switch (this.input.body.access_type) {
+    switch (this.state.input.accessType) {
       case "APP_RECOGNIZED":
         throw new BadRequestException([MESSAGE_NOT_IMPLEMENTED]);
       default:

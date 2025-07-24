@@ -1,17 +1,17 @@
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
-import PrismaUsersRepository from "../repositories/prisma/users.repository";
-import UsersModel from "../models/users.model";
+import PrismaUserRepository from "../repositories/prisma/user.repository";
+import UserModel from "../models/user.model";
 import { hashPassword } from "../shared/utils/bcrypt";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 
-export default class UsersService {
-  private repository: PrismaUsersRepository;
+export default class UserService {
+  private repository: PrismaUserRepository;
 
   constructor() {
-    this.repository = new PrismaUsersRepository();
+    this.repository = new PrismaUserRepository();
   };
 
-  getById = async (id: string): Promise<UsersModel> => {
+  getById = async (id: string): Promise<UserModel> => {
     const record = await this.repository.findById({ id: id });
 
     if (!record) {
@@ -21,10 +21,10 @@ export default class UsersService {
     return record;
   };
 
-  getByUsernameOrEmail = async (username_or_email: string): Promise<UsersModel> => {
+  getByUsernameOrEmail = async (value: string): Promise<UserModel> => {
     const record = await this.repository.findByUsernameOrEmail({
-      username: username_or_email,
-      email: username_or_email,
+      username: value,
+      email: value,
     });
 
     if (!record) {
@@ -34,12 +34,12 @@ export default class UsersService {
     return record;
   };
 
-  save = async (data: UsersModel): Promise<UsersModel> => {
-    let record: UsersModel;
-    let newData = new UsersModel(data);
+  save = async (data: UserModel): Promise<UserModel> => {
+    let record: UserModel;
+    let newData = new UserModel(data);
     let option = {
       params: newData,
-      exclude: ["deleted_at"]
+      exclude: ["deletedAt"]
     };
 
     if (data.id) {

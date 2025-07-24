@@ -1,29 +1,29 @@
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_NOT_IMPLEMENTED } from "../shared/constants/message.constant";
-import SessionsService from "./sessions.service";
-import UsersService from "./users.service";
+import SessionService from "./session.service";
+import UserService from "./user.service";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 import UserRequestHeaderModel from "../models/user-request-header.model";
-import SessionsModel from "../models/sessions.model";
-import UsersModel from "../models/users.model";
+import SessionModel from "../models/session.model";
+import UserModel from "../models/user.model";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
 import UserKafkaProducer from "../events/producer/user.producer";
 
-type Input = {
+type State = {
   token: string,
   userRequestHeader: UserRequestHeaderModel
 };
 
 export default class LogoutService {
-  private input: Input;
-  private sessionsService: SessionsService;
+  private state: State;
+  private sessionService: SessionService;
 
-  constructor(input: Input) {
-    this.input = input;
-    this.sessionsService = new SessionsService();
+  constructor(state: State) {
+    this.state = state;
+    this.sessionService = new SessionService();
   };
 
-  private getSession = async (token: string): Promise<SessionsModel> => this.sessionsService
+  private getSession = async (token: string): Promise<SessionModel> => this.sessionService
     .getByAccessToken(token)
     .catch(err => {
       if (err instanceof NotFoundException) {
@@ -33,7 +33,7 @@ export default class LogoutService {
       throw err;
     });
 
-  private getUser = async (usersService: UsersService, userId: string): Promise<UsersModel> => usersService
+  private getUser = async (userService: UserService, userId: string): Promise<UserModel> => userService
     .getById(userId)
     .catch(err => {
       if (err instanceof NotFoundException) {
@@ -43,47 +43,47 @@ export default class LogoutService {
       throw err;
     });
 
-  private updateUser = async (usersService: UsersService, user: UsersModel) => usersService
+  private updateUser = async (userService: UserService, user: UserModel) => userService
     .save({
       ...user,
-      is_logged: false
+      isLogged: false
     });
 
-  private userUpdates = async (session: SessionsModel) => {
-    // Users updates
-    const usersService = new UsersService();
-    const record = await this.getUser(usersService, session.user_id);
-    const newRecord = await this.updateUser(usersService, record);
+  private userUpdates = async (session: SessionModel) => {
+    // User updates
+    const userService = new UserService();
+    const record = await this.getUser(userService, session.userId);
+    const newRecord = await this.updateUser(userService, record);
 
     // Send to Kafka
     const userProducer = new UserKafkaProducer();
     await userProducer.userLoggedOutEventEmitter(
       {
-        old_details: {
+        oldDetails: {
           id: record.id!,
-          is_logged: record.is_logged,
-          updated_at: record.updated_at
+          isLogged: record.isLogged,
+          updatedAt: record.updatedAt
         },
-        new_details: {
+        newDetails: {
           id: record.id!,
-          is_logged: newRecord.is_logged,
-          updated_at: record.updated_at
+          isLogged: newRecord.isLogged,
+          updatedAt: record.updatedAt
         }
       },
       record.id!,
       {
-        ip_address: this.input.userRequestHeader.ip_address ?? undefined,
-        host: this.input.userRequestHeader.host ?? undefined,
-        user_agent: this.input.userRequestHeader.user_agent ?? undefined
+        ipAddress: this.state.userRequestHeader.ipAddress ?? undefined,
+        host: this.state.userRequestHeader.host ?? undefined,
+        userAgent: this.state.userRequestHeader.userAgent ?? undefined
       }
     );
   };
 
   execute = async (): Promise<void> => {
-    const session = await this.getSession(this.input.token);
-    await this.sessionsService.delete(session.id as string);
+    const session = await this.getSession(this.state.token);
+    await this.sessionService.delete(session.id as string);
 
-    switch (session.access_type) {
+    switch (session.accessType) {
       case "APP_RECOGNIZED":
         throw new BadRequestException([MESSAGE_NOT_IMPLEMENTED]);
       default:

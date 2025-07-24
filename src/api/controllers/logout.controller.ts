@@ -25,7 +25,7 @@ const controller = async (
     await logoutService.execute();
 
     apiResponse(res, {
-      status_code: 200,
+      statusCode: 200,
       message: MESSAGE_DATA_SIGNED_OUT
     });
   } catch (error) {

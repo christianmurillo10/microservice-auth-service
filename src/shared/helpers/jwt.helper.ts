@@ -1,10 +1,10 @@
 import JWTModel from "../../models/jwt.model";
-import { UsersAccessTypeValue } from "../../entities/users.entity";
+import { UserAccessTypeValue } from "../../entities/user.entity";
 
 export const generateAccessToken = (
   id: number,
   email: string,
-  accessType: UsersAccessTypeValue,
+  accessType: UserAccessTypeValue,
   subject: number,
   exp: number
 ) => {

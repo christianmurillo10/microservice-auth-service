@@ -30,14 +30,14 @@ export type FindByUsernameOrEmailArgs = {
 };
 
 export type FindByAccessTokenArgs = {
-  access_token: string,
+  accessToken: string,
   condition?: GenericObject | undefined,
   include?: string[] | undefined,
   exclude?: string[] | undefined
 };
 
 export type FindByRefreshTokenArgs = {
-  refresh_token: string,
+  refreshToken: string,
   condition?: GenericObject | undefined,
   include?: string[] | undefined,
   exclude?: string[] | undefined

@@ -1,6 +1,6 @@
 import { PrismaClient } from "@prisma/client";
-import SessionsModel from "../../models/sessions.model";
-import SessionsRepository from "../sessions.interface";
+import SessionModel from "../../models/session.model";
+import SessionRepository from "../session.interface";
 import {
   FindByIdArgs,
   FindByAccessTokenArgs,
@@ -10,147 +10,147 @@ import {
   SoftDeleteArgs
 } from "../../shared/types/repository.type";
 import { setSelectExclude } from "../../shared/helpers/common.helper";
-import { sessionsSubsets } from "../../shared/helpers/select-subset.helper";
-import { UsersAccessTypeValue } from "../../entities/users.entity";
+import { sessionSubsets } from "../../shared/helpers/select-subset.helper";
+import { UserAccessTypeValue } from "../../entities/user.entity";
 
-export default class PrismaSessionsRepository implements SessionsRepository {
+export default class PrismaSessionRepository implements SessionRepository {
   private client;
 
   constructor() {
     const prisma = new PrismaClient();
-    this.client = prisma.sessions;
+    this.client = prisma.session;
   };
 
   findById = async (
     args: FindByIdArgs<string>
-  ): Promise<SessionsModel | null> => {
+  ): Promise<SessionModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...sessionsSubsets,
+        ...sessionSubsets,
         ...exclude
       },
       where: {
         id: args.id,
-        deleted_at: null,
+        deletedAt: null,
         ...args.condition
       }
     });
 
     if (!res) return null;
 
-    return new SessionsModel({
+    return new SessionModel({
       ...res,
-      access_type: res.access_type as UsersAccessTypeValue
+      accessType: res.accessType as UserAccessTypeValue
     });
   };
 
   findByAccessToken = async (
     args: FindByAccessTokenArgs
-  ): Promise<SessionsModel | null> => {
+  ): Promise<SessionModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...sessionsSubsets,
+        ...sessionSubsets,
         ...exclude
       },
       where: {
-        access_token: args.access_token,
-        deleted_at: null,
+        accessToken: args.accessToken,
+        deletedAt: null,
         ...args.condition
       }
     });
 
     if (!res) return null;
 
-    return new SessionsModel({
+    return new SessionModel({
       ...res,
-      access_type: res.access_type as UsersAccessTypeValue
+      accessType: res.accessType as UserAccessTypeValue
     });
   };
 
   findByRefreshToken = async (
     args: FindByRefreshTokenArgs
-  ): Promise<SessionsModel | null> => {
+  ): Promise<SessionModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
-        ...sessionsSubsets,
+        ...sessionSubsets,
         ...exclude
       },
       where: {
-        refresh_token: args.refresh_token,
-        deleted_at: null,
+        refreshToken: args.refreshToken,
+        deletedAt: null,
         ...args.condition
       }
     });
 
     if (!res) return null;
 
-    return new SessionsModel({
+    return new SessionModel({
       ...res,
-      access_type: res.access_type as UsersAccessTypeValue
+      accessType: res.accessType as UserAccessTypeValue
     });
   };
 
   create = async (
-    args: CreateArgs<SessionsModel>
-  ): Promise<SessionsModel> => {
+    args: CreateArgs<SessionModel>
+  ): Promise<SessionModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
-        ...sessionsSubsets,
+        ...sessionSubsets,
         ...exclude
       },
       data: args.params
     });
 
-    return new SessionsModel({
+    return new SessionModel({
       ...data,
-      access_type: data.access_type as UsersAccessTypeValue
+      accessType: data.accessType as UserAccessTypeValue
     });
   };
 
   update = async (
-    args: UpdateArgs<string, SessionsModel>
-  ): Promise<SessionsModel> => {
+    args: UpdateArgs<string, SessionModel>
+  ): Promise<SessionModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
-        ...sessionsSubsets,
+        ...sessionSubsets,
         ...exclude
       },
       where: { id: args.id },
       data: {
         ...args.params,
-        updated_at: new Date(),
+        updatedAt: new Date(),
       }
     });
 
-    return new SessionsModel({
+    return new SessionModel({
       ...data,
-      access_type: data.access_type as UsersAccessTypeValue
+      accessType: data.accessType as UserAccessTypeValue
     });
   };
 
   softDelete = async (
     args: SoftDeleteArgs<string>
-  ): Promise<SessionsModel> => {
+  ): Promise<SessionModel> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
-        ...sessionsSubsets,
+        ...sessionSubsets,
         ...exclude
       },
       where: { id: args.id },
       data: {
-        deleted_at: new Date(),
+        deletedAt: new Date(),
       }
     });
 
-    return new SessionsModel({
+    return new SessionModel({
       ...data,
-      access_type: data.access_type as UsersAccessTypeValue
+      accessType: data.accessType as UserAccessTypeValue
     });
   };
 };

@@ -1,15 +1,15 @@
-import UsersModel from "../../../models/users.model";
+import UserModel from "../../../models/user.model";
 import EventListenerAbstract from "../event-listener.abstract";
 import EventListenerService from "../event-listener.interface";
-import UsersService from "../../users.service";
+import UserService from "../../user.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 
-export default class UserDeletedEventListenerService extends EventListenerAbstract<UsersModel> implements EventListenerService<UsersModel> {
-  private usersService: UsersService;
+export default class UserDeletedEventListenerService extends EventListenerAbstract<UserModel> implements EventListenerService<UserModel> {
+  private userService: UserService;
 
   constructor() {
     super();
-    this.usersService = new UsersService();
+    this.userService = new UserService();
   };
 
   execute = async (): Promise<void> => {
@@ -18,8 +18,8 @@ export default class UserDeletedEventListenerService extends EventListenerAbstra
       return;
     };
 
-    const userId = this.state.new_details.id!;
-    const existingUser = await this.usersService.getById(userId)
+    const userId = this.state.newDetails.id!;
+    const existingUser = await this.userService.getById(userId)
       .catch(err => {
         if (err instanceof NotFoundException) {
           console.log(`User ${userId} not exist!`);
@@ -33,13 +33,13 @@ export default class UserDeletedEventListenerService extends EventListenerAbstra
       return;
     }
 
-    const user = new UsersModel({
+    const user = new UserModel({
       ...existingUser,
-      ...this.state.new_details
+      ...this.state.newDetails
     });
-    await this.usersService.save(user)
+    await this.userService.save(user)
       .catch(err => {
-        console.log("Error on deleting users", err);
+        console.log("Error on deleting user", err);
       });
 
     console.info(`Event Notification: Successfully deleted user ${user.id}.`);

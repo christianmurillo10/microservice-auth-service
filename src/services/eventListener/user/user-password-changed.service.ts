@@ -1,15 +1,15 @@
-import UsersModel from "../../../models/users.model";
+import UserModel from "../../../models/user.model";
 import EventListenerAbstract from "../event-listener.abstract";
 import EventListenerService from "../event-listener.interface";
-import UsersService from "../../users.service";
+import UserService from "../../user.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 
-export default class UserPasswordChangedEventListenerService extends EventListenerAbstract<UsersModel> implements EventListenerService<UsersModel> {
-  private usersService: UsersService;
+export default class UserPasswordChangedEventListenerService extends EventListenerAbstract<UserModel> implements EventListenerService<UserModel> {
+  private userService: UserService;
 
   constructor() {
     super();
-    this.usersService = new UsersService();
+    this.userService = new UserService();
   };
 
   execute = async (): Promise<void> => {
@@ -18,8 +18,8 @@ export default class UserPasswordChangedEventListenerService extends EventListen
       return;
     };
 
-    const userId = this.state.new_details.id!;
-    const existingUser = await this.usersService.getById(userId)
+    const userId = this.state.newDetails.id!;
+    const existingUser = await this.userService.getById(userId)
       .catch(err => {
         if (err instanceof NotFoundException) {
           console.log(`User ${userId} not exist!`);
@@ -33,14 +33,14 @@ export default class UserPasswordChangedEventListenerService extends EventListen
       return;
     }
 
-    const user = new UsersModel({
+    const user = new UserModel({
       ...existingUser,
-      password: this.state.new_details.password,
-      updated_at: this.state.new_details.updated_at
+      password: this.state.newDetails.password,
+      updatedAt: this.state.newDetails.updatedAt
     });
-    await this.usersService.save(user)
+    await this.userService.save(user)
       .catch(err => {
-        console.log("Error on changing users password", err);
+        console.log("Error on changing user password", err);
       });
 
     console.info(`Event Notification: Successfully changed user password ${user.id}.`);

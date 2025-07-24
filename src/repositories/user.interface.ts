@@ -1,4 +1,4 @@
-import UserRequestHeader from "../models/users.model";
+import UserRequestHeader from "../models/user.model";
 import {
   FindByIdArgs,
   FindByUsernameOrEmailArgs,
@@ -6,7 +6,7 @@ import {
   UpdateArgs
 } from "../shared/types/repository.type";
 
-export default interface UsersRepository {
+export default interface UserRepository {
   findById: (args: FindByIdArgs<string>) => Promise<UserRequestHeader | null>;
 
   findByUsernameOrEmail: (args: FindByUsernameOrEmailArgs) => Promise<UserRequestHeader | null>;

@@ -16,7 +16,7 @@ export type GetByNameArgs = {
 };
 
 export type GetByRefreshTokenArgs = {
-  refresh_token: string,
+  refreshToken: string,
   condition?: GenericObject
 };
 

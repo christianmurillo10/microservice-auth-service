@@ -15,11 +15,11 @@ const controller = async (
   try {
     const { userRequestHeader } = req;
     const { body } = req;
-    const loginService = new LoginService({ body, userRequestHeader });
+    const loginService = new LoginService({ input: body, userRequestHeader });
     const result = await loginService.execute();
 
     apiResponse(res, {
-      status_code: 200,
+      statusCode: 200,
       message: MESSAGE_DATA_SIGNED_IN,
       result
     });

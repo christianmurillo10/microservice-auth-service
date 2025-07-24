@@ -24,12 +24,12 @@ export const parseQueryFilters = <T>(data: T): GenericObject => {
     ? Object.assign({}, ...Object.entries(data)
       .map(([key, value]) => {
         const dateFields = [
-          "created_at",
-          "updated_at",
-          "deleted_at",
-          "last_logged_at",
-          "verified_at",
-          "refresh_token_expires_at",
+          "createdAt",
+          "updatedAt",
+          "deletedAt",
+          "lastLoggedAt",
+          "verifiedAt",
+          "refreshTokenExpiresAt",
           "date"
         ];
 

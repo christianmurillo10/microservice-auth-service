@@ -1,8 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
-import SessionEntity from "../entities/session.entity";
+import Session from "../entities/session.entity";
 import { UserAccessTypeValue, UserAccessType } from "../entities/user.entity";
 
-class SessionModel implements SessionEntity {
+class SessionModel implements Session {
   id?: string = uuidv4();
   accessType: UserAccessTypeValue = UserAccessType.Business;
   accessToken: string = "";
@@ -13,7 +13,7 @@ class SessionModel implements SessionEntity {
   updatedAt: Date = new Date();
   deletedAt?: Date | null = null;
 
-  constructor(props: SessionEntity) {
+  constructor(props: Session) {
     this.id = props.id;
     this.accessType = props.accessType;
     this.accessToken = props.accessToken;

@@ -4,7 +4,7 @@ import Permission from "../entities/permission.entity";
 class PermissionModel implements Permission {
   id?: string = uuidv4();
   name: string = "";
-  description: string = "";
+  description?: string | null = null;
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
   deletedAt?: Date | null = null;

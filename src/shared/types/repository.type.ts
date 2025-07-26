@@ -7,6 +7,12 @@ export type FindAllArgs = {
   exclude?: string[] | undefined
 };
 
+export type FindOneArgs = {
+  condition?: GenericObject | undefined,
+  include?: string[] | undefined,
+  exclude?: string[] | undefined
+};
+
 export type FindByIdArgs<I> = {
   id: I,
   condition?: GenericObject | undefined,

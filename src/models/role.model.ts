@@ -4,7 +4,7 @@ import Role from "../entities/role.entity";
 class RoleModel implements Role {
   id?: string = uuidv4();
   name: string = "";
-  description: string = "";
+  description?: string | null;
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
   deletedAt?: Date | null = null;

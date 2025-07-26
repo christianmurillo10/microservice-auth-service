@@ -25,3 +25,35 @@ export const sessionSubsets = {
   updatedAt: true,
   deletedAt: true
 };
+
+export const roleSubsets = {
+  id: true,
+  name: true,
+  description: true,
+  createdAt: true,
+  updatedAt: true,
+  deletedAt: true
+};
+
+export const permissionSubsets = {
+  id: true,
+  name: true,
+  description: true,
+  createdAt: true,
+  updatedAt: true,
+  deletedAt: true
+};
+
+export const userRoleSubsets = {
+  id: true,
+  userId: true,
+  roleId: true,
+  assignedAt: true
+};
+
+export const rolePermissionSubsets = {
+  id: true,
+  roleId: true,
+  permissionId: true,
+  grantedAt: true
+};

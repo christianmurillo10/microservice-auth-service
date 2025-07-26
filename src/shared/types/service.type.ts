@@ -5,6 +5,18 @@ export type GetAllArgs = {
   query?: Query
 };
 
+export type GetAllByUserIdArgs = {
+  userId: string,
+  condition?: GenericObject,
+  query?: Query
+};
+
+export type GetAllByRoleIdArgs = {
+  roleId: string,
+  condition?: GenericObject,
+  query?: Query
+};
+
 export type GetByIdArgs<I> = {
   id: I,
   condition?: GenericObject

@@ -3,7 +3,8 @@ import {
   CountArgs,
   CreateArgs,
   FindAllArgs,
-  FindOneArgs,
+  FindByIdArgs,
+  FindByNameArgs,
   SoftDeleteArgs,
   SoftDeleteManyArgs,
   UpdateArgs
@@ -13,7 +14,9 @@ import { GenericObject } from "../shared/types/common.type";
 export default interface RoleRepository {
   findAll: (args: FindAllArgs) => Promise<RoleModel[]>;
 
-  findOne: (args: FindOneArgs) => Promise<RoleModel | null>;
+  findById: (args: FindByIdArgs<string>) => Promise<RoleModel | null>;
+
+  findByName: (args: FindByNameArgs) => Promise<RoleModel | null>;
 
   create: (args: CreateArgs<RoleModel>) => Promise<RoleModel>;
 

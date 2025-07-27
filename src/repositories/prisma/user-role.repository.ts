@@ -3,7 +3,8 @@ import UserRoleModel from "../../models/user-role.model";
 import UserRoleRepository from "../user-role.interface";
 import {
   FindAllArgs,
-  FindOneArgs,
+  FindByIdArgs,
+  FindAllUserIdArgs,
   CreateArgs,
   UpdateArgs,
   CountArgs
@@ -44,8 +45,34 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
     return res.map(item => new UserRoleModel(item));
   };
 
-  findOne = async (
-    args: FindOneArgs
+  findAllByUserId = async (
+    args: FindAllUserIdArgs
+  ): Promise<UserRoleModel[]> => {
+    const exclude = setSelectExclude(args.exclude!);
+    const res = await this.client.findMany({
+      select: {
+        ...userRoleSubsets,
+        ...exclude
+      },
+      where: {
+        ...args.condition,
+        ...parseQueryFilters(args.query?.filters),
+        userId: args.userId
+      },
+      orderBy: {
+        ...args.query?.sorting
+      },
+      take: args.query?.limit,
+      skip: args.query?.page && args.query?.limit ?
+        (args.query?.page - 1) * args.query?.limit :
+        undefined
+    });
+
+    return res.map(item => new UserRoleModel(item));
+  };
+
+  findById = async (
+    args: FindByIdArgs<string>
   ): Promise<UserRoleModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
@@ -53,7 +80,10 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
         ...userRoleSubsets,
         ...exclude
       },
-      where: args.condition
+      where: {
+        id: args.id,
+        ...args.condition
+      }
     });
 
     if (!res) return null;

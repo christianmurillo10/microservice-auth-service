@@ -3,7 +3,8 @@ import PermissionModel from "../../models/permission.model";
 import PermissionRepository from "../permission.interface";
 import {
   FindAllArgs,
-  FindOneArgs,
+  FindByIdArgs,
+  FindByNameArgs,
   CreateArgs,
   UpdateArgs,
   SoftDeleteArgs,
@@ -48,8 +49,8 @@ export default class PrismaPermissionRepository implements PermissionRepository 
     return res.map(item => new PermissionModel(item));
   };
 
-  findOne = async (
-    args: FindOneArgs
+  findById = async (
+    args: FindByIdArgs<string>
   ): Promise<PermissionModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
@@ -58,6 +59,28 @@ export default class PrismaPermissionRepository implements PermissionRepository 
         ...exclude
       },
       where: {
+        id: args.id,
+        deletedAt: null,
+        ...args.condition
+      }
+    });
+
+    if (!res) return null;
+
+    return new PermissionModel(res);
+  };
+
+  findByName = async (
+    args: FindByNameArgs
+  ): Promise<PermissionModel | null> => {
+    const exclude = setSelectExclude(args.exclude!);
+    const res = await this.client.findFirst({
+      select: {
+        ...permissionSubsets,
+        ...exclude
+      },
+      where: {
+        name: args.name,
         deletedAt: null,
         ...args.condition
       }

@@ -22,12 +22,10 @@ export default class UserRoleService {
     return record;
   };
 
-  getAllByUsereId = async (args?: GetAllByUserIdArgs): Promise<UserRoleModel[]> => {
-    const record = await this.repository.findAll({
-      condition: {
-        userId: args?.userId,
-        ...args?.condition
-      },
+  getAllByUsereId = async (args: GetAllByUserIdArgs): Promise<UserRoleModel[]> => {
+    const record = await this.repository.findAllByUserId({
+      userId: args.userId,
+      condition: args.condition,
       query: args?.query,
       exclude: ["deletedAt"]
     });
@@ -36,7 +34,7 @@ export default class UserRoleService {
   };
 
   getById = async (id: string): Promise<UserRoleModel> => {
-    const record = await this.repository.findOne({ condition: { id } });
+    const record = await this.repository.findById({ id });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);

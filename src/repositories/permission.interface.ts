@@ -3,7 +3,8 @@ import {
   CountArgs,
   CreateArgs,
   FindAllArgs,
-  FindOneArgs,
+  FindByIdArgs,
+  FindByNameArgs,
   SoftDeleteArgs,
   SoftDeleteManyArgs,
   UpdateArgs
@@ -13,7 +14,9 @@ import { GenericObject } from "../shared/types/common.type";
 export default interface PermissionRepository {
   findAll: (args: FindAllArgs) => Promise<PermissionModel[]>;
 
-  findOne: (args: FindOneArgs) => Promise<PermissionModel | null>;
+  findById: (args: FindByIdArgs<string>) => Promise<PermissionModel | null>;
+
+  findByName: (args: FindByNameArgs) => Promise<PermissionModel | null>;
 
   create: (args: CreateArgs<PermissionModel>) => Promise<PermissionModel>;
 

@@ -22,12 +22,10 @@ export default class RolePermissionService {
     return record;
   };
 
-  getAllByRoleId = async (args?: GetAllByRoleIdArgs): Promise<RolePermissionModel[]> => {
-    const record = await this.repository.findAll({
-      condition: {
-        roleId: args?.roleId,
-        ...args?.condition
-      },
+  getAllByRoleId = async (args: GetAllByRoleIdArgs): Promise<RolePermissionModel[]> => {
+    const record = await this.repository.findAllByRoleId({
+      roleId: args.roleId,
+      condition: args.condition,
       query: args?.query,
       exclude: ["deletedAt"]
     });
@@ -36,7 +34,7 @@ export default class RolePermissionService {
   };
 
   getById = async (id: string): Promise<RolePermissionModel> => {
-    const record = await this.repository.findOne({ condition: { id } });
+    const record = await this.repository.findById({ id });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);

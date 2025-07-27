@@ -12,7 +12,7 @@ export default class UserService {
   };
 
   getById = async (id: string): Promise<UserModel> => {
-    const record = await this.repository.findById({ id: id });
+    const record = await this.repository.findById({ id });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);

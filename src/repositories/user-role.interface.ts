@@ -3,14 +3,17 @@ import {
   CountArgs,
   CreateArgs,
   FindAllArgs,
-  FindOneArgs,
+  FindAllUserIdArgs,
+  FindByIdArgs,
   UpdateArgs
 } from "../shared/types/repository.type";
 
 export default interface UserRoleRepository {
   findAll: (args: FindAllArgs) => Promise<UserRoleModel[]>;
 
-  findOne: (args: FindOneArgs) => Promise<UserRoleModel | null>;
+  findAllByUserId: (args: FindAllUserIdArgs) => Promise<UserRoleModel[]>;
+
+  findById: (args: FindByIdArgs<string>) => Promise<UserRoleModel | null>;
 
   create: (args: CreateArgs<UserRoleModel>) => Promise<UserRoleModel>;
 

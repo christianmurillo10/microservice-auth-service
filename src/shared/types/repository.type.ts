@@ -7,8 +7,18 @@ export type FindAllArgs = {
   exclude?: string[] | undefined
 };
 
-export type FindOneArgs = {
+export type FindAllRoleIdArgs = {
+  roleId: string,
   condition?: GenericObject | undefined,
+  query?: Query | undefined,
+  include?: string[] | undefined,
+  exclude?: string[] | undefined
+};
+
+export type FindAllUserIdArgs = {
+  userId: string,
+  condition?: GenericObject | undefined,
+  query?: Query | undefined,
   include?: string[] | undefined,
   exclude?: string[] | undefined
 };

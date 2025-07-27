@@ -3,14 +3,17 @@ import {
   CountArgs,
   CreateArgs,
   FindAllArgs,
-  FindOneArgs,
+  FindAllRoleIdArgs,
+  FindByIdArgs,
   UpdateArgs
 } from "../shared/types/repository.type";
 
 export default interface RolePermissionRepository {
   findAll: (args: FindAllArgs) => Promise<RolePermissionModel[]>;
 
-  findOne: (args: FindOneArgs) => Promise<RolePermissionModel | null>;
+  findAllByRoleId: (args: FindAllRoleIdArgs) => Promise<RolePermissionModel[]>;
+
+  findById: (args: FindByIdArgs<string>) => Promise<RolePermissionModel | null>;
 
   create: (args: CreateArgs<RolePermissionModel>) => Promise<RolePermissionModel>;
 

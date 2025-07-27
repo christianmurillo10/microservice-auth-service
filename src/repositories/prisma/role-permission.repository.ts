@@ -3,7 +3,8 @@ import RolePermissionModel from "../../models/role-permission.model";
 import RolePermissionRepository from "../role-permission.interface";
 import {
   FindAllArgs,
-  FindOneArgs,
+  FindAllRoleIdArgs,
+  FindByIdArgs,
   CreateArgs,
   UpdateArgs,
   CountArgs
@@ -44,8 +45,34 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
     return res.map(item => new RolePermissionModel(item));
   };
 
-  findOne = async (
-    args: FindOneArgs
+  findAllByRoleId = async (
+    args: FindAllRoleIdArgs
+  ): Promise<RolePermissionModel[]> => {
+    const exclude = setSelectExclude(args.exclude!);
+    const res = await this.client.findMany({
+      select: {
+        ...rolePermissionSubsets,
+        ...exclude
+      },
+      where: {
+        ...args.condition,
+        ...parseQueryFilters(args.query?.filters),
+        roleId: args.roleId
+      },
+      orderBy: {
+        ...args.query?.sorting
+      },
+      take: args.query?.limit,
+      skip: args.query?.page && args.query?.limit ?
+        (args.query?.page - 1) * args.query?.limit :
+        undefined
+    });
+
+    return res.map(item => new RolePermissionModel(item));
+  };
+
+  findById = async (
+    args: FindByIdArgs<string>
   ): Promise<RolePermissionModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
@@ -53,7 +80,10 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
         ...rolePermissionSubsets,
         ...exclude
       },
-      where: args.condition
+      where: {
+        id: args.id,
+        ...args.condition
+      }
     });
 
     if (!res) return null;

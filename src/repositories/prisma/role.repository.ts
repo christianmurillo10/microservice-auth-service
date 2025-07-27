@@ -3,7 +3,8 @@ import RoleModel from "../../models/role.model";
 import RoleRepository from "../role.interface";
 import {
   FindAllArgs,
-  FindOneArgs,
+  FindByIdArgs,
+  FindByNameArgs,
   CreateArgs,
   UpdateArgs,
   SoftDeleteArgs,
@@ -48,8 +49,8 @@ export default class PrismaRoleRepository implements RoleRepository {
     return res.map(item => new RoleModel(item));
   };
 
-  findOne = async (
-    args: FindOneArgs
+  findById = async (
+    args: FindByIdArgs<string>
   ): Promise<RoleModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
@@ -58,6 +59,28 @@ export default class PrismaRoleRepository implements RoleRepository {
         ...exclude
       },
       where: {
+        id: args.id,
+        deletedAt: null,
+        ...args.condition
+      }
+    });
+
+    if (!res) return null;
+
+    return new RoleModel(res);
+  };
+
+  findByName = async (
+    args: FindByNameArgs
+  ): Promise<RoleModel | null> => {
+    const exclude = setSelectExclude(args.exclude!);
+    const res = await this.client.findFirst({
+      select: {
+        ...roleSubsets,
+        ...exclude
+      },
+      where: {
+        name: args.name,
         deletedAt: null,
         ...args.condition
       }

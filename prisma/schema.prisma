@@ -1,6 +1,7 @@
 generator client {
   provider      = "prisma-client-js"
   binaryTargets = ["native"]
+  output = "client"
 }
 
 datasource db {
@@ -16,7 +17,7 @@ model Business {
   logoPath          String?   @map("logo_path") @db.VarChar(255)
   preferredTimezone String?   @map("preferred_timezone") @db.VarChar(100)
   currency          String?   @db.VarChar(100)
-  createdAt         DateTime  @map("created_at") @db.DateTime(0)
+  createdAt         DateTime  @default(now()) @map("created_at") @db.DateTime(0)
   updatedAt         DateTime  @updatedAt @map("updated_at") @db.DateTime(0)
   deletedAt         DateTime? @map("deleted_at") @db.DateTime(0)
 

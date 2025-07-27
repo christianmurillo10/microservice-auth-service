@@ -1,4 +1,4 @@
-import { PrismaClient } from "@prisma/client";
+import { PrismaClient } from "../../../prisma/client";
 import SessionModel from "../../models/session.model";
 import SessionRepository from "../session.interface";
 import {

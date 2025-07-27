@@ -8,7 +8,7 @@ class UserModel implements User {
   email: string = "";
   password: string = "";
   accessType: UserAccessTypeValue = UserAccessType.Business;
-  businessId?: number | null = null;
+  businessId?: string | null = null;
   isActive: boolean = true;
   isLogged: boolean = false;
   lastLoggedAt?: Date | null = null;

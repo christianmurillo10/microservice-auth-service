@@ -13,7 +13,7 @@ export default interface User {
   email: string;
   password: string;
   accessType: UserAccessTypeValue;
-  businessId?: number | null;
+  businessId?: string | null;
   isActive: boolean;
   isLogged: boolean;
   lastLoggedAt?: Date | null;

@@ -30,6 +30,7 @@ export const roleSubsets = {
   id: true,
   name: true,
   description: true,
+  businessId: true,
   createdAt: true,
   updatedAt: true,
   deletedAt: true
@@ -39,6 +40,7 @@ export const permissionSubsets = {
   id: true,
   name: true,
   description: true,
+  businessId: true,
   createdAt: true,
   updatedAt: true,
   deletedAt: true

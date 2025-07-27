@@ -10,6 +10,7 @@
     "db-migrate": "prisma migrate dev --skip-seed --name migration",
     "db-migrate-reset": "prisma migrate reset --skip-seed",
     "db-seed": "prisma db seed",
+    "db-generate": "prisma generate",
     "prisma": "prisma",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

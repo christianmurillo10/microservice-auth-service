@@ -31,6 +31,7 @@ services:
       - database
     volumes:
       - ./:/var/app/current
+      - /var/app/current/node_modules
     networks:
       - microservices_network
 

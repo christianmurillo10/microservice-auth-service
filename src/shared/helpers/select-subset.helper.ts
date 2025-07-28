@@ -1,3 +1,16 @@
+export const businessSubsets = {
+  id: true,
+  name: true,
+  apiKey: true,
+  domain: true,
+  logoPath: true,
+  preferredTimezone: true,
+  currency: true,
+  createdAt: true,
+  updatedAt: true,
+  deletedAt: true
+};
+
 export const userSubsets = {
   id: true,
   name: true,

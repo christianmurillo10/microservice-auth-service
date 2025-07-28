@@ -5,6 +5,13 @@ export type GetAllArgs = {
   query?: Query
 };
 
+export type GetAllBetweenCreatedAtArgs = {
+  dateFrom: string,
+  dateTo: string,
+  condition?: GenericObject,
+  query?: Query
+};
+
 export type GetAllByUserIdArgs = {
   userId: string,
   condition?: GenericObject,

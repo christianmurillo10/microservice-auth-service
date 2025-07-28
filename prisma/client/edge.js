@@ -249,7 +249,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/var/app/current/prisma/client",
+      "value": "/Users/christian/Documents/Codes/Github Projects/boilerplate-microservices/microservice-auth-service/prisma/client",
       "fromEnvVar": null
     },
     "config": {
@@ -258,12 +258,12 @@ const config = {
     "binaryTargets": [
       {
         "fromEnvVar": null,
-        "value": "linux-arm64-openssl-3.0.x",
+        "value": "darwin-arm64",
         "native": true
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/var/app/current/prisma/schema.prisma",
+    "sourceFilePath": "/Users/christian/Documents/Codes/Github Projects/boilerplate-microservices/microservice-auth-service/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {

@@ -17,9 +17,8 @@ services:
 
   app:
     container_name: microservice_auth_service
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: node:20.13
+    command: /bin/sh -c "npm install && npm run dev"
     environment:
       NODE_ENV: development
       APP_ENV: local
@@ -29,9 +28,9 @@ services:
       - "5001:3000"
     depends_on:
       - database
+    working_dir: /var/app/current
     volumes:
       - ./:/var/app/current
-      - /var/app/current/node_modules
     networks:
       - microservices_network
 

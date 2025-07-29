@@ -4,6 +4,7 @@ import config from "../../config/server.config";
 import login from "../controllers/login.controller";
 import logout from "../controllers/logout.controller";
 import refreshToken from "../controllers/refreshToken";
+import businessRoute from "./business.route";
 
 const router = Router();
 
@@ -17,5 +18,6 @@ router.get("/", (_req: Request, res: Response) => {
 router.use(login);
 router.use(logout);
 router.use(refreshToken);
+router.use("/business", businessRoute);
 
 export default router;

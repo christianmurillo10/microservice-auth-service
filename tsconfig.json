@@ -17,7 +17,8 @@
     ],                                                /* Specify multiple folders that act like './node_modules/@types'. */
     "types": [
       "node",
-      "express"
+      "express",
+      "multer"
     ],                                                /* Specify type package names to be included without being referenced in a source file. */
     /* Emit */
     "declaration": true,                              /* Generate .d.ts files from TypeScript and JavaScript files in your project. */

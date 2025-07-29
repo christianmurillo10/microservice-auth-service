@@ -11,6 +11,16 @@ export type Query = {
   limit?: number
 };
 
+export type Pagination = {
+  totalItems: number,
+  totalPageItems: number,
+  totalPages: number,
+  page: number,
+  pageSize: number,
+  hasNextPage: boolean,
+  hasPreviousPage: boolean,
+};
+
 export type ApiResponseInput = {
   service?: string,
   version?: string,
@@ -18,7 +28,8 @@ export type ApiResponseInput = {
   status?: string,
   message?: string,
   errors?: string[],
-  result?: unknown,
+  data?: unknown,
+  pagination?: Pagination,
 };
 
 export type EventMessageData<T> = {

@@ -25,12 +25,12 @@ const controller = async (
       token: authHeader.split(" ")[1],
       refreshToken: body.refreshToken
     });
-    const result = await refreshtokenService.execute();
+    const data = await refreshtokenService.execute();
 
     apiResponse(res, {
       statusCode: 200,
       message: MESSAGE_DATA_REFRESH_TOKEN,
-      result
+      data
     });
   } catch (error) {
     console.error(`${ERROR_ON_REFRESH_TOKEN}: `, error);

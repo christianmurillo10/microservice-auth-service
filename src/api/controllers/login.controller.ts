@@ -16,12 +16,12 @@ const controller = async (
     const { userRequestHeader } = req;
     const { body } = req;
     const loginService = new LoginService({ input: body, userRequestHeader });
-    const result = await loginService.execute();
+    const data = await loginService.execute();
 
     apiResponse(res, {
       statusCode: 200,
       message: MESSAGE_DATA_SIGNED_IN,
-      result
+      data
     });
   } catch (error) {
     console.error(`${ERROR_ON_LOGIN}: `, error);

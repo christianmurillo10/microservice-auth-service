@@ -1,5 +1,5 @@
 import { Schema } from "joi";
-import { GenericObject } from "../types/common.type";
+import { GenericObject, Pagination } from "../types/common.type";
 
 export const validateInput = async <I>(input: I, schema: Schema): Promise<I> => {
   const options = {
@@ -73,4 +73,23 @@ export const addMinutesToDate = (date: Date, minutes: number): Date => {
 export const addDaysToDate = (date: Date, days: number): Date => {
   const newDate = date.setDate(date.getDate() + days);
   return new Date(newDate);
+};
+
+export const getPagination = (
+  totalItems: number,
+  totalPageItems: number,
+  page: number,
+  pageSize: number
+): Pagination => {
+  const totalPages = Math.ceil(totalItems / pageSize);
+
+  return {
+    totalItems: totalItems,
+    totalPageItems: totalPageItems,
+    totalPages: totalPages,
+    page,
+    pageSize: pageSize,
+    hasNextPage: page < totalPages,
+    hasPreviousPage: page > 1
+  };
 };

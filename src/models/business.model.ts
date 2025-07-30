@@ -4,7 +4,7 @@ import Business from "../entities/business.enity";
 class BusinessModel implements Business {
   id?: string = uuidv4();
   name: string = "";
-  apiKey: string = "";
+  apiKey: string = `key-${uuidv4()}`;
   domain?: string | null = null;
   logoPath?: string | null = null;
   preferredTimezone?: string | null = null;

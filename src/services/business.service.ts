@@ -80,6 +80,7 @@ export default class BusinessService {
       });
     } else {
       // Create
+      console.log("option", option);
       option.params.logoPath = uploadPath;
       record = await this.repository.create(option);
     }

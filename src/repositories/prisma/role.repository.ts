@@ -4,7 +4,7 @@ import RoleRepository from "../role.interface";
 import {
   FindAllArgs,
   FindByIdArgs,
-  FindByNameArgs,
+  FindByBusinessIdAndNameArgs,
   CreateArgs,
   UpdateArgs,
   SoftDeleteArgs,
@@ -70,8 +70,8 @@ export default class PrismaRoleRepository implements RoleRepository {
     return new RoleModel(res);
   };
 
-  findByName = async (
-    args: FindByNameArgs
+  findByBusinessIdAndName = async (
+    args: FindByBusinessIdAndNameArgs
   ): Promise<RoleModel | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
@@ -80,6 +80,7 @@ export default class PrismaRoleRepository implements RoleRepository {
         ...exclude
       },
       where: {
+        businessId: args.businessId,
         name: args.name,
         deletedAt: null,
         ...args.condition

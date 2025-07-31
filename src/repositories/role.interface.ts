@@ -4,7 +4,7 @@ import {
   CreateArgs,
   FindAllArgs,
   FindByIdArgs,
-  FindByNameArgs,
+  FindByBusinessIdAndNameArgs,
   SoftDeleteArgs,
   SoftDeleteManyArgs,
   UpdateArgs
@@ -16,7 +16,7 @@ export default interface RoleRepository {
 
   findById: (args: FindByIdArgs<string>) => Promise<RoleModel | null>;
 
-  findByName: (args: FindByNameArgs) => Promise<RoleModel | null>;
+  findByBusinessIdAndName: (args: FindByBusinessIdAndNameArgs) => Promise<RoleModel | null>;
 
   create: (args: CreateArgs<RoleModel>) => Promise<RoleModel>;
 

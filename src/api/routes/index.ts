@@ -5,6 +5,7 @@ import login from "../controllers/login.controller";
 import logout from "../controllers/logout.controller";
 import refreshToken from "../controllers/refreshToken";
 import businessRoute from "./business.route";
+import roleRoute from "./role.route";
 
 const router = Router();
 
@@ -19,5 +20,6 @@ router.use(login);
 router.use(logout);
 router.use(refreshToken);
 router.use("/business", businessRoute);
+router.use("/role", roleRoute);
 
 export default router;

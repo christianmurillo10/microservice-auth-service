@@ -32,6 +32,16 @@ export default class RoleService {
     return record;
   };
 
+  getByBusinessIdAndName = async (businessId: string, name: string): Promise<RoleModel> => {
+    const record = await this.repository.findByBusinessIdAndName({ businessId, name });
+
+    if (!record) {
+      throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
+    };
+
+    return record;
+  };
+
   save = async (data: RoleModel): Promise<RoleModel> => {
     let record: RoleModel;
     let newData = new RoleModel(data);

@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaBusinessRepository from "../repositories/prisma/business.repository";
@@ -80,7 +81,8 @@ export default class BusinessService {
       });
     } else {
       // Create
-      console.log("option", option);
+      option.params.id = uuidv4();
+      option.params.apiKey = `key-${uuidv4()}`;
       option.params.logoPath = uploadPath;
       record = await this.repository.create(option);
     }

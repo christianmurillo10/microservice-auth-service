@@ -1,8 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
 import RolePermission from "../entities/role-permission.entity";
 
 class RolePermissionModel implements RolePermission {
-  id?: string = uuidv4();
+  id?: string;
   roleId: string;
   permissionId: string;
   grantedAt: Date = new Date();

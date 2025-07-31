@@ -1,10 +1,9 @@
-import { v4 as uuidv4 } from "uuid";
 import Business from "../entities/business.enity";
 
 class BusinessModel implements Business {
-  id?: string = uuidv4();
+  id?: string;
   name: string = "";
-  apiKey: string = `key-${uuidv4()}`;
+  apiKey: string = "";
   domain?: string | null = null;
   logoPath?: string | null = null;
   preferredTimezone?: string | null = null;

@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaUserRepository from "../repositories/prisma/user.repository";
 import UserModel from "../models/user.model";
@@ -50,6 +51,7 @@ export default class UserService {
       });
     } else {
       // Create
+      option.params.id = uuidv4();
       option.params.password = hashPassword(option.params.password as string);
       record = await this.repository.create(option);
     }

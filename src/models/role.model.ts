@@ -1,8 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
 import Role from "../entities/role.entity";
 
 class RoleModel implements Role {
-  id?: string = uuidv4();
+  id?: string;
   name: string = "";
   description?: string | null;
   businessId: string;

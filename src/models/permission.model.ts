@@ -1,8 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
 import Permission from "../entities/permission.entity";
 
 class PermissionModel implements Permission {
-  id?: string = uuidv4();
+  id?: string;
   name: string = "";
   description?: string | null = null;
   businessId: string;

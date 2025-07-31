@@ -1,8 +1,7 @@
-import { v4 as uuidv4 } from "uuid";
 import UserRole from "../entities/user-role.entity";
 
 class UserRoleModel implements UserRole {
-  id?: string = uuidv4();
+  id?: string;
   userId: string;
   roleId: string;
   assignedAt: Date = new Date();

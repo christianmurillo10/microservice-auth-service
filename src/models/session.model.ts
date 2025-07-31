@@ -1,9 +1,8 @@
-import { v4 as uuidv4 } from "uuid";
 import Session from "../entities/session.entity";
 import { UserAccessTypeValue, UserAccessType } from "../entities/user.entity";
 
 class SessionModel implements Session {
-  id?: string = uuidv4();
+  id?: string;
   accessType: UserAccessTypeValue = UserAccessType.Business;
   accessToken: string = "";
   refreshToken: string = "";

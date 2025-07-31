@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaSessionRepository from "../repositories/prisma/session.repository";
 import SessionModel from "../models/session.model";
@@ -56,6 +57,7 @@ export default class SessionService {
       });
     } else {
       // Create
+      option.params.id = uuidv4();
       record = await this.repository.create(option);
     }
 

@@ -34,7 +34,7 @@ const controller = async (
         allRoleCount,
         roleCount,
         Number(query.page ?? 1),
-        Number(query.limit ?? 10)
+        Number(query.pageSize ?? 10)
       )
     });
   } catch (error) {

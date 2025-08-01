@@ -32,6 +32,16 @@ export default class PermissionService {
     return record;
   };
 
+  getByBusinessIdAndName = async (businessId: string, name: string): Promise<PermissionModel> => {
+    const record = await this.repository.findByBusinessIdAndName({ businessId, name });
+
+    if (!record) {
+      throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
+    };
+
+    return record;
+  };
+
   save = async (data: PermissionModel): Promise<PermissionModel> => {
     let record: PermissionModel;
     let newData = new PermissionModel(data);

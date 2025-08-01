@@ -6,6 +6,7 @@ import logout from "../controllers/logout.controller";
 import refreshToken from "../controllers/refreshToken";
 import businessRoute from "./business.route";
 import roleRoute from "./role.route";
+import permissionRoute from "./permission.route";
 
 const router = Router();
 
@@ -21,5 +22,6 @@ router.use(logout);
 router.use(refreshToken);
 router.use("/business", businessRoute);
 router.use("/role", roleRoute);
+router.use("/permission", permissionRoute);
 
 export default router;

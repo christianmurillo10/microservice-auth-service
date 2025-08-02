@@ -17,9 +17,6 @@ export const create = async (
 
     const schema = joi.object({
       name: joi.string().label("Name").max(100).required(),
-      domain: joi.string().label("Domain").max(255).allow("").allow(null),
-      preferredTimezone: joi.string().label("Preferred Timezone").max(100).allow("").allow(null),
-      currency: joi.string().label("Currency").max(100).allow("").allow(null),
     });
     req.body = await validateInput(req.body, schema);
     next();
@@ -40,9 +37,6 @@ export const update = async (
 
     const schema = joi.object({
       name: joi.string().label("Name").max(100).empty(),
-      domain: joi.string().label("Domain").max(255).empty().allow("").allow(null),
-      preferredTimezone: joi.string().label("Preferred Timezone").empty().max(100).allow("").allow(null),
-      currency: joi.string().label("Currency").max(100).allow("").empty().allow(null),
     });
     req.body = await validateInput(req.body, schema);
     next();
@@ -65,17 +59,11 @@ export const list = async (
         createdAt: joi.date().label("Date Created").empty(),
         updatedAt: joi.date().label("Last Modified").empty(),
         name: joi.string().label("Name").max(100).empty(),
-        domain: joi.string().label("Domain").max(255).empty(),
-        preferredTimezone: joi.string().label("Preferred Timezone").max(100).empty(),
-        currency: joi.string().label("Currency").max(100).empty()
       }).label("Filters").empty(),
       sorting: joi.object({
         createdAt: joi.string().label("Date Created").valid("asc", "desc").empty(),
         updatedAt: joi.string().label("Last Modified").valid("asc", "desc").empty(),
         name: joi.string().label("Name").valid("asc", "desc").empty(),
-        domain: joi.string().label("Domain").valid("asc", "desc").empty(),
-        preferredTimezone: joi.string().label("Preferred Timezone").valid("asc", "desc").empty(),
-        currency: joi.string().label("Currency").valid("asc", "desc").empty()
       }).label("Sorting").empty(),
       page: joi.number().min(1).label("Page").empty(),
       pageSize: joi.number().min(1).label("Page Size").empty(),

@@ -18,7 +18,7 @@ const controller = async (
 ): Promise<void> => {
   try {
     const { body } = req;
-    const existingPermission = await permissionService.getByOrganizationIdAndName(body.organizationId, body.name)
+    const existingPermission = await permissionService.getByOrganizationIdAndActionAndResource(body.organizationId, body.action, body.resource)
       .catch(err => {
         if (err instanceof NotFoundException) return null;
         throw err;

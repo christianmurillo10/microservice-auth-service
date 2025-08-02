@@ -6,7 +6,6 @@ import {
   FindAllBetweenCreatedAtArgs,
   FindByIdArgs,
   FindByNameArgs,
-  FindByApiKeyArgs,
   CreateArgs,
   UpdateArgs,
   SoftDeleteArgs,
@@ -106,27 +105,6 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
       },
       where: {
         name: args.name,
-        deletedAt: null,
-        ...args.condition
-      }
-    });
-
-    if (!res) return null;
-
-    return new OrganizationModel(res);
-  };
-
-  findByApiKey = async (
-    args: FindByApiKeyArgs
-  ): Promise<OrganizationModel | null> => {
-    const exclude = setSelectExclude(args.exclude!);
-    const res = await this.client.findFirst({
-      select: {
-        ...organizationSubsets,
-        ...exclude
-      },
-      where: {
-        apiKey: args.apiKey,
         deletedAt: null,
         ...args.condition
       }

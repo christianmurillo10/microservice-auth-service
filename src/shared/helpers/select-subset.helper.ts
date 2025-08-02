@@ -42,7 +42,6 @@ export const sessionSubsets = {
 export const roleSubsets = {
   id: true,
   name: true,
-  description: true,
   organizationId: true,
   createdAt: true,
   updatedAt: true,
@@ -51,8 +50,8 @@ export const roleSubsets = {
 
 export const permissionSubsets = {
   id: true,
-  name: true,
-  description: true,
+  action: true,
+  resource: true,
   organizationId: true,
   createdAt: true,
   updatedAt: true,

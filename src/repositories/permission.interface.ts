@@ -4,7 +4,7 @@ import {
   CreateArgs,
   FindAllArgs,
   FindByIdArgs,
-  FindByOrganizationIdAndNameArgs,
+  FindByOrganizationIdAndActionAndResourceArgs,
   SoftDeleteArgs,
   SoftDeleteManyArgs,
   UpdateArgs
@@ -16,7 +16,7 @@ export default interface PermissionRepository {
 
   findById: (args: FindByIdArgs<string>) => Promise<PermissionModel | null>;
 
-  findByOrganizationIdAndName: (args: FindByOrganizationIdAndNameArgs) => Promise<PermissionModel | null>;
+  findByOrganizationIdAndActionAndResource: (args: FindByOrganizationIdAndActionAndResourceArgs) => Promise<PermissionModel | null>;
 
   create: (args: CreateArgs<PermissionModel>) => Promise<PermissionModel>;
 

@@ -1,7 +1,7 @@
 export default interface Permission {
   id?: string;
-  name: string;
-  description?: string | null;
+  action: string;
+  resource: string;
   organizationId: string;
   createdAt: Date;
   updatedAt: Date;

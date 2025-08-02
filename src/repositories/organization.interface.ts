@@ -4,7 +4,6 @@ import {
   CreateArgs,
   FindAllArgs,
   FindAllBetweenCreatedAtArgs,
-  FindByApiKeyArgs,
   FindByIdArgs,
   FindByNameArgs,
   SoftDeleteArgs,
@@ -21,8 +20,6 @@ export default interface OrganizationRepository {
   findById: (args: FindByIdArgs<string>) => Promise<OrganizationModel | null>;
 
   findByName: (args: FindByNameArgs) => Promise<OrganizationModel | null>;
-
-  findByApiKey: (args: FindByApiKeyArgs) => Promise<OrganizationModel | null>;
 
   create: (args: CreateArgs<OrganizationModel>) => Promise<OrganizationModel>;
 

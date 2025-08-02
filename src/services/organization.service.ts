@@ -53,16 +53,6 @@ export default class OrganizationService {
     return record;
   };
 
-  getByApiKey = async (apiKey: string): Promise<OrganizationModel> => {
-    const record = await this.repository.findByApiKey({ apiKey: apiKey });
-
-    if (!record) {
-      throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
-    };
-
-    return record;
-  };
-
   save = async (data: OrganizationModel, file?: Express.Multer.File): Promise<OrganizationModel> => {
     const uploadPath = setUploadPath(file, this.repository.logoPath);
     let record: OrganizationModel;
@@ -82,7 +72,6 @@ export default class OrganizationService {
     } else {
       // Create
       option.params.id = uuidv4();
-      option.params.apiKey = `key-${uuidv4()}`;
       option.params.logoPath = uploadPath;
       record = await this.repository.create(option);
     }

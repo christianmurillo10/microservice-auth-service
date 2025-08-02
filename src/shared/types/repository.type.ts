@@ -45,13 +45,6 @@ export type FindByNameArgs = {
   exclude?: string[] | undefined
 };
 
-export type FindByApiKeyArgs = {
-  apiKey: string,
-  condition?: GenericObject | undefined,
-  include?: string[] | undefined,
-  exclude?: string[] | undefined
-};
-
 export type FindByUsernameOrEmailArgs = {
   username: string,
   email: string,
@@ -77,6 +70,15 @@ export type FindByRefreshTokenArgs = {
 export type FindByOrganizationIdAndNameArgs = {
   organizationId: string,
   name: string,
+  condition?: GenericObject | undefined,
+  include?: string[] | undefined,
+  exclude?: string[] | undefined
+};
+
+export type FindByOrganizationIdAndActionAndResourceArgs = {
+  organizationId: string,
+  action: string,
+  resource: string,
   condition?: GenericObject | undefined,
   include?: string[] | undefined,
   exclude?: string[] | undefined

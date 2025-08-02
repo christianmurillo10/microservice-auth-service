@@ -32,8 +32,12 @@ export default class PermissionService {
     return record;
   };
 
-  getByOrganizationIdAndName = async (organizationId: string, name: string): Promise<PermissionModel> => {
-    const record = await this.repository.findByOrganizationIdAndName({ organizationId, name });
+  getByOrganizationIdAndActionAndResource = async (organizationId: string, action: string, resource: string): Promise<PermissionModel> => {
+    const record = await this.repository.findByOrganizationIdAndActionAndResource({
+      organizationId,
+      action,
+      resource
+    });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);

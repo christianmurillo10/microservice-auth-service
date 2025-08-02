@@ -55,4 +55,4 @@ public/images
 .env
 
 # Prisma
-prisma/client
+/src/generated/prisma

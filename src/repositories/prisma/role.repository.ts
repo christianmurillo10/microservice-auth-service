@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../../prisma/client";
+import { PrismaClient } from "../../generated/prisma";
 import RoleModel from "../../models/role.model";
 import RoleRepository from "../role.interface";
 import {

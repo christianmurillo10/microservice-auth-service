@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../../prisma/client";
+import { PrismaClient } from "../../generated/prisma";
 import OrganizationModel from "../../models/organization.model";
 import OrganizationRepository from "../organization.interface";
 import {

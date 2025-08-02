@@ -1,8 +1,8 @@
 export const MESSAGE_INVALID_PARAMETER = "Invalid parameter.";
 export const MESSAGE_INVALID_BODY = "Invalid body.";
 export const MESSAGE_INVALID_QUERY = "Invalid query.";
-export const MESSAGE_INVALID_API_KEY = "Invalid API Key.";
-export const MESSAGE_REQUIRED_API_KEY = "API Key is required.";
+export const MESSAGE_INVALID_ORGANIZATION = "Invalid organization.";
+export const MESSAGE_REQUIRED_ORGANIZATION = "Organization is required.";
 export const MESSAGE_REQUIRED_AUTHORIZATION = "Authorization is required.";
 export const MESSAGE_DATA_CREATED = "Successfully created data.";
 export const MESSAGE_DATA_INGESTED = "Successfully ingest data.";

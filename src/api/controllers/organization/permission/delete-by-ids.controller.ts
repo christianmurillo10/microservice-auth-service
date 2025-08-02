@@ -1,10 +1,10 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { apiResponse } from "../../../shared/utils/api-response";
-import authenticate from "../../../middlewares/authenticate.middleware";
-import { deleteByIds as validator } from "../../../middlewares/validators/permission.validator";
-import { MESSAGE_DATA_DELETED } from "../../../shared/constants/message.constant";
-import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
-import PermissionService from "../../../services/permission.service";
+import { apiResponse } from "../../../../shared/utils/api-response";
+import authenticate from "../../../../middlewares/authenticate.middleware";
+import { deleteByIds as validator } from "../../../../middlewares/validators/permission.validator";
+import { MESSAGE_DATA_DELETED } from "../../../../shared/constants/message.constant";
+import { ERROR_ON_DELETE } from "../../../../shared/constants/error.constant";
+import PermissionService from "../../../../services/permission.service";
 
 const router = Router();
 const permissionService = new PermissionService();
@@ -29,7 +29,7 @@ const controller = async (
 };
 
 export default router.post(
-  "/delete-by-ids",
+  "/:organizationId/permission/delete-by-ids",
   authenticate,
   validator,
   controller

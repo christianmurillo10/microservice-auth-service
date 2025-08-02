@@ -4,9 +4,7 @@ import config from "../../config/server.config";
 import login from "../controllers/login.controller";
 import logout from "../controllers/logout.controller";
 import refreshToken from "../controllers/refreshToken";
-import organizationRoute from "./organization.route";
-import roleRoute from "./role.route";
-import permissionRoute from "./permission.route";
+import organizationRoute from "./origanization";
 
 const router = Router();
 
@@ -21,7 +19,5 @@ router.use(login);
 router.use(logout);
 router.use(refreshToken);
 router.use("/organization", organizationRoute);
-router.use("/role", roleRoute);
-router.use("/permission", permissionRoute);
 
 export default router;

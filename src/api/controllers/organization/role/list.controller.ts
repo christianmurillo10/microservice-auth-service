@@ -1,11 +1,11 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { apiResponse } from "../../../shared/utils/api-response";
-import authenticate from "../../../middlewares/authenticate.middleware";
-import { list as validator } from "../../../middlewares/validators/role.validator";
-import { MESSAGE_DATA_FIND_ALL, MESSAGE_DATA_NOT_FOUND } from "../../../shared/constants/message.constant";
-import { ERROR_ON_LIST } from "../../../shared/constants/error.constant";
-import { getPagination } from "../../../shared/helpers/common.helper";
-import RoleService from "../../../services/role.service";
+import { apiResponse } from "../../../../shared/utils/api-response";
+import authenticate from "../../../../middlewares/authenticate.middleware";
+import { list as validator } from "../../../../middlewares/validators/role.validator";
+import { MESSAGE_DATA_FIND_ALL, MESSAGE_DATA_NOT_FOUND } from "../../../../shared/constants/message.constant";
+import { ERROR_ON_LIST } from "../../../../shared/constants/error.constant";
+import { getPagination } from "../../../../shared/helpers/common.helper";
+import RoleService from "../../../../services/role.service";
 
 const router = Router();
 const roleService = new RoleService();
@@ -44,7 +44,7 @@ const controller = async (
 };
 
 export default router.get(
-  "/",
+  "/:organizationId/role/",
   authenticate,
   validator,
   controller

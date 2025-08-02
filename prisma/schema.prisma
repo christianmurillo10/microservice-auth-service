@@ -9,7 +9,7 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Business {
+model Organization {
   id                String    @id @default(uuid()) @db.Char(36)
   name              String    @db.VarChar(100)
   apiKey            String    @map("api_key") @db.VarChar(255)
@@ -21,11 +21,11 @@ model Business {
   updatedAt         DateTime  @updatedAt @map("updated_at") @db.DateTime(0)
   deletedAt         DateTime? @map("deleted_at") @db.DateTime(0)
 
-  users       User[]       @relation("UserToBusiness")
-  roles       Role[]       @relation("RoleToBusiness")
-  permissions Permission[] @relation("PermissionToBusiness")
+  users       User[]       @relation("UserToOrganization")
+  roles       Role[]       @relation("RoleToOrganization")
+  permissions Permission[] @relation("PermissionToOrganization")
 
-  @@map("businesses")
+  @@map("organizations")
 }
 
 model User {
@@ -35,7 +35,7 @@ model User {
   email        String    @unique @db.VarChar(100)
   password     String    @db.VarChar(100)
   accessType   String    @map("access_type") @db.VarChar(100)
-  businessId   String?   @map("business_id") @db.Char(36)
+  organizationId   String?   @map("organization_id") @db.Char(36)
   isActive     Boolean   @default(true) @map("is_active")
   isLogged     Boolean   @default(false) @map("is_logged")
   lastLoggedAt DateTime? @map("last_logged_at") @db.DateTime(0)
@@ -43,11 +43,11 @@ model User {
   updatedAt    DateTime  @updatedAt @map("updated_at") @db.DateTime(0)
   deletedAt    DateTime? @map("deleted_at") @db.DateTime(0)
 
-  business  Business?  @relation("UserToBusiness", fields: [businessId], references: [id], onDelete: Cascade)
+  organization  Organization?  @relation("UserToOrganization", fields: [organizationId], references: [id], onDelete: Cascade)
   sessions  Session[]  @relation("SessionToUser")
   userRoles UserRole[] @relation("UserRoleToUser")
 
-  @@index([businessId], map: "business_id")
+  @@index([organizationId], map: "organization_id")
   @@map("users")
 }
 
@@ -72,16 +72,16 @@ model Role {
   id          String    @id @default(uuid()) @db.Char(36)
   name        String    @db.VarChar(100)
   description String?   @db.Text
-  businessId  String    @map("business_id") @db.Char(36)
+  organizationId  String    @map("organization_id") @db.Char(36)
   createdAt   DateTime  @default(now()) @map("created_at") @db.DateTime(0)
   updatedAt   DateTime  @updatedAt @map("updated_at") @db.DateTime(0)
   deletedAt   DateTime? @map("deleted_at") @db.DateTime(0)
 
-  business        Business         @relation("RoleToBusiness", fields: [businessId], references: [id], onDelete: Cascade)
+  organization        Organization         @relation("RoleToOrganization", fields: [organizationId], references: [id], onDelete: Cascade)
   rolePermissions RolePermission[] @relation("RolePermissionToRole")
   userRoles       UserRole[]       @relation("UserRoleToRole")
 
-  @@index([businessId], map: "business_id")
+  @@index([organizationId], map: "organization_id")
   @@map("roles")
 }
 
@@ -89,15 +89,15 @@ model Permission {
   id          String    @id @default(uuid()) @db.Char(36)
   name        String    @db.VarChar(100)
   description String?   @db.Text
-  businessId  String    @map("business_id") @db.Char(36)
+  organizationId  String    @map("organization_id") @db.Char(36)
   createdAt   DateTime  @default(now()) @map("created_at") @db.DateTime(0)
   updatedAt   DateTime  @updatedAt @map("updated_at") @db.DateTime(0)
   deletedAt   DateTime? @map("deleted_at") @db.DateTime(0)
 
-  business        Business         @relation("PermissionToBusiness", fields: [businessId], references: [id], onDelete: Cascade)
+  organization        Organization         @relation("PermissionToOrganization", fields: [organizationId], references: [id], onDelete: Cascade)
   rolePermissions RolePermission[] @relation("RolePermissionToPermission")
 
-  @@index([businessId], map: "business_id")
+  @@index([organizationId], map: "organization_id")
   @@map("permissions")
 }
 

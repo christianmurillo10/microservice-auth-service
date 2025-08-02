@@ -6,8 +6,8 @@ class UserModel implements User {
   username: string = "";
   email: string = "";
   password: string = "";
-  accessType: UserAccessTypeValue = UserAccessType.Business;
-  businessId?: string | null = null;
+  accessType: UserAccessTypeValue = UserAccessType.Organization;
+  organizationId?: string | null = null;
   isActive: boolean = true;
   isLogged: boolean = false;
   lastLoggedAt?: Date | null = null;
@@ -22,7 +22,7 @@ class UserModel implements User {
     this.email = props.email;
     this.password = props.password;
     this.accessType = props.accessType;
-    this.businessId = props.businessId;
+    this.organizationId = props.organizationId;
     this.isActive = props.isActive;
     this.isLogged = props.isLogged;
     this.lastLoggedAt = props.lastLoggedAt;

@@ -74,8 +74,8 @@ export type FindByRefreshTokenArgs = {
   exclude?: string[] | undefined
 };
 
-export type FindByBusinessIdAndNameArgs = {
-  businessId: string,
+export type FindByOrganizationIdAndNameArgs = {
+  organizationId: string,
   name: string,
   condition?: GenericObject | undefined,
   include?: string[] | undefined,

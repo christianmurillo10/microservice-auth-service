@@ -19,7 +19,7 @@ export const create = async (
       name: joi.string().label("Name").max(100).required(),
       description: joi.string().label("Description").max(255).allow("").allow(null),
       currency: joi.string().label("Currency").max(100).allow("").allow(null),
-      businessId: joi.string().label("Business").required(),
+      organizationId: joi.string().label("Organization").required(),
     });
     req.body = await validateInput(req.body, schema);
     next();
@@ -41,7 +41,7 @@ export const update = async (
     const schema = joi.object({
       name: joi.string().label("Name").max(100).empty(),
       description: joi.string().label("Description").max(255).empty().allow("").allow(null),
-      businessId: joi.string().label("Business").empty(),
+      organizationId: joi.string().label("Organization").empty(),
     });
     req.body = await validateInput(req.body, schema);
     next();
@@ -65,14 +65,14 @@ export const list = async (
         updatedAt: joi.date().label("Last Modified").empty(),
         name: joi.string().label("Name").max(100).empty(),
         description: joi.string().label("Description").max(255).empty(),
-        businessId: joi.string().label("Business").empty(),
+        organizationId: joi.string().label("Organization").empty(),
       }).label("Filters").empty(),
       sorting: joi.object({
         createdAt: joi.string().label("Date Created").valid("asc", "desc").empty(),
         updatedAt: joi.string().label("Last Modified").valid("asc", "desc").empty(),
         name: joi.string().label("Name").valid("asc", "desc").empty(),
         description: joi.string().label("Description").valid("asc", "desc").empty(),
-        businessId: joi.string().label("Business").valid("asc", "desc").empty(),
+        organizationId: joi.string().label("Organization").valid("asc", "desc").empty(),
       }).label("Sorting").empty(),
       page: joi.number().min(1).label("Page").empty(),
       pageSize: joi.number().min(1).label("Page Size").empty(),

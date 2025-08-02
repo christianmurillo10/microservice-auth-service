@@ -18,7 +18,7 @@ export const login = async (
 
     const schema = joi.object({
       accessType: joi.string().label("Access Type")
-        .valid(UserAccessType.Portal, UserAccessType.Business, UserAccessType.AppRecognized)
+        .valid(UserAccessType.Portal, UserAccessType.Organization, UserAccessType.AppRecognized)
         .optional(),
       email: joi.string().email().label("Email").required(),
       password: joi.string().label("Password").required(),

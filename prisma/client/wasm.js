@@ -117,7 +117,7 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.BusinessScalarFieldEnum = {
+exports.Prisma.OrganizationScalarFieldEnum = {
   id: 'id',
   name: 'name',
   apiKey: 'apiKey',
@@ -137,7 +137,7 @@ exports.Prisma.UserScalarFieldEnum = {
   email: 'email',
   password: 'password',
   accessType: 'accessType',
-  businessId: 'businessId',
+  organizationId: 'organizationId',
   isActive: 'isActive',
   isLogged: 'isLogged',
   lastLoggedAt: 'lastLoggedAt',
@@ -162,7 +162,7 @@ exports.Prisma.RoleScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  businessId: 'businessId',
+  organizationId: 'organizationId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -172,7 +172,7 @@ exports.Prisma.PermissionScalarFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  businessId: 'businessId',
+  organizationId: 'organizationId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt',
   deletedAt: 'deletedAt'
@@ -202,7 +202,7 @@ exports.Prisma.NullsOrder = {
   last: 'last'
 };
 
-exports.Prisma.BusinessOrderByRelevanceFieldEnum = {
+exports.Prisma.OrganizationOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
   apiKey: 'apiKey',
@@ -219,7 +219,7 @@ exports.Prisma.UserOrderByRelevanceFieldEnum = {
   email: 'email',
   password: 'password',
   accessType: 'accessType',
-  businessId: 'businessId'
+  organizationId: 'organizationId'
 };
 
 exports.Prisma.SessionOrderByRelevanceFieldEnum = {
@@ -234,14 +234,14 @@ exports.Prisma.RoleOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  businessId: 'businessId'
+  organizationId: 'organizationId'
 };
 
 exports.Prisma.PermissionOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
   description: 'description',
-  businessId: 'businessId'
+  organizationId: 'organizationId'
 };
 
 exports.Prisma.UserRoleOrderByRelevanceFieldEnum = {
@@ -258,7 +258,7 @@ exports.Prisma.RolePermissionOrderByRelevanceFieldEnum = {
 
 
 exports.Prisma.ModelName = {
-  Business: 'Business',
+  Organization: 'Organization',
   User: 'User',
   Session: 'Session',
   Role: 'Role',

@@ -18,7 +18,7 @@ const controller = async (
 ): Promise<void> => {
   try {
     const { body } = req;
-    const existingRole = await roleService.getByBusinessIdAndName(body.businessId, body.name)
+    const existingRole = await roleService.getByOrganizationIdAndName(body.organizationId, body.name)
       .catch(err => {
         if (err instanceof NotFoundException) return null;
         throw err;

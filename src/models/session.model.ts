@@ -3,7 +3,7 @@ import { UserAccessTypeValue, UserAccessType } from "../entities/user.entity";
 
 class SessionModel implements Session {
   id?: string;
-  accessType: UserAccessTypeValue = UserAccessType.Business;
+  accessType: UserAccessTypeValue = UserAccessType.Organization;
   accessToken: string = "";
   refreshToken: string = "";
   userId: string = "";

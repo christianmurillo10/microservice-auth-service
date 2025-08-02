@@ -4,7 +4,7 @@ import config from "../../config/server.config";
 import login from "../controllers/login.controller";
 import logout from "../controllers/logout.controller";
 import refreshToken from "../controllers/refreshToken";
-import businessRoute from "./business.route";
+import organizationRoute from "./organization.route";
 import roleRoute from "./role.route";
 import permissionRoute from "./permission.route";
 
@@ -20,7 +20,7 @@ router.get("/", (_req: Request, res: Response) => {
 router.use(login);
 router.use(logout);
 router.use(refreshToken);
-router.use("/business", businessRoute);
+router.use("/organization", organizationRoute);
 router.use("/role", roleRoute);
 router.use("/permission", permissionRoute);
 

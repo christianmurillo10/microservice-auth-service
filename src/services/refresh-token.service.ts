@@ -84,7 +84,7 @@ export default class RefreshTokenService {
       record.id as unknown as number,
       record.email,
       session.accessType,
-      record.businessId as unknown as number,
+      record.organizationId as unknown as number,
     );
 
     // Save data to session table

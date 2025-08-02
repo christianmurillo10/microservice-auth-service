@@ -4,7 +4,7 @@ class RoleModel implements Role {
   id?: string;
   name: string = "";
   description?: string | null;
-  businessId: string;
+  organizationId: string;
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
   deletedAt?: Date | null = null;
@@ -13,7 +13,7 @@ class RoleModel implements Role {
     this.id = props.id;
     this.name = props.name;
     this.description = props.description;
-    this.businessId = props.businessId;
+    this.organizationId = props.organizationId;
     this.createdAt = props.createdAt;
     this.updatedAt = props.updatedAt;
     this.deletedAt = props.deletedAt;

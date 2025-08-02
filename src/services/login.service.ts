@@ -114,7 +114,7 @@ export default class LoginService {
       newRecord.id as unknown as number,
       newRecord.email,
       newRecord.accessType,
-      newRecord.businessId as unknown as number,
+      newRecord.organizationId as unknown as number,
       loggedDate
     );
     const session = await this.createSession(accessToken, record.accessType, record.id as string);

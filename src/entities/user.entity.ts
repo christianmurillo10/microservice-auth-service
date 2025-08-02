@@ -1,10 +1,10 @@
 export enum UserAccessType {
   Portal = "PORTAL",
-  Business = "BUSINESS",
+  Organization = "ORGANIZATION",
   AppRecognized = "APP_RECOGNIZED"
 };
 
-export type UserAccessTypeValue = UserAccessType.Portal | UserAccessType.Business | UserAccessType.AppRecognized;
+export type UserAccessTypeValue = UserAccessType.Portal | UserAccessType.Organization | UserAccessType.AppRecognized;
 
 export default interface User {
   id?: string;
@@ -13,7 +13,7 @@ export default interface User {
   email: string;
   password: string;
   accessType: UserAccessTypeValue;
-  businessId?: string | null;
+  organizationId?: string | null;
   isActive: boolean;
   isLogged: boolean;
   lastLoggedAt?: Date | null;

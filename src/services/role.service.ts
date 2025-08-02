@@ -32,8 +32,8 @@ export default class RoleService {
     return record;
   };
 
-  getByBusinessIdAndName = async (businessId: string, name: string): Promise<RoleModel> => {
-    const record = await this.repository.findByBusinessIdAndName({ businessId, name });
+  getByOrganizationIdAndName = async (organizationId: string, name: string): Promise<RoleModel> => {
+    const record = await this.repository.findByOrganizationIdAndName({ organizationId, name });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);

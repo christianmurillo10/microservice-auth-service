@@ -23,25 +23,23 @@ export default class LogoutService {
     this.sessionService = new SessionService();
   };
 
-  private getSession = async (token: string): Promise<SessionModel> => this.sessionService
-    .getByAccessToken(token)
-    .catch(err => {
-      if (err instanceof NotFoundException) {
-        throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
-      };
+  private getSession = async (token: string): Promise<SessionModel> => {
+    try {
+      return this.sessionService.getByAccessToken(token)
+    } catch (error) {
+      if (error instanceof NotFoundException) throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
+      throw error;
+    }
+  };
 
-      throw err;
-    });
-
-  private getUser = async (userService: UserService, userId: string): Promise<UserModel> => userService
-    .getById(userId)
-    .catch(err => {
-      if (err instanceof NotFoundException) {
-        throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
-      }
-
-      throw err;
-    });
+  private getUser = async (userService: UserService, userId: string): Promise<UserModel> => {
+    try {
+      return userService.getById(userId);
+    } catch (error) {
+      if (error instanceof NotFoundException) throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
+      throw error;
+    }
+  };
 
   private updateUser = async (userService: UserService, user: UserModel) => userService
     .save({

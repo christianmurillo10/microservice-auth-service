@@ -41,15 +41,14 @@ export default class RefreshTokenService {
     }
   };
 
-  private getUser = async (id: string) => this.userService
-    .getById(id)
-    .catch(err => {
-      if (err instanceof NotFoundException) {
-        throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
-      }
-
-      throw err;
-    });
+  private getUser = async (id: string) => {
+    try {
+      return this.userService.getById(id);
+    } catch (error) {
+      if (error instanceof NotFoundException) throw new UnauthorizedException([MESSAGE_DATA_INVALID_TOKEN]);
+      throw error;
+    }
+  };
 
   private getAccessToken = (
     id: number,

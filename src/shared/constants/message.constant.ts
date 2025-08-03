@@ -1,8 +1,6 @@
 export const MESSAGE_INVALID_PARAMETER = "Invalid parameter.";
 export const MESSAGE_INVALID_BODY = "Invalid body.";
 export const MESSAGE_INVALID_QUERY = "Invalid query.";
-export const MESSAGE_INVALID_ORGANIZATION = "Invalid organization.";
-export const MESSAGE_REQUIRED_ORGANIZATION = "Organization is required.";
 export const MESSAGE_REQUIRED_AUTHORIZATION = "Authorization is required.";
 export const MESSAGE_DATA_CREATED = "Successfully created data.";
 export const MESSAGE_DATA_INGESTED = "Successfully ingest data.";
@@ -33,3 +31,4 @@ export const MESSAGE_ERROR_FORBIDDEN = "Forbidden";
 export const MESSAGE_ERROR_NOT_FOUND = "Not Found";
 export const MESSAGE_ERROR_CONFLICT = "Conflict";
 export const MESSAGE_NOT_IMPLEMENTED = "Not yet implemented.";
+export const MESSAGE_NOT_PERMITTED = "You do not have permission to access this resource.";

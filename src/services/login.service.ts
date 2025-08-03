@@ -43,15 +43,14 @@ export default class LoginService {
     };
   };
 
-  private getUser = async (userService: UserService, email: string): Promise<UserModel> => userService
-    .getByUsernameOrEmail(email)
-    .catch(err => {
-      if (err instanceof NotFoundException) {
-        throw new BadRequestException([MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS]);
-      }
-
-      throw err;
-    });
+  private getUser = async (userService: UserService, email: string): Promise<UserModel> => {
+    try {
+      return userService.getByUsernameOrEmail(email);
+    } catch (error) {
+      if (error instanceof NotFoundException) throw new BadRequestException([MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS]);
+      throw error;
+    }
+  };
 
   private updateUser = async (userService: UserService, user: UserModel, loggedDate: Date) => userService
     .save({

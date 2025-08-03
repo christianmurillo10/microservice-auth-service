@@ -1,18 +1,18 @@
 
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
-import PrismaUserRoleRepository from "../repositories/prisma/user-role.repository";
-import UserRoleModel from "../models/user-role.model";
+import PrismaUserPermissionRepository from "../repositories/prisma/user-permission.repository";
+import UserPermissionModel from "../models/user-permission.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllByUserIdArgs } from "../shared/types/service.type";
 
-export default class UserRoleService {
-  private repository: PrismaUserRoleRepository
+export default class UserPermissionService {
+  private repository: PrismaUserPermissionRepository
 
   constructor() {
-    this.repository = new PrismaUserRoleRepository();
+    this.repository = new PrismaUserPermissionRepository();
   };
 
-  getAll = async (args?: GetAllArgs): Promise<UserRoleModel[]> => {
+  getAll = async (args?: GetAllArgs): Promise<UserPermissionModel[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query
@@ -21,7 +21,7 @@ export default class UserRoleService {
     return record;
   };
 
-  getAllByUsereId = async (args: GetAllByUserIdArgs): Promise<UserRoleModel[]> => {
+  getAllByUserId = async (args: GetAllByUserIdArgs): Promise<UserPermissionModel[]> => {
     const record = await this.repository.findAllByUserId({
       userId: args.userId,
       condition: args.condition,
@@ -31,7 +31,7 @@ export default class UserRoleService {
     return record;
   };
 
-  getById = async (id: string): Promise<UserRoleModel> => {
+  getById = async (id: string): Promise<UserPermissionModel> => {
     const record = await this.repository.findById({ id });
 
     if (!record) {
@@ -41,8 +41,8 @@ export default class UserRoleService {
     return record;
   };
 
-  save = async (data: UserRoleModel): Promise<UserRoleModel> => {
-    const newData = new UserRoleModel(data);
+  save = async (data: UserPermissionModel): Promise<UserPermissionModel> => {
+    const newData = new UserPermissionModel(data);
     return await this.repository.create({ params: newData });
   };
 

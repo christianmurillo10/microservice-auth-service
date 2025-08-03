@@ -67,3 +67,10 @@ export const rolePermissionSubsets = {
   permissionId: true,
   grantedAt: true
 };
+
+export const userPermissionSubsets = {
+  id: true,
+  userId: true,
+  permissionId: true,
+  grantedAt: true
+};

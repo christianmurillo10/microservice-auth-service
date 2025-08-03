@@ -6,7 +6,6 @@ import {
   FindByIdArgs,
   FindAllUserIdArgs,
   CreateArgs,
-  UpdateArgs,
   CountArgs
 } from "../../shared/types/repository.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
@@ -101,24 +100,6 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
         ...exclude
       },
       data: args.params
-    });
-
-    return new UserRoleModel(data);
-  };
-
-  update = async (
-    args: UpdateArgs<string, UserRoleModel>
-  ): Promise<UserRoleModel> => {
-    const exclude = setSelectExclude(args.exclude!);
-    const data = await this.client.update({
-      select: {
-        ...userRoleSubsets,
-        ...exclude
-      },
-      where: { id: args.id },
-      data: {
-        ...args.params,
-      }
     });
 
     return new UserRoleModel(data);

@@ -4,8 +4,7 @@ import {
   CreateArgs,
   FindAllArgs,
   FindAllUserIdArgs,
-  FindByIdArgs,
-  UpdateArgs
+  FindByIdArgs
 } from "../shared/types/repository.type";
 
 export default interface UserRoleRepository {
@@ -16,8 +15,6 @@ export default interface UserRoleRepository {
   findById: (args: FindByIdArgs<string>) => Promise<UserRoleModel | null>;
 
   create: (args: CreateArgs<UserRoleModel>) => Promise<UserRoleModel>;
-
-  update: (args: UpdateArgs<string, UserRoleModel>) => Promise<UserRoleModel>;
 
   count: (args?: CountArgs) => Promise<number>;
 };

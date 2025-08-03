@@ -15,8 +15,7 @@ export default class RolePermissionService {
   getAll = async (args?: GetAllArgs): Promise<RolePermissionModel[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
-      query: args?.query,
-      exclude: ["deletedAt"]
+      query: args?.query
     });
 
     return record;
@@ -26,8 +25,7 @@ export default class RolePermissionService {
     const record = await this.repository.findAllByRoleId({
       roleId: args.roleId,
       condition: args.condition,
-      query: args?.query,
-      exclude: ["deletedAt"]
+      query: args?.query
     });
 
     return record;
@@ -44,25 +42,8 @@ export default class RolePermissionService {
   };
 
   save = async (data: RolePermissionModel): Promise<RolePermissionModel> => {
-    let record: RolePermissionModel;
-    let newData = new RolePermissionModel(data);
-    let option = {
-      params: newData,
-      exclude: ["deletedAt"]
-    };
-
-    if (data.id) {
-      // Update
-      record = await this.repository.update({
-        id: data.id,
-        ...option
-      });
-    } else {
-      // Create
-      record = await this.repository.create(option);
-    }
-
-    return record;
+    const newData = new RolePermissionModel(data);
+    return await this.repository.create({ params: newData });
   };
 
   count = async (args: CountAllArgs): Promise<number> => {

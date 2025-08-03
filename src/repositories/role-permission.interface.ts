@@ -2,6 +2,7 @@ import RolePermissionModel from "../models/role-permission.model";
 import {
   CountArgs,
   CreateArgs,
+  DeleteArgs,
   FindAllArgs,
   FindAllRoleIdArgs,
   FindByIdArgs
@@ -15,6 +16,8 @@ export default interface RolePermissionRepository {
   findById: (args: FindByIdArgs<string>) => Promise<RolePermissionModel | null>;
 
   create: (args: CreateArgs<RolePermissionModel>) => Promise<RolePermissionModel>;
+
+  delete: (args: DeleteArgs<string>) => Promise<void>;
 
   count: (args?: CountArgs) => Promise<number>;
 };

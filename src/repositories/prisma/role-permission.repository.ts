@@ -6,6 +6,7 @@ import {
   FindAllRoleIdArgs,
   FindByIdArgs,
   CreateArgs,
+  DeleteArgs,
   CountArgs
 } from "../../shared/types/repository.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
@@ -103,6 +104,14 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
     });
 
     return new RolePermissionModel(data);
+  };
+
+  delete = async (
+    args: DeleteArgs<string>
+  ): Promise<void> => {
+    await this.client.delete({
+      where: { id: args.id }
+    });
   };
 
   count = async (

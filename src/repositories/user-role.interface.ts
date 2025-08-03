@@ -2,6 +2,7 @@ import UserRoleModel from "../models/user-role.model";
 import {
   CountArgs,
   CreateArgs,
+  DeleteArgs,
   FindAllArgs,
   FindAllUserIdArgs,
   FindByIdArgs
@@ -15,6 +16,8 @@ export default interface UserRoleRepository {
   findById: (args: FindByIdArgs<string>) => Promise<UserRoleModel | null>;
 
   create: (args: CreateArgs<UserRoleModel>) => Promise<UserRoleModel>;
+
+  delete: (args: DeleteArgs<string>) => Promise<void>;
 
   count: (args?: CountArgs) => Promise<number>;
 };

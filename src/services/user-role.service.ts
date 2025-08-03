@@ -42,8 +42,11 @@ export default class UserRoleService {
   };
 
   save = async (data: UserRoleModel): Promise<UserRoleModel> => {
-    const newData = new UserRoleModel(data);
-    return await this.repository.create({ params: newData });
+    return await this.repository.create({ params: new UserRoleModel(data) });
+  };
+
+  delete = async (id: string): Promise<void> => {
+    await this.repository.delete({ id: id });
   };
 
   count = async (args: CountAllArgs): Promise<number> => {

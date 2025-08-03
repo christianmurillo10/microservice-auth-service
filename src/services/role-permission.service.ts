@@ -42,8 +42,11 @@ export default class RolePermissionService {
   };
 
   save = async (data: RolePermissionModel): Promise<RolePermissionModel> => {
-    const newData = new RolePermissionModel(data);
-    return await this.repository.create({ params: newData });
+    return await this.repository.create({ params: new RolePermissionModel(data) });
+  };
+
+  delete = async (id: string): Promise<void> => {
+    await this.repository.delete({ id: id });
   };
 
   count = async (args: CountAllArgs): Promise<number> => {

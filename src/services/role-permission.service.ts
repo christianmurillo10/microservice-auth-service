@@ -41,6 +41,16 @@ export default class RolePermissionService {
     return record;
   };
 
+  getByRoleIdAndPermissionId = async (roleId: string, permissionId: string): Promise<RolePermissionModel> => {
+    const record = await this.repository.findByRoleIdAndPermissionId({ roleId, permissionId });
+
+    if (!record) {
+      throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
+    };
+
+    return record;
+  };
+
   save = async (data: RolePermissionModel): Promise<RolePermissionModel> => {
     return await this.repository.create({ params: new RolePermissionModel(data) });
   };

@@ -5,6 +5,7 @@ import {
   FindAllArgs,
   FindAllRoleIdArgs,
   FindByIdArgs,
+  FindByRoleIdAndPermissionIdArgs,
   CreateArgs,
   DeleteArgs,
   CountArgs
@@ -82,6 +83,27 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
       },
       where: {
         id: args.id,
+        ...args.condition
+      }
+    });
+
+    if (!res) return null;
+
+    return new RolePermissionModel(res);
+  };
+
+  findByRoleIdAndPermissionId = async (
+    args: FindByRoleIdAndPermissionIdArgs
+  ): Promise<RolePermissionModel | null> => {
+    const exclude = setSelectExclude(args.exclude!);
+    const res = await this.client.findFirst({
+      select: {
+        ...rolePermissionSubsets,
+        ...exclude
+      },
+      where: {
+        roleId: args.roleId,
+        permissionId: args.permissionId,
         ...args.condition
       }
     });

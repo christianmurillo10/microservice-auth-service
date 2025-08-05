@@ -84,6 +84,14 @@ export type FindByOrganizationIdAndActionAndResourceArgs = {
   exclude?: string[] | undefined
 };
 
+export type FindByRoleIdAndPermissionIdArgs = {
+  roleId: string,
+  permissionId: string,
+  condition?: GenericObject | undefined,
+  include?: string[] | undefined,
+  exclude?: string[] | undefined
+};
+
 export type CreateArgs<P> = {
   params: P,
   include?: string[] | undefined,

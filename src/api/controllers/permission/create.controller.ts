@@ -1,12 +1,12 @@
 import { Router, Request, Response, NextFunction } from "express";
-import { apiResponse } from "../../../../shared/utils/api-response";
-import authenticate from "../../../../middlewares/authenticate.middleware";
-import { create as validator } from "../../../../middlewares/validators/permission.validator";
-import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../../../shared/constants/message.constant";
-import { ERROR_ON_CREATE } from "../../../../shared/constants/error.constant";
-import PermissionService from "../../../../services/permission.service";
-import NotFoundException from "../../../../shared/exceptions/not-found.exception";
-import ConflictException from "../../../../shared/exceptions/conflict.exception";
+import { apiResponse } from "../../../shared/utils/api-response";
+import authenticate from "../../../middlewares/authenticate.middleware";
+import { create as validator } from "../../../middlewares/validators/permission.validator";
+import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../../shared/constants/message.constant";
+import { ERROR_ON_CREATE } from "../../../shared/constants/error.constant";
+import PermissionService from "../../../services/permission.service";
+import NotFoundException from "../../../shared/exceptions/not-found.exception";
+import ConflictException from "../../../shared/exceptions/conflict.exception";
 
 const router = Router();
 const permissionService = new PermissionService();

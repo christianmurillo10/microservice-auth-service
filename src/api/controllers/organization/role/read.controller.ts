@@ -36,7 +36,7 @@ const controller = async (
 };
 
 export default router.get(
-  "/:organizationId/role/:id",
+  "/:organizationId/roles/:id",
   authenticate,
   controller
 );

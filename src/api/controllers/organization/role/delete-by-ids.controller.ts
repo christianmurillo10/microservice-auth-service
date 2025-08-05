@@ -29,7 +29,7 @@ const controller = async (
 };
 
 export default router.post(
-  "/:organizationId/role/delete-by-ids",
+  "/:organizationId/roles/delete-by-ids",
   authenticate,
   validator,
   controller

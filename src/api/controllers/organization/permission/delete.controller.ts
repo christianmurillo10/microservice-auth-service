@@ -36,7 +36,7 @@ const controller = async (
 };
 
 export default router.delete(
-  "/:organizationId/permission/:id",
+  "/:organizationId/permissions/:id",
   authenticate,
   controller
 );

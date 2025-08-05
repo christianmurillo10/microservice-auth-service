@@ -18,6 +18,6 @@ router.get("/", (_req: Request, res: Response) => {
 router.use(login);
 router.use(logout);
 router.use(refreshToken);
-router.use("/organization", organizationRoute);
+router.use("/organizations", organizationRoute);
 
 export default router;

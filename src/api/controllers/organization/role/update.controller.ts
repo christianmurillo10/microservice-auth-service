@@ -38,7 +38,7 @@ const controller = async (
 };
 
 export default router.put(
-  "/:organizationId/role/:id",
+  "/:organizationId/roles/:id",
   authenticate,
   validator,
   controller

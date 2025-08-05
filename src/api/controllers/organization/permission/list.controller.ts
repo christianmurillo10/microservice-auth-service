@@ -44,7 +44,7 @@ const controller = async (
 };
 
 export default router.get(
-  "/:organizationId/permission/",
+  "/:organizationId/permissions/",
   authenticate,
   validator,
   controller

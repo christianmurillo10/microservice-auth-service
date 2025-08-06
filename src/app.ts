@@ -20,6 +20,7 @@ declare module "express-serve-static-core" {
     userRequestHeader: UserRequestHeaderModel
   }
 };
+
 export default class App {
   private app: Express;
   private server: Server;

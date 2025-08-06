@@ -1,9 +1,7 @@
 import { Router, Request, Response } from "express";
 import { apiResponse } from "../../shared/utils/api-response";
 import config from "../../config/server.config";
-import login from "../controllers/login.controller";
-import logout from "../controllers/logout.controller";
-import refreshToken from "../controllers/refreshToken";
+import authRoute from "./auth.route";
 import organizationRoute from "./organization.route";
 import roleRoute from "./role.route";
 import permissionRoute from "./permission.route";
@@ -17,9 +15,7 @@ router.get("/", (_req: Request, res: Response) => {
   }).end();
 });
 
-router.use(login);
-router.use(logout);
-router.use(refreshToken);
+router.use("/auth", authRoute);
 router.use("/organizations", organizationRoute);
 router.use("/organizations/:organizationId/roles", roleRoute);
 router.use("/organizations/:organizationId/permissions", permissionRoute);

@@ -1,17 +1,22 @@
 import { Router } from "express";
-import create from "../controllers/organization/create.controller";
-import read from "../controllers/organization/read.controller";
-import update from "../controllers/organization/update.controller";
-import remove from "../controllers/organization/delete.controller";
-import list from "../controllers/organization/list.controller";
-import deleteByIds from "../controllers/organization/delete-by-ids.controller";
+import multer from "multer";
+import authenticate from "../../middlewares/authenticate.middleware";
+import {
+  list as listValidation,
+  create as createValidation,
+  update as updateValidation,
+  deleteByIds as deleteByIdsValidation
+} from "../../middlewares/validations/organization.validation";
+import * as OrganizationController from "../controllers/organization";
 
+const upload = multer();
 const router = Router();
-router.use(create);
-router.use(read);
-router.use(update);
-router.use(remove);
-router.use(list);
-router.use(deleteByIds);
+
+router.get("/", authenticate, listValidation, OrganizationController.listController);
+router.post("/", authenticate, upload.single("logo"), createValidation, OrganizationController.createController);
+router.get("/:id", authenticate, OrganizationController.readController);
+router.put("/:id", authenticate, upload.single("logo"), updateValidation, OrganizationController.updateController);
+router.delete("/:id", authenticate, OrganizationController.deleteController);
+router.post("/delete-by-ids", authenticate, deleteByIdsValidation, OrganizationController.deleteByIdsController);
 
 export default router;

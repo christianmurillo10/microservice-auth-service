@@ -1,19 +1,14 @@
-import { Router, Request, Response, NextFunction } from "express";
-import multer from "multer";
+import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
-import authenticate from "../../../middlewares/authenticate.middleware";
-import { create as validation } from "../../../middlewares/validations/organization.validation";
 import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../../shared/constants/message.constant";
 import { ERROR_ON_CREATE } from "../../../shared/constants/error.constant";
 import OrganizationService from "../../../services/organization.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 import ConflictException from "../../../shared/exceptions/conflict.exception";
 
-const router = Router();
-const upload = multer();
 const organizationService = new OrganizationService();
 
-const controller = async (
+const createController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -43,10 +38,4 @@ const controller = async (
   };
 };
 
-export default router.post(
-  "/",
-  authenticate,
-  upload.single("logo"),
-  validation,
-  controller
-);
+export default createController;

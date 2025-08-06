@@ -1,16 +1,13 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
-import authenticate from "../../../middlewares/authenticate.middleware";
-import { list as validation } from "../../../middlewares/validations/organization.validation";
 import { MESSAGE_DATA_FIND_ALL, MESSAGE_DATA_NOT_FOUND } from "../../../shared/constants/message.constant";
 import { ERROR_ON_LIST } from "../../../shared/constants/error.constant";
 import { getPagination } from "../../../shared/helpers/common.helper";
 import OrganizationService from "../../../services/organization.service";
 
-const router = Router();
 const organizationService = new OrganizationService();
 
-const controller = async (
+const listcontroller = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -43,9 +40,4 @@ const controller = async (
   };
 };
 
-export default router.get(
-  "/",
-  authenticate,
-  validation,
-  controller
-);
+export default listcontroller;

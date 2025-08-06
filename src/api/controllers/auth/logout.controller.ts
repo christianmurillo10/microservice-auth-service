@@ -1,13 +1,11 @@
-import { Router, Request, Response, NextFunction } from "express";
-import { apiResponse } from "../../shared/utils/api-response";
-import { MESSAGE_DATA_SIGNED_OUT, MESSAGE_REQUIRED_AUTHORIZATION } from "../../shared/constants/message.constant";
-import { ERROR_ON_LOGOUT } from "../../shared/constants/error.constant";
-import BadRequestException from "../../shared/exceptions/bad-request.exception";
-import LogoutService from "../../services/logout.service";
+import { Request, Response, NextFunction } from "express";
+import { apiResponse } from "../../../shared/utils/api-response";
+import { MESSAGE_DATA_SIGNED_OUT, MESSAGE_REQUIRED_AUTHORIZATION } from "../../../shared/constants/message.constant";
+import { ERROR_ON_LOGOUT } from "../../../shared/constants/error.constant";
+import BadRequestException from "../../../shared/exceptions/bad-request.exception";
+import LogoutService from "../../../services/logout.service";
 
-const router = Router();
-
-const controller = async (
+const logoutController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -34,7 +32,4 @@ const controller = async (
   };
 };
 
-export default router.post(
-  "/logout",
-  controller
-);
+export default logoutController;

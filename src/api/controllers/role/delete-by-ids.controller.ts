@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
 import authenticate from "../../../middlewares/authenticate.middleware";
-import { deleteByIds as validator } from "../../../middlewares/validators/role.validator";
+import { deleteByIds as validation } from "../../../middlewares/validations/role.validation";
 import { MESSAGE_DATA_DELETED } from "../../../shared/constants/message.constant";
 import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
 import RoleService from "../../../services/role.service";
@@ -31,6 +31,6 @@ const controller = async (
 export default router.post(
   "/delete-by-ids",
   authenticate,
-  validator,
+  validation,
   controller
 );

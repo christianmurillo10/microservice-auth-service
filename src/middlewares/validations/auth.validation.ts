@@ -30,7 +30,7 @@ export const login = async (
   };
 };
 
-export const token = async (
+export const refreshToken = async (
   req: Request,
   _res: Response,
   next: NextFunction

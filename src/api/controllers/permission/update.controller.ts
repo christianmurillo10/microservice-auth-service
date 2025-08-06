@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
 import authenticate from "../../../middlewares/authenticate.middleware";
-import { update as validator } from "../../../middlewares/validators/permission.validator";
+import { update as validation } from "../../../middlewares/validations/permission.validation";
 import { MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
 import { ERROR_ON_UPDATE } from "../../../shared/constants/error.constant";
 import PermissionService from "../../../services/permission.service";
@@ -40,6 +40,6 @@ const controller = async (
 export default router.put(
   "/:id",
   authenticate,
-  validator,
+  validation,
   controller
 );

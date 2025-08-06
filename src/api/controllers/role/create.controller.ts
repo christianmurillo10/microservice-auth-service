@@ -1,7 +1,7 @@
 import { Router, Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
 import authenticate from "../../../middlewares/authenticate.middleware";
-import { create as validator } from "../../../middlewares/validators/role.validator";
+import { create as validation } from "../../../middlewares/validations/role.validation";
 import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../../shared/constants/message.constant";
 import { ERROR_ON_CREATE } from "../../../shared/constants/error.constant";
 import RoleService from "../../../services/role.service";
@@ -44,6 +44,6 @@ const controller = async (
 export default router.post(
   "/",
   authenticate,
-  validator,
+  validation,
   controller
 );

@@ -1,11 +1,13 @@
 import { Router } from "express";
-import login from "../controllers/login.controller";
-import logout from "../controllers/logout.controller";
-import refreshToken from "../controllers/refreshToken";
+import * as AuthController from "../controllers/auth";
+import {
+  login as loginValidation,
+  refreshToken as refreshTokenValidation
+} from "../../middlewares/validations/auth.validation";
 
 const router = Router();
-router.use(login);
-router.use(logout);
-router.use(refreshToken);
+router.post("/login", loginValidation, AuthController.loginController);
+router.post("/logout", AuthController.logoutController);
+router.post("/refresh-token", refreshTokenValidation, AuthController.refreshTokenController);
 
 export default router;

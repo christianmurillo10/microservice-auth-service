@@ -1,4 +1,4 @@
-export { default as listController } from "./list.controller";
-export { default as createController } from "./create.controller";
-export { default as readController } from "./read.controller";
-export { default as deleteController } from "./delete.controller";
+export { default as list } from "./list.controller";
+export { default as create } from "./create.controller";
+export { default as read } from "./read.controller";
+export { default as remove } from "./delete.controller";

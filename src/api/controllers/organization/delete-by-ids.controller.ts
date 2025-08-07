@@ -6,7 +6,7 @@ import OrganizationService from "../../../services/organization.service";
 
 const organizationService = new OrganizationService();
 
-const deleteByIdsController = async (
+const deleteByIds = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -25,4 +25,4 @@ const deleteByIdsController = async (
   };
 };
 
-export default deleteByIdsController;
+export default deleteByIds;

@@ -10,11 +10,11 @@ import * as RoleController from "../controllers/role";
 
 const router = Router();
 
-router.get("/", authenticate, listValidation, RoleController.listController);
-router.post("/", authenticate, createValidation, RoleController.createController);
-router.get("/:id", authenticate, RoleController.readController);
-router.put("/:id", authenticate, updateValidation, RoleController.updateController);
-router.delete("/:id", authenticate, RoleController.deleteController);
-router.post("/delete-by-ids", authenticate, deleteByIdsValidation, RoleController.deleteByIdsController);
+router.get("/", authenticate, listValidation, RoleController.list);
+router.post("/", authenticate, createValidation, RoleController.create);
+router.get("/:id", authenticate, RoleController.read);
+router.put("/:id", authenticate, updateValidation, RoleController.update);
+router.delete("/:id", authenticate, RoleController.remove);
+router.post("/delete-by-ids", authenticate, deleteByIdsValidation, RoleController.deleteByIds);
 
 export default router;

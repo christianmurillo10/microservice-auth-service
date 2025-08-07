@@ -7,7 +7,7 @@ import RoleService from "../../../services/role.service";
 
 const roleService = new RoleService();
 
-const listController = async (
+const list = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -40,4 +40,4 @@ const listController = async (
   };
 };
 
-export default listController;
+export default list;

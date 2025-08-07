@@ -7,8 +7,8 @@ import * as AuthController from "../controllers/auth";
 
 const router = Router();
 
-router.post("/login", loginValidation, AuthController.loginController);
-router.post("/logout", AuthController.logoutController);
-router.post("/refresh-token", refreshTokenValidation, AuthController.refreshTokenController);
+router.post("/login", loginValidation, AuthController.login);
+router.post("/logout", AuthController.logout);
+router.post("/refresh-token", refreshTokenValidation, AuthController.refreshToken);
 
 export default router;

@@ -12,11 +12,11 @@ import * as OrganizationController from "../controllers/organization";
 const upload = multer();
 const router = Router();
 
-router.get("/", authenticate, listValidation, OrganizationController.listController);
-router.post("/", authenticate, upload.single("logo"), createValidation, OrganizationController.createController);
-router.get("/:id", authenticate, OrganizationController.readController);
-router.put("/:id", authenticate, upload.single("logo"), updateValidation, OrganizationController.updateController);
-router.delete("/:id", authenticate, OrganizationController.deleteController);
-router.post("/delete-by-ids", authenticate, deleteByIdsValidation, OrganizationController.deleteByIdsController);
+router.get("/", authenticate, listValidation, OrganizationController.list);
+router.post("/", authenticate, upload.single("logo"), createValidation, OrganizationController.create);
+router.get("/:id", authenticate, OrganizationController.read);
+router.put("/:id", authenticate, upload.single("logo"), updateValidation, OrganizationController.update);
+router.delete("/:id", authenticate, OrganizationController.remove);
+router.post("/delete-by-ids", authenticate, deleteByIdsValidation, OrganizationController.deleteByIds);
 
 export default router;

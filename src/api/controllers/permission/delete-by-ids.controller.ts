@@ -6,7 +6,7 @@ import PermissionService from "../../../services/permission.service";
 
 const permissionService = new PermissionService();
 
-const deleteByIdsController = async (
+const deleteByIds = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -25,4 +25,4 @@ const deleteByIdsController = async (
   };
 };
 
-export default deleteByIdsController;
+export default deleteByIds;

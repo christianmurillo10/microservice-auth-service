@@ -1,17 +1,20 @@
 import { Router } from "express";
-import create from "../controllers/role/create.controller";
-import read from "../controllers/role/read.controller";
-import update from "../controllers/role/update.controller";
-import remove from "../controllers/role/delete.controller";
-import list from "../controllers/role/list.controller";
-import deleteByIds from "../controllers/role/delete-by-ids.controller";
+import authenticate from "../../middlewares/authenticate.middleware";
+import {
+  list as listValidation,
+  create as createValidation,
+  update as updateValidation,
+  deleteByIds as deleteByIdsValidation
+} from "../../middlewares/validations/role.validation";
+import * as RoleController from "../controllers/role";
 
 const router = Router();
-router.use(create);
-router.use(read);
-router.use(update);
-router.use(remove);
-router.use(list);
-router.use(deleteByIds);
+
+router.get("/", authenticate, listValidation, RoleController.listController);
+router.post("/", authenticate, createValidation, RoleController.createController);
+router.get("/:id", authenticate, RoleController.readController);
+router.put("/:id", authenticate, updateValidation, RoleController.updateController);
+router.delete("/:id", authenticate, RoleController.deleteController);
+router.post("/delete-by-ids", authenticate, deleteByIdsValidation, RoleController.deleteByIdsController);
 
 export default router;

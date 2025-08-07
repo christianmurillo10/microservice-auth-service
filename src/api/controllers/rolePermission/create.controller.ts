@@ -1,17 +1,14 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
-import authenticate from "../../../middlewares/authenticate.middleware";
-import { create as validation } from "../../../middlewares/validations/role-permission.validation";
 import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../../shared/constants/message.constant";
 import { ERROR_ON_CREATE } from "../../../shared/constants/error.constant";
 import RolePermissionService from "../../../services/role-permission.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 import ConflictException from "../../../shared/exceptions/conflict.exception";
 
-const router = Router();
 const rolePermissionService = new RolePermissionService();
 
-const controller = async (
+const createController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -41,9 +38,4 @@ const controller = async (
   };
 };
 
-export default router.post(
-  "/:organizationId/roles/:roleId/permissions/",
-  authenticate,
-  validation,
-  controller
-);
+export default createController;

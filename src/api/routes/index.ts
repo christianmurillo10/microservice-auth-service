@@ -19,5 +19,6 @@ router.use("/auth", authRoute);
 router.use("/organizations", organizationRoute);
 router.use("/organizations/:organizationId/roles", roleRoute);
 router.use("/organizations/:organizationId/permissions", permissionRoute);
+router.use("/organizations/:organizationId/roles/:roleId/permissions", roleRoute);
 
 export default router;

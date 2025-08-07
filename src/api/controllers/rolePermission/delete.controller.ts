@@ -1,15 +1,13 @@
-import { Router, Request, Response, NextFunction } from "express";
+import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
-import authenticate from "../../../middlewares/authenticate.middleware";
 import { MESSAGE_DATA_DELETED, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
 import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
 import RolePermissionService from "../../../services/role-permission.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 
-const router = Router();
 const roleService = new RolePermissionService();
 
-const controller = async (
+const deleteController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -35,8 +33,4 @@ const controller = async (
   };
 };
 
-export default router.delete(
-  "/:organizationId/roles/:roleId/permissions/:id",
-  authenticate,
-  controller
-);
+export default deleteController;

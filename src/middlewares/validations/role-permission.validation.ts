@@ -26,27 +26,6 @@ export const create = async (
   };
 };
 
-export const update = async (
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) => {
-  try {
-    if (_.isEmpty(req.body)) {
-      throw new BadRequestException([MESSAGE_INVALID_BODY]);
-    };
-
-    const schema = joi.object({
-      roleId: joi.string().label("Role").empty(),
-      permissionId: joi.string().label("Permission").empty(),
-    });
-    req.body = await validateInput(req.body, schema);
-    next();
-  } catch (error) {
-    next(error);
-  };
-};
-
 export const list = async (
   req: Request,
   _res: Response,

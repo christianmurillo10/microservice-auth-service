@@ -1,17 +1,20 @@
 import { Router } from "express";
-import create from "../controllers/permission/create.controller";
-import read from "../controllers/permission/read.controller";
-import update from "../controllers/permission/update.controller";
-import remove from "../controllers/permission/delete.controller";
-import list from "../controllers/permission/list.controller";
-import deleteByIds from "../controllers/permission/delete-by-ids.controller";
+import authenticate from "../../middlewares/authenticate.middleware";
+import {
+  list as listValidation,
+  create as createValidation,
+  update as updateValidation,
+  deleteByIds as deleteByIdsValidation
+} from "../../middlewares/validations/permission.validation";
+import * as PermissionController from "../controllers/permission";
 
 const router = Router();
-router.use(create);
-router.use(read);
-router.use(update);
-router.use(remove);
-router.use(list);
-router.use(deleteByIds);
+
+router.get("/", authenticate, listValidation, PermissionController.listController);
+router.post("/", authenticate, createValidation, PermissionController.createController);
+router.get("/:id", authenticate, PermissionController.readController);
+router.put("/:id", authenticate, updateValidation, PermissionController.updateController);
+router.delete("/:id", authenticate, PermissionController.deleteController);
+router.post("/delete-by-ids", authenticate, deleteByIdsValidation, PermissionController.deleteByIdsController);
 
 export default router;

@@ -12,5 +12,6 @@ router.get("/", authenticate, listValidation, RolePermissionController.list);
 router.post("/", authenticate, createValidation, RolePermissionController.create);
 router.get("/:id", authenticate, RolePermissionController.read);
 router.delete("/:id", authenticate, RolePermissionController.remove);
+router.put("/sync", authenticate, RolePermissionController.sync);
 
 export default router;

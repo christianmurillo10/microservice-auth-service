@@ -2,6 +2,7 @@ export const ERROR_ON_CREATE = "Error on create";
 export const ERROR_ON_BULK_CREATE = "Error on bulk create";
 export const ERROR_ON_UPDATE = "Error on update";
 export const ERROR_ON_DELETE = "Error on delete";
+export const ERROR_ON_SYNC = "Error on sync";
 export const ERROR_ON_UPDATE_AND_DELETE = "Error on update and delete";
 export const ERROR_ON_LIST = "Error on list";
 export const ERROR_ON_READ = "Error on read";

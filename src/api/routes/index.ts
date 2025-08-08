@@ -5,6 +5,7 @@ import authRoute from "./auth.route";
 import organizationRoute from "./organization.route";
 import roleRoute from "./role.route";
 import permissionRoute from "./permission.route";
+import rolePermissionRoute from "./role-permission.route";
 
 const router = Router();
 
@@ -19,6 +20,6 @@ router.use("/auth", authRoute);
 router.use("/organizations", organizationRoute);
 router.use("/organizations/:organizationId/roles", roleRoute);
 router.use("/organizations/:organizationId/permissions", permissionRoute);
-router.use("/organizations/:organizationId/roles/:roleId/permissions", roleRoute);
+router.use("/organizations/:organizationId/roles/:roleId/permissions", rolePermissionRoute);
 
 export default router;

@@ -6,6 +6,7 @@ export const MESSAGE_DATA_CREATED = "Successfully created data.";
 export const MESSAGE_DATA_INGESTED = "Successfully ingest data.";
 export const MESSAGE_DATA_UPDATED = "Successfully updated data.";
 export const MESSAGE_DATA_DELETED = "Successfully deleted data.";
+export const MESSAGE_DATA_SYNCED = "Successfully synced data.";
 export const MESSAGE_DATA_CRUD = "Successfully crud data.";
 export const MESSAGE_DATA_SIGNED_IN = "Successfully signed in.";
 export const MESSAGE_DATA_SIGNED_OUT = "Successfully signed out.";

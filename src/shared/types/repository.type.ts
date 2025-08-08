@@ -123,7 +123,3 @@ export type CountArgs = {
   condition?: GenericObject | undefined,
   query?: Query | undefined
 };
-
-export type SyncArgs<P> = {
-  params: P
-};

@@ -5,8 +5,7 @@ import {
   DeleteArgs,
   FindAllArgs,
   FindAllRoleIdArgs,
-  FindByIdArgs,
-  SyncArgs
+  FindByIdArgs
 } from "../shared/types/repository.type";
 
 export default interface RolePermissionRepository {
@@ -21,6 +20,4 @@ export default interface RolePermissionRepository {
   delete: (args: DeleteArgs<string>) => Promise<void>;
 
   count: (args?: CountArgs) => Promise<number>;
-
-  sync: (args: SyncArgs<RolePermissionModel>) => Promise<void>;
 };

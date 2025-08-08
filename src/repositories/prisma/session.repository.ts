@@ -13,12 +13,11 @@ import { setSelectExclude } from "../../shared/helpers/common.helper";
 import { sessionSubsets } from "../../shared/helpers/select-subset.helper";
 import { UserAccessTypeValue } from "../../entities/user.entity";
 
-const prisma = new PrismaClient();
-
 export default class PrismaSessionRepository implements SessionRepository {
   private client;
 
   constructor() {
+    const prisma = new PrismaClient();
     this.client = prisma.session;
   };
 

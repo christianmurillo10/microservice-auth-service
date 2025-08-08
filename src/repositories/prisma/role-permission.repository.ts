@@ -8,18 +8,16 @@ import {
   FindByRoleIdAndPermissionIdArgs,
   CreateArgs,
   DeleteArgs,
-  CountArgs,
-  SyncArgs
+  CountArgs
 } from "../../shared/types/repository.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { rolePermissionSubsets } from "../../shared/helpers/select-subset.helper";
-
-const prisma = new PrismaClient();
 
 export default class PrismaRolePermissionRepository implements RolePermissionRepository {
   private client;
 
   constructor() {
+    const prisma = new PrismaClient();
     this.client = prisma.rolePermission;
   };
 
@@ -149,13 +147,5 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
     });
 
     return data;
-  };
-
-  sync = async (
-    _args: SyncArgs<RolePermissionModel>
-  ): Promise<void> => {
-    await prisma.$transaction([
-
-    ]);
   };
 };

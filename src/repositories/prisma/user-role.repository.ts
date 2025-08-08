@@ -12,12 +12,11 @@ import {
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { userRoleSubsets } from "../../shared/helpers/select-subset.helper";
 
-const prisma = new PrismaClient();
-
 export default class PrismaUserRoleRepository implements UserRoleRepository {
   private client;
 
   constructor() {
+    const prisma = new PrismaClient();
     this.client = prisma.userRole;
   };
 

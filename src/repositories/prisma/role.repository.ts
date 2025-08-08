@@ -15,12 +15,11 @@ import { GenericObject } from "../../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { roleSubsets } from "../../shared/helpers/select-subset.helper";
 
-const prisma = new PrismaClient();
-
 export default class PrismaRoleRepository implements RoleRepository {
   private client;
 
   constructor() {
+    const prisma = new PrismaClient();
     this.client = prisma.role;
   };
 

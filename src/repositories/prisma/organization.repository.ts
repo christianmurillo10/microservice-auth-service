@@ -16,14 +16,13 @@ import { GenericObject } from "../../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { organizationSubsets } from "../../shared/helpers/select-subset.helper";
 
-const prisma = new PrismaClient();
-
 export default class PrismaOrganizationRepository implements OrganizationRepository {
   private client;
 
   readonly logoPath = "public/images/organization/";
 
   constructor() {
+    const prisma = new PrismaClient();
     this.client = prisma.organization;
   };
 

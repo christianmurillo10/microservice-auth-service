@@ -5,7 +5,7 @@ import { ERROR_ON_READ } from "../../../shared/constants/error.constant";
 import RolePermissionService from "../../../services/role-permission.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 
-const roleService = new RolePermissionService();
+const rolePermissionService = new RolePermissionService();
 
 const read = async (
   req: Request,
@@ -20,7 +20,7 @@ const read = async (
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const rolePermission = await roleService.getById(id);
+    const rolePermission = await rolePermissionService.getById(id);
 
     apiResponse(res, {
       statusCode: 200,

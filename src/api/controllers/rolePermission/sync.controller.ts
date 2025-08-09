@@ -1,10 +1,11 @@
 import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
-import { MESSAGE_DATA_SYNCED } from "../../../shared/constants/message.constant";
+import { MESSAGE_DATA_SYNCED, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
 import { ERROR_ON_SYNC } from "../../../shared/constants/error.constant";
-// import RolePermissionService from "../../../services/role-permission.service";
+import BadRequestException from "../../../shared/exceptions/bad-request.exception";
+import RolePermissionService from "../../../services/role-permission.service";
 
-// const rolePermissionService = new RolePermissionService();
+const rolePermissionService = new RolePermissionService();
 
 const sync = async (
   req: Request,
@@ -12,12 +13,18 @@ const sync = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { body } = req;
+    const { params, body } = req;
+    const roleId = params.roleId;
+
+    if (roleId === ":roleId") {
+      throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
+    }
+
+    await rolePermissionService.sync(roleId, body.permissionIds);
 
     apiResponse(res, {
       statusCode: 200,
-      message: MESSAGE_DATA_SYNCED,
-      data: body
+      message: MESSAGE_DATA_SYNCED
     });
   } catch (error) {
     console.error(`${ERROR_ON_SYNC}: `, error);

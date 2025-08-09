@@ -5,7 +5,7 @@ import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
 import RolePermissionService from "../../../services/role-permission.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 
-const roleService = new RolePermissionService();
+const rolePermissionService = new RolePermissionService();
 
 const remove = async (
   req: Request,
@@ -20,7 +20,7 @@ const remove = async (
       throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
     }
 
-    const newRolePermission = await roleService.delete(id);
+    const newRolePermission = await rolePermissionService.delete(id);
 
     apiResponse(res, {
       statusCode: 200,

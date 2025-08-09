@@ -98,6 +98,10 @@ export type CreateArgs<P> = {
   exclude?: string[] | undefined
 };
 
+export type CreateManyArgs<P> = {
+  params: P[]
+};
+
 export type UpdateArgs<I, P> = {
   id: I,
   params: P,
@@ -111,11 +115,15 @@ export type SoftDeleteArgs<I> = {
   exclude?: string[] | undefined
 };
 
+export type SoftDeleteManyArgs<I> = {
+  ids: I[]
+};
+
 export type DeleteArgs<I> = {
   id: I
 };
 
-export type SoftDeleteManyArgs<I> = {
+export type DeleteManyArgs<I> = {
   ids: I[]
 };
 

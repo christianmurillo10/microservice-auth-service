@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
-import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../../shared/constants/message.constant";
+import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
 import { ERROR_ON_CREATE } from "../../../shared/constants/error.constant";
 import RolePermissionService from "../../../services/role-permission.service";
+import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 import ConflictException from "../../../shared/exceptions/conflict.exception";
 
@@ -14,8 +15,14 @@ const create = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { body } = req;
-    const existingRolePermission = await rolePermissionService.getByRoleIdAndPermissionId(body.roleId, body.permissionId)
+    const { params, body } = req;
+    const roleId = params.roleId;
+
+    if (roleId === ":roleId") {
+      throw new BadRequestException([MESSAGE_INVALID_PARAMETER]);
+    }
+
+    const existingRolePermission = await rolePermissionService.getByRoleIdAndPermissionId(roleId, body.permissionId)
       .catch(err => {
         if (err instanceof NotFoundException) return null;
         throw err;

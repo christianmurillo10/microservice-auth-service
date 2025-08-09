@@ -5,7 +5,7 @@ import { ERROR_ON_LIST } from "../../../shared/constants/error.constant";
 import { getPagination } from "../../../shared/helpers/common.helper";
 import RolePermissionService from "../../../services/role-permission.service";
 
-const roleService = new RolePermissionService();
+const rolePermissionService = new RolePermissionService();
 
 const list = async (
   req: Request,
@@ -14,9 +14,9 @@ const list = async (
 ): Promise<void> => {
   try {
     const { query } = req;
-    const rolePermission = await roleService.getAll({ query });
-    const roleCount = rolePermission.length;
-    const allRolePermissionCount = await roleService.count({ query });
+    const rolePermission = await rolePermissionService.getAll({ query });
+    const rolePermissionCount = rolePermission.length;
+    const allRolePermissionCount = await rolePermissionService.count({ query });
     let message = MESSAGE_DATA_FIND_ALL;
 
     if (rolePermission.length < 1) {
@@ -29,7 +29,7 @@ const list = async (
       data: rolePermission,
       pagination: getPagination(
         allRolePermissionCount,
-        roleCount,
+        rolePermissionCount,
         Number(query.page ?? 1),
         Number(query.pageSize ?? 10)
       )

@@ -4,12 +4,15 @@ import PrismaRolePermissionRepository from "../repositories/prisma/role-permissi
 import RolePermissionModel from "../models/role-permission.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllByRoleIdArgs } from "../shared/types/service.type";
+import { PrismaClient } from "../prisma/client";
 
 export default class RolePermissionService {
-  private repository: PrismaRolePermissionRepository
+  private repository: PrismaRolePermissionRepository;
+  private prisma: PrismaClient;
 
   constructor() {
     this.repository = new PrismaRolePermissionRepository();
+    this.prisma = new PrismaClient();
   };
 
   getAll = async (args?: GetAllArgs): Promise<RolePermissionModel[]> => {
@@ -61,5 +64,34 @@ export default class RolePermissionService {
 
   count = async (args: CountAllArgs): Promise<number> => {
     return await this.repository.count(args);
+  };
+
+  sync = async (roleId: string, permissionIds: string[]): Promise<void> => {
+    const existingRolePermissions = await this.repository.findAll({ condition: { roleId } });
+    const existingPermissionIds = new Set(existingRolePermissions.map(permission => permission.permissionId));
+
+    // Set toCreate data
+    const newPermissionIds = permissionIds.filter(id => !existingPermissionIds.has(id));
+    const toCreate: RolePermissionModel[] = newPermissionIds.map(val => new RolePermissionModel({
+      roleId,
+      permissionId: val,
+      grantedAt: new Date()
+    }));
+
+    // Set toDelete data
+    const incomingPermissionIds = new Set(permissionIds);
+    const toDeleteData = existingRolePermissions.filter(val => !incomingPermissionIds.has(val.permissionId));
+    const toDeleteIds = toDeleteData.map(data => data.id!);
+
+    await this.prisma.$transaction([
+      ...(toCreate.length > 0
+        ? [this.repository.createMany({ params: toCreate }) as any]
+        : []
+      ),
+      ...(toDeleteIds.length > 0
+        ? [this.repository.deleteMany({ ids: toDeleteIds }) as any]
+        : []
+      ),
+    ]);
   };
 };

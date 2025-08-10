@@ -1,3 +1,4 @@
+import { Prisma } from "../prisma/client";
 import RolePermissionModel from "../models/role-permission.model";
 import {
   CountArgs,
@@ -19,11 +20,11 @@ export default interface RolePermissionRepository {
 
   create: (args: CreateArgs<RolePermissionModel>) => Promise<RolePermissionModel>;
 
-  syncCreateMany: (args: CreateManyArgs<RolePermissionModel>) => void;
-
   delete: (args: DeleteArgs<string>) => Promise<void>;
 
-  syncDeleteMany: (args: DeleteManyArgs<string>) => void;
-
   count: (args?: CountArgs) => Promise<number>;
+
+  syncCreateMany: (args: CreateManyArgs<RolePermissionModel>) => Prisma.PrismaPromise<Prisma.BatchPayload>;
+
+  syncDeleteMany: (args: DeleteManyArgs<string>) => Prisma.PrismaPromise<Prisma.BatchPayload>;
 };

@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../prisma/client";
+import { Prisma, PrismaClient } from "../../prisma/client";
 import RolePermissionModel from "../../models/role-permission.model";
 import RolePermissionRepository from "../role-permission.interface";
 import {
@@ -130,31 +130,11 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
     return new RolePermissionModel(data);
   };
 
-  syncCreateMany = (
-    args: CreateManyArgs<RolePermissionModel>,
-  ): void => {
-    this.client.createMany({
-      data: args.params
-    });
-  };
-
   delete = async (
     args: DeleteArgs<string>
   ): Promise<void> => {
     await this.client.delete({
       where: { id: args.id }
-    });
-  };
-
-  syncDeleteMany = (
-    args: DeleteManyArgs<string>
-  ): void => {
-    this.client.deleteMany({
-      where: {
-        id: {
-          in: args.ids
-        }
-      }
     });
   };
 
@@ -169,5 +149,25 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
     });
 
     return data;
+  };
+
+  syncCreateMany = (
+    args: CreateManyArgs<RolePermissionModel>,
+  ): Prisma.PrismaPromise<Prisma.BatchPayload> => {
+    return this.client.createMany({
+      data: args.params
+    });
+  };
+
+  syncDeleteMany = (
+    args: DeleteManyArgs<string>
+  ): Prisma.PrismaPromise<Prisma.BatchPayload> => {
+    return this.client.deleteMany({
+      where: {
+        id: {
+          in: args.ids
+        }
+      }
+    });
   };
 };

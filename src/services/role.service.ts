@@ -23,7 +23,10 @@ export default class RoleService {
   };
 
   getById = async (id: string): Promise<RoleModel> => {
-    const record = await this.repository.findById({ id });
+    const record = await this.repository.findById({
+      id,
+      exclude: ["deletedAt"]
+    });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
@@ -33,7 +36,11 @@ export default class RoleService {
   };
 
   getByOrganizationIdAndName = async (organizationId: string, name: string): Promise<RoleModel> => {
-    const record = await this.repository.findByOrganizationIdAndName({ organizationId, name });
+    const record = await this.repository.findByOrganizationIdAndName({
+      organizationId,
+      name,
+      exclude: ["deletedAt"]
+    });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);

@@ -14,8 +14,8 @@ const create = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { body } = req;
-    const existingPermission = await permissionService.getByOrganizationIdAndActionAndResource(body.organizationId, body.action, body.resource)
+    const { params, body } = req;
+    const existingPermission = await permissionService.getByOrganizationIdAndActionAndResource(params.organizationId, body.action, body.resource)
       .catch(err => {
         if (err instanceof NotFoundException) return null;
         throw err;

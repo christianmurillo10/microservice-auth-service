@@ -13,8 +13,11 @@ const list = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { query } = req;
-    const role = await roleService.getAll({ query });
+    const { params, query } = req;
+    const role = await roleService.getAll({
+      condition: { organizationId: params.organizationId },
+      query
+    });
     const roleCount = role.length;
     const allRoleCount = await roleService.count({ query });
     let message = MESSAGE_DATA_FIND_ALL;

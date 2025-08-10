@@ -13,7 +13,10 @@ export default class UserService {
   };
 
   getById = async (id: string): Promise<UserModel> => {
-    const record = await this.repository.findById({ id });
+    const record = await this.repository.findById({
+      id,
+      exclude: ["deletedAt"]
+    });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
@@ -26,6 +29,7 @@ export default class UserService {
     const record = await this.repository.findByUsernameOrEmail({
       username: value,
       email: value,
+      exclude: ["deletedAt"]
     });
 
     if (!record) {

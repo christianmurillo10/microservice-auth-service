@@ -18,7 +18,6 @@ export const create = async (
     const schema = joi.object({
       action: joi.string().label("Action").max(100).required(),
       resource: joi.string().label("Resource").max(100).required(),
-      organizationId: joi.string().label("Organization").required(),
     });
     req.body = await validateInput(req.body, schema);
     next();
@@ -40,7 +39,6 @@ export const update = async (
     const schema = joi.object({
       action: joi.string().label("Action").max(100).empty(),
       resource: joi.string().label("Resource").max(100).empty(),
-      organizationId: joi.string().label("Organization").empty(),
     });
     req.body = await validateInput(req.body, schema);
     next();
@@ -64,14 +62,12 @@ export const list = async (
         updatedAt: joi.date().label("Last Modified").empty(),
         action: joi.string().label("Action").max(100).empty(),
         resource: joi.string().label("Resource").max(100).empty(),
-        organizationId: joi.string().label("Organization").empty(),
       }).label("Filters").empty(),
       sorting: joi.object({
         createdAt: joi.string().label("Date Created").valid("asc", "desc").empty(),
         updatedAt: joi.string().label("Last Modified").valid("asc", "desc").empty(),
         action: joi.string().label("Action").valid("asc", "desc").empty(),
         resource: joi.string().label("Resource").valid("asc", "desc").empty(),
-        organizationId: joi.string().label("Organization").valid("asc", "desc").empty(),
       }).label("Sorting").empty(),
       page: joi.number().min(1).label("Page").empty(),
       pageSize: joi.number().min(1).label("Page Size").empty(),

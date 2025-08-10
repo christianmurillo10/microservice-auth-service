@@ -23,7 +23,10 @@ export default class PermissionService {
   };
 
   getById = async (id: string): Promise<PermissionModel> => {
-    const record = await this.repository.findById({ id });
+    const record = await this.repository.findById({
+      id,
+      exclude: ["deletedAt"]
+    });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
@@ -36,7 +39,8 @@ export default class PermissionService {
     const record = await this.repository.findByOrganizationIdAndActionAndResource({
       organizationId,
       action,
-      resource
+      resource,
+      exclude: ["deletedAt"]
     });
 
     if (!record) {

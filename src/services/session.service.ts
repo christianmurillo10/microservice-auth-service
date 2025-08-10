@@ -12,7 +12,10 @@ export default class SessionService {
   };
 
   getById = async (id: string): Promise<SessionModel> => {
-    const record = await this.repository.findById({ id });
+    const record = await this.repository.findById({
+      id,
+      exclude: ["deletedAt"]
+    });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
@@ -22,7 +25,10 @@ export default class SessionService {
   };
 
   getByAccessToken = async (accessToken: string): Promise<SessionModel> => {
-    const record = await this.repository.findByAccessToken({ accessToken });
+    const record = await this.repository.findByAccessToken({
+      accessToken,
+      exclude: ["deletedAt"]
+    });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
@@ -32,7 +38,10 @@ export default class SessionService {
   };
 
   getByRefreshToken = async (refreshToken: string): Promise<SessionModel> => {
-    const record = await this.repository.findByRefreshToken({ refreshToken });
+    const record = await this.repository.findByRefreshToken({
+      refreshToken,
+      exclude: ["deletedAt"]
+    });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);

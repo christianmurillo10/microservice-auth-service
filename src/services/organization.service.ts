@@ -34,7 +34,10 @@ export default class OrganizationService {
   };
 
   getById = async (id: string): Promise<OrganizationModel> => {
-    const record = await this.repository.findById({ id: id });
+    const record = await this.repository.findById({
+      id,
+      exclude: ["deletedAt"]
+    });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
@@ -44,7 +47,10 @@ export default class OrganizationService {
   };
 
   getByName = async (name: string): Promise<OrganizationModel> => {
-    const record = await this.repository.findByName({ name: name });
+    const record = await this.repository.findByName({
+      name,
+      exclude: ["deletedAt"]
+    });
 
     if (!record) {
       throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);

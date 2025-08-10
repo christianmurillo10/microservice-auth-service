@@ -23,6 +23,7 @@ type State = {
 
 type Output = {
   userId: string,
+  organizationId?: string,
   token: string,
   expiration: Date,
   refreshToken: string
@@ -145,6 +146,7 @@ export default class LoginService {
 
     return {
       userId: session.userId,
+      organizationId: newRecord.organizationId ?? undefined,
       token: session.accessToken,
       expiration: accessTokenExpiryDate,
       refreshToken: session.refreshToken

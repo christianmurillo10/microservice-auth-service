@@ -15,7 +15,8 @@ const create = async (
 ): Promise<void> => {
   try {
     const { params, body } = req;
-    const existingPermission = await permissionService.getByOrganizationIdAndActionAndResource(params.organizationId, body.action, body.resource)
+    const { organizationId } = params;
+    const existingPermission = await permissionService.getByOrganizationIdAndActionAndResource(organizationId, body.action, body.resource)
       .catch(err => {
         if (err instanceof NotFoundException) return null;
         throw err;
@@ -25,7 +26,7 @@ const create = async (
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const newPermission = await permissionService.save(body);
+    const newPermission = await permissionService.save({ ...body, organizationId });
 
     apiResponse(res, {
       statusCode: 201,

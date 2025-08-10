@@ -8,7 +8,7 @@ import {
 } from "../../middlewares/validations/permission.validation";
 import * as PermissionController from "../controllers/permission";
 
-const router = Router();
+const router = Router({ mergeParams: true });
 
 router.get("/", authenticate, listValidation, PermissionController.list);
 router.post("/", authenticate, createValidation, PermissionController.create);

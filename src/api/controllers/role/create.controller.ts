@@ -15,7 +15,8 @@ const create = async (
 ): Promise<void> => {
   try {
     const { params, body } = req;
-    const existingRole = await roleService.getByOrganizationIdAndName(params.organizationId, body.name)
+    const { organizationId } = params;
+    const existingRole = await roleService.getByOrganizationIdAndName(organizationId, body.name)
       .catch(err => {
         if (err instanceof NotFoundException) return null;
         throw err;
@@ -25,7 +26,7 @@ const create = async (
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const newRole = await roleService.save(body);
+    const newRole = await roleService.save({ ...body, organizationId });
 
     apiResponse(res, {
       statusCode: 201,

@@ -10,7 +10,7 @@ import {
 import * as OrganizationController from "../controllers/organization";
 
 const upload = multer();
-const router = Router();
+const router = Router({ mergeParams: true });
 
 router.get("/", authenticate, listValidation, OrganizationController.list);
 router.post("/", authenticate, upload.single("logo"), createValidation, OrganizationController.create);

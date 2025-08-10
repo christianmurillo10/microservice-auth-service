@@ -5,7 +5,7 @@ import {
 } from "../../middlewares/validations/auth.validation";
 import * as AuthController from "../controllers/auth";
 
-const router = Router();
+const router = Router({ mergeParams: true });
 
 router.post("/login", loginValidation, AuthController.login);
 router.post("/logout", AuthController.logout);

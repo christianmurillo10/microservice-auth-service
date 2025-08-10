@@ -19,11 +19,11 @@ export default interface RolePermissionRepository {
 
   create: (args: CreateArgs<RolePermissionModel>) => Promise<RolePermissionModel>;
 
-  createMany: (args: CreateManyArgs<RolePermissionModel>) => Promise<void>;
+  syncCreateMany: (args: CreateManyArgs<RolePermissionModel>) => void;
 
   delete: (args: DeleteArgs<string>) => Promise<void>;
 
-  deleteMany: (args: DeleteManyArgs<string>) => Promise<void>;
+  syncDeleteMany: (args: DeleteManyArgs<string>) => void;
 
   count: (args?: CountArgs) => Promise<number>;
 };

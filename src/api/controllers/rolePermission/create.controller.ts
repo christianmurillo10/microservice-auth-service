@@ -32,7 +32,7 @@ const create = async (
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const newRolePermission = await rolePermissionService.save(body);
+    const newRolePermission = await rolePermissionService.save({ ...body, roleId });
 
     apiResponse(res, {
       statusCode: 201,

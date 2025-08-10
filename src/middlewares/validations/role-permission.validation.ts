@@ -16,7 +16,6 @@ export const create = async (
     };
 
     const schema = joi.object({
-      roleId: joi.string().label("Role").required(),
       permissionId: joi.string().label("Permission").required(),
     });
     req.body = await validateInput(req.body, schema);

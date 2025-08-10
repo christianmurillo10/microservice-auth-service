@@ -130,10 +130,10 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
     return new RolePermissionModel(data);
   };
 
-  createMany = async (
+  syncCreateMany = (
     args: CreateManyArgs<RolePermissionModel>,
-  ): Promise<void> => {
-    await this.client.createMany({
+  ): void => {
+    this.client.createMany({
       data: args.params
     });
   };
@@ -146,10 +146,10 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
     });
   };
 
-  deleteMany = async (
+  syncDeleteMany = (
     args: DeleteManyArgs<string>
-  ): Promise<void> => {
-    await this.client.deleteMany({
+  ): void => {
+    this.client.deleteMany({
       where: {
         id: {
           in: args.ids

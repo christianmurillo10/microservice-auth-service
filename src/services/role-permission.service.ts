@@ -85,11 +85,11 @@ export default class RolePermissionService {
 
     await this.prisma.$transaction([
       ...(toCreate.length > 0
-        ? [this.repository.createMany({ params: toCreate }) as any]
+        ? [this.repository.syncCreateMany({ params: toCreate }) as any]
         : []
       ),
       ...(toDeleteIds.length > 0
-        ? [this.repository.deleteMany({ ids: toDeleteIds }) as any]
+        ? [this.repository.syncDeleteMany({ ids: toDeleteIds }) as any]
         : []
       ),
     ]);

@@ -8,7 +8,8 @@ import {
   DeleteManyArgs,
   FindAllArgs,
   FindAllRoleIdArgs,
-  FindByIdArgs
+  FindByIdArgs,
+  FindByRoleIdAndPermissionIdArgs
 } from "../shared/types/repository.type";
 
 export default interface RolePermissionRepository {
@@ -17,6 +18,8 @@ export default interface RolePermissionRepository {
   findAllByRoleId: (args: FindAllRoleIdArgs) => Promise<RolePermissionModel[]>;
 
   findById: (args: FindByIdArgs<string>) => Promise<RolePermissionModel | null>;
+
+  findByRoleIdAndPermissionId: (args: FindByRoleIdAndPermissionIdArgs) => Promise<RolePermissionModel | null>;
 
   create: (args: CreateArgs<RolePermissionModel>) => Promise<RolePermissionModel>;
 

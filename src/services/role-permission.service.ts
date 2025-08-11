@@ -1,10 +1,9 @@
-
+import { PrismaClient } from "../prisma/client";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaRolePermissionRepository from "../repositories/prisma/role-permission.repository";
 import RolePermissionModel from "../models/role-permission.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllByRoleIdArgs } from "../shared/types/service.type";
-import { PrismaClient } from "../prisma/client";
 
 export default class RolePermissionService {
   private repository: PrismaRolePermissionRepository;

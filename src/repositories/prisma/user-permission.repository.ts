@@ -1,12 +1,15 @@
-import { PrismaClient } from "../../prisma/client";
+import { Prisma, PrismaClient } from "../../prisma/client";
 import UserPermissionModel from "../../models/user-permission.model";
 import UserPermissionRepository from "../user-permission.interface";
 import {
   FindAllArgs,
   FindAllUserIdArgs,
   FindByIdArgs,
+  FindByUserIdAndPermissionIdArgs,
   CreateArgs,
+  CreateManyArgs,
   DeleteArgs,
+  DeleteManyArgs,
   CountArgs
 } from "../../shared/types/repository.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
@@ -91,6 +94,27 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
     return new UserPermissionModel(res);
   };
 
+  findByUserIdAndPermissionId = async (
+    args: FindByUserIdAndPermissionIdArgs
+  ): Promise<UserPermissionModel | null> => {
+    const exclude = setSelectExclude(args.exclude!);
+    const res = await this.client.findFirst({
+      select: {
+        ...userPermissionSubsets,
+        ...exclude
+      },
+      where: {
+        userId: args.userId,
+        permissionId: args.permissionId,
+        ...args.condition
+      }
+    });
+
+    if (!res) return null;
+
+    return new UserPermissionModel(res);
+  };
+
   create = async (
     args: CreateArgs<UserPermissionModel>
   ): Promise<UserPermissionModel> => {
@@ -125,5 +149,25 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
     });
 
     return data;
+  };
+
+  syncCreateMany = (
+    args: CreateManyArgs<UserPermissionModel>,
+  ): Prisma.PrismaPromise<Prisma.BatchPayload> => {
+    return this.client.createMany({
+      data: args.params
+    });
+  };
+
+  syncDeleteMany = (
+    args: DeleteManyArgs<string>
+  ): Prisma.PrismaPromise<Prisma.BatchPayload> => {
+    return this.client.deleteMany({
+      where: {
+        id: {
+          in: args.ids
+        }
+      }
+    });
   };
 };

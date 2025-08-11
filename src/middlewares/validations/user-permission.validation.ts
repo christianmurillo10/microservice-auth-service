@@ -77,3 +77,27 @@ export const list = async (
     next(error);
   };
 };
+
+export const sync = async (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (_.isEmpty(req.body)) {
+      throw new BadRequestException([MESSAGE_INVALID_BODY]);
+    };
+
+    const schema = joi.object({
+      permissionIds: joi.array()
+        .items(joi.string())
+        .min(1)
+        .label("Permission IDs")
+        .required(),
+    });
+    req.body = await validateInput(req.body, schema);
+    next();
+  } catch (error) {
+    next(error);
+  };
+};

@@ -16,29 +16,7 @@ export const create = async (
     };
 
     const schema = joi.object({
-      userId: joi.string().label("User").required(),
       roleId: joi.string().label("Role").required(),
-    });
-    req.body = await validateInput(req.body, schema);
-    next();
-  } catch (error) {
-    next(error);
-  };
-};
-
-export const update = async (
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) => {
-  try {
-    if (_.isEmpty(req.body)) {
-      throw new BadRequestException([MESSAGE_INVALID_BODY]);
-    };
-
-    const schema = joi.object({
-      userId: joi.string().label("User").empty(),
-      roleId: joi.string().label("Role").empty(),
     });
     req.body = await validateInput(req.body, schema);
     next();
@@ -72,6 +50,30 @@ export const list = async (
     });
     const stringifyQuery = JSON.stringify(await validateInput(req.query, schema));
     req.query = JSON.parse(stringifyQuery);
+    next();
+  } catch (error) {
+    next(error);
+  };
+};
+
+export const sync = async (
+  req: Request,
+  _res: Response,
+  next: NextFunction
+) => {
+  try {
+    if (_.isEmpty(req.body)) {
+      throw new BadRequestException([MESSAGE_INVALID_BODY]);
+    };
+
+    const schema = joi.object({
+      permissionIds: joi.array()
+        .items(joi.string())
+        .min(1)
+        .label("Role IDs")
+        .required(),
+    });
+    req.body = await validateInput(req.body, schema);
     next();
   } catch (error) {
     next(error);

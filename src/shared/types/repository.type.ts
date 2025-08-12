@@ -100,6 +100,14 @@ export type FindByUserIdAndPermissionIdArgs = {
   exclude?: string[] | undefined
 };
 
+export type FindByUserIdAndRoleIdArgs = {
+  userId: string,
+  roleId: string,
+  condition?: GenericObject | undefined,
+  include?: string[] | undefined,
+  exclude?: string[] | undefined
+};
+
 export type CreateArgs<P> = {
   params: P,
   include?: string[] | undefined,

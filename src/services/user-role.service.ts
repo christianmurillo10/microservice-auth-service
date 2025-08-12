@@ -1,4 +1,4 @@
-
+import { PrismaClient } from "../prisma/client";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaUserRoleRepository from "../repositories/prisma/user-role.repository";
 import UserRoleModel from "../models/user-role.model";
@@ -6,10 +6,12 @@ import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllByUserIdArgs } from "../shared/types/service.type";
 
 export default class UserRoleService {
-  private repository: PrismaUserRoleRepository
+  private repository: PrismaUserRoleRepository;
+  private prisma: PrismaClient;
 
   constructor() {
     this.repository = new PrismaUserRoleRepository();
+    this.prisma = new PrismaClient();
   };
 
   getAll = async (args?: GetAllArgs): Promise<UserRoleModel[]> => {
@@ -41,6 +43,16 @@ export default class UserRoleService {
     return record;
   };
 
+  getByUserIdAndRoleId = async (userId: string, roleId: string): Promise<UserRoleModel> => {
+    const record = await this.repository.findByUserIdAndRoleId({ userId, roleId });
+
+    if (!record) {
+      throw new NotFoundException([MESSAGE_DATA_NOT_EXIST]);
+    };
+
+    return record;
+  };
+
   save = async (data: UserRoleModel): Promise<UserRoleModel> => {
     return await this.repository.create({ params: new UserRoleModel(data) });
   };
@@ -51,5 +63,34 @@ export default class UserRoleService {
 
   count = async (args: CountAllArgs): Promise<number> => {
     return await this.repository.count(args);
+  };
+
+  sync = async (userId: string, roleIds: string[]): Promise<void> => {
+    const existingUserPermissions = await this.repository.findAll({ condition: { userId } });
+    const existingPermissionIds = new Set(existingUserPermissions.map(role => role.roleId));
+
+    // Set toCreate data
+    const newPermissionIds = roleIds.filter(id => !existingPermissionIds.has(id));
+    const toCreate: UserRoleModel[] = newPermissionIds.map(val => new UserRoleModel({
+      userId,
+      roleId: val,
+      assignedAt: new Date()
+    }));
+
+    // Set toDelete data
+    const incomingPermissionIds = new Set(roleIds);
+    const toDeleteData = existingUserPermissions.filter(val => !incomingPermissionIds.has(val.roleId));
+    const toDeleteIds = toDeleteData.map(data => data.id!);
+
+    await this.prisma.$transaction([
+      ...(toCreate.length > 0
+        ? [this.repository.syncCreateMany({ params: toCreate })]
+        : []
+      ),
+      ...(toDeleteIds.length > 0
+        ? [this.repository.syncDeleteMany({ ids: toDeleteIds })]
+        : []
+      ),
+    ]);
   };
 };

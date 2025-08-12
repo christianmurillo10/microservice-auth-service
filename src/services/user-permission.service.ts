@@ -6,7 +6,7 @@ import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllByUserIdArgs } from "../shared/types/service.type";
 
 export default class UserPermissionService {
-  private repository: PrismaUserPermissionRepository
+  private repository: PrismaUserPermissionRepository;
   private prisma: PrismaClient;
 
   constructor() {

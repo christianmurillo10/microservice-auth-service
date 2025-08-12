@@ -1,0 +1,43 @@
+import { Request, Response, NextFunction } from "express";
+import { apiResponse } from "../../../shared/utils/api-response";
+import { MESSAGE_DATA_FIND_ALL, MESSAGE_DATA_NOT_FOUND } from "../../../shared/constants/message.constant";
+import { ERROR_ON_LIST } from "../../../shared/constants/error.constant";
+import { getPagination } from "../../../shared/helpers/common.helper";
+import UserRoleService from "../../../services/user-role.service";
+
+const userRoleService = new UserRoleService();
+
+const list = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    const { query } = req;
+    const userRole = await userRoleService.getAll({ query });
+    const userRoleCount = userRole.length;
+    const allUserRoleCount = await userRoleService.count({ query });
+    let message = MESSAGE_DATA_FIND_ALL;
+
+    if (userRole.length < 1) {
+      message = MESSAGE_DATA_NOT_FOUND;
+    };
+
+    apiResponse(res, {
+      statusCode: 200,
+      message,
+      data: userRole,
+      pagination: getPagination(
+        allUserRoleCount,
+        userRoleCount,
+        Number(query.page ?? 1),
+        Number(query.pageSize ?? 10)
+      )
+    });
+  } catch (error) {
+    console.error(`${ERROR_ON_LIST}: `, error);
+    next(error);
+  };
+};
+
+export default list;

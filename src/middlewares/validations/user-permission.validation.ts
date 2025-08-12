@@ -16,29 +16,7 @@ export const create = async (
     };
 
     const schema = joi.object({
-      userId: joi.string().label("User").required(),
       permissionId: joi.string().label("Permission").required(),
-    });
-    req.body = await validateInput(req.body, schema);
-    next();
-  } catch (error) {
-    next(error);
-  };
-};
-
-export const update = async (
-  req: Request,
-  _res: Response,
-  next: NextFunction
-) => {
-  try {
-    if (_.isEmpty(req.body)) {
-      throw new BadRequestException([MESSAGE_INVALID_BODY]);
-    };
-
-    const schema = joi.object({
-      userId: joi.string().label("User").empty(),
-      permissionId: joi.string().label("Permission").empty(),
     });
     req.body = await validateInput(req.body, schema);
     next();

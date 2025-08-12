@@ -1,12 +1,15 @@
-import { PrismaClient } from "../../prisma/client";
+import { Prisma, PrismaClient } from "../../prisma/client";
 import UserRoleModel from "../../models/user-role.model";
 import UserRoleRepository from "../user-role.interface";
 import {
   FindAllArgs,
-  FindByIdArgs,
   FindAllUserIdArgs,
+  FindByIdArgs,
+  FindByUserIdAndRoleIdArgs,
   CreateArgs,
+  CreateManyArgs,
   DeleteArgs,
+  DeleteManyArgs,
   CountArgs
 } from "../../shared/types/repository.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
@@ -91,6 +94,27 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
     return new UserRoleModel(res);
   };
 
+  findByUserIdAndRoleId = async (
+    args: FindByUserIdAndRoleIdArgs
+  ): Promise<UserRoleModel | null> => {
+    const exclude = setSelectExclude(args.exclude!);
+    const res = await this.client.findFirst({
+      select: {
+        ...userRoleSubsets,
+        ...exclude
+      },
+      where: {
+        userId: args.userId,
+        roleId: args.roleId,
+        ...args.condition
+      }
+    });
+
+    if (!res) return null;
+
+    return new UserRoleModel(res);
+  };
+
   create = async (
     args: CreateArgs<UserRoleModel>
   ): Promise<UserRoleModel> => {
@@ -125,5 +149,25 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
     });
 
     return data;
+  };
+
+  syncCreateMany = (
+    args: CreateManyArgs<UserRoleModel>,
+  ): Prisma.PrismaPromise<Prisma.BatchPayload> => {
+    return this.client.createMany({
+      data: args.params
+    });
+  };
+
+  syncDeleteMany = (
+    args: DeleteManyArgs<string>
+  ): Prisma.PrismaPromise<Prisma.BatchPayload> => {
+    return this.client.deleteMany({
+      where: {
+        id: {
+          in: args.ids
+        }
+      }
+    });
   };
 };

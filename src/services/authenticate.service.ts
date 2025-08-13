@@ -1,7 +1,7 @@
 import { UserAccessType } from "../entities/user.entity";
 import OrganizationModel from "../models/organization.model";
 import UserModel from "../models/user.model";
-import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_LOGGED, MESSAGE_NOT_PERMITTED } from "../shared/constants/message.constant";
+import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_LOGGED, MESSAGE_DATA_NOT_PERMITTED } from "../shared/constants/message.constant";
 import ForbiddenException from "../shared/exceptions/forbidden.exception";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
@@ -60,7 +60,7 @@ export default class AuthenticateService {
       tokenData.client === UserAccessType.Organization &&
       organizationId !== String(tokenData.sub)
     ) {
-      throw new ForbiddenException([MESSAGE_NOT_PERMITTED]);
+      throw new ForbiddenException([MESSAGE_DATA_NOT_PERMITTED]);
     };
 
     return {

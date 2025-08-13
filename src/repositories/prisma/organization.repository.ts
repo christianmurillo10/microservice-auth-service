@@ -3,7 +3,7 @@ import OrganizationModel from "../../models/organization.model";
 import OrganizationRepository from "../organization.interface";
 import {
   FindAllArgs,
-  FindAllBetweenCreatedAtArgs,
+  FindAllByBetweenCreatedAtArgs,
   FindByIdArgs,
   FindByNameArgs,
   CreateArgs,
@@ -53,7 +53,7 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
   };
 
   findAllBetweenCreatedAt = async (
-    args: FindAllBetweenCreatedAtArgs
+    args: FindAllByBetweenCreatedAtArgs
   ): Promise<OrganizationModel[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const betweenCreatedAt = args.dateFrom && args.dateTo

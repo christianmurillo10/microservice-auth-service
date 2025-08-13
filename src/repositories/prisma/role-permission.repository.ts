@@ -3,7 +3,7 @@ import RolePermissionModel from "../../models/role-permission.model";
 import RolePermissionRepository from "../role-permission.interface";
 import {
   FindAllArgs,
-  FindAllRoleIdArgs,
+  FindAllByRoleIdArgs,
   FindByIdArgs,
   FindByRoleIdAndPermissionIdArgs,
   CreateArgs,
@@ -49,7 +49,7 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
   };
 
   findAllByRoleId = async (
-    args: FindAllRoleIdArgs
+    args: FindAllByRoleIdArgs
   ): Promise<RolePermissionModel[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({

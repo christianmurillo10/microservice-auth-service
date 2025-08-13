@@ -24,6 +24,13 @@ export type GetAllByRoleIdArgs = {
   query?: Query
 };
 
+export type GetAllUserPermissionsArgs = {
+  userId: string,
+  organizationId: string,
+  action: string,
+  resource: string
+};
+
 export type GetByIdArgs<I> = {
   id: I,
   condition?: GenericObject

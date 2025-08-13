@@ -1,4 +1,4 @@
-import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_NOT_IMPLEMENTED } from "../shared/constants/message.constant";
+import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_IMPLEMENTED } from "../shared/constants/message.constant";
 import SessionService from "./session.service";
 import UserService from "./user.service";
 import NotFoundException from "../shared/exceptions/not-found.exception";
@@ -83,7 +83,7 @@ export default class LogoutService {
 
     switch (session.accessType) {
       case "APP_RECOGNIZED":
-        throw new BadRequestException([MESSAGE_NOT_IMPLEMENTED]);
+        throw new BadRequestException([MESSAGE_DATA_NOT_IMPLEMENTED]);
       default:
         await this.userUpdates(session);
         break;

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import UserModel from "../models/user.model";
 import UserRequestHeaderModel from "../models/user-request-header.model";
-import { MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS, MESSAGE_NOT_IMPLEMENTED } from "../shared/constants/message.constant";
+import { MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS, MESSAGE_DATA_NOT_IMPLEMENTED } from "../shared/constants/message.constant";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { addDaysToDate, addMinutesToDate } from "../shared/helpers/common.helper";
@@ -156,7 +156,7 @@ export default class LoginService {
   execute = async (): Promise<Output> => {
     switch (this.state.input.accessType) {
       case "APP_RECOGNIZED":
-        throw new BadRequestException([MESSAGE_NOT_IMPLEMENTED]);
+        throw new BadRequestException([MESSAGE_DATA_NOT_IMPLEMENTED]);
       default:
         return await this.userUpdates();
     };

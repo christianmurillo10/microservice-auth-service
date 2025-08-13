@@ -7,7 +7,7 @@ export type FindAllArgs = {
   exclude?: string[] | undefined
 };
 
-export type FindAllBetweenCreatedAtArgs = {
+export type FindAllByBetweenCreatedAtArgs = {
   dateFrom?: string | undefined,
   dateTo?: string | undefined,
   condition?: GenericObject | undefined,
@@ -15,7 +15,7 @@ export type FindAllBetweenCreatedAtArgs = {
   exclude?: string[] | undefined
 };
 
-export type FindAllRoleIdArgs = {
+export type FindAllByRoleIdArgs = {
   roleId: string,
   condition?: GenericObject | undefined,
   query?: Query | undefined,
@@ -23,12 +23,19 @@ export type FindAllRoleIdArgs = {
   exclude?: string[] | undefined
 };
 
-export type FindAllUserIdArgs = {
+export type FindAllByUserIdArgs = {
   userId: string,
   condition?: GenericObject | undefined,
   query?: Query | undefined,
   include?: string[] | undefined,
   exclude?: string[] | undefined
+};
+
+export type FindAllUserPermissionsArgs = {
+  userId: string,
+  organizationId: string,
+  action: string,
+  resource: string
 };
 
 export type FindByIdArgs<I> = {

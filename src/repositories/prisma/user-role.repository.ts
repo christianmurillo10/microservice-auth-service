@@ -3,7 +3,7 @@ import UserRoleModel from "../../models/user-role.model";
 import UserRoleRepository from "../user-role.interface";
 import {
   FindAllArgs,
-  FindAllUserIdArgs,
+  FindAllByUserIdArgs,
   FindByIdArgs,
   FindByUserIdAndRoleIdArgs,
   CreateArgs,
@@ -49,7 +49,7 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
   };
 
   findAllByUserId = async (
-    args: FindAllUserIdArgs
+    args: FindAllByUserIdArgs
   ): Promise<UserRoleModel[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({

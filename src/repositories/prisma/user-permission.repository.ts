@@ -3,7 +3,8 @@ import UserPermissionModel from "../../models/user-permission.model";
 import UserPermissionRepository from "../user-permission.interface";
 import {
   FindAllArgs,
-  FindAllUserIdArgs,
+  FindAllByUserIdArgs,
+  FindAllUserPermissionsArgs,
   FindByIdArgs,
   FindByUserIdAndPermissionIdArgs,
   CreateArgs,
@@ -13,7 +14,7 @@ import {
   CountArgs
 } from "../../shared/types/repository.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
-import { userPermissionSubsets } from "../../shared/helpers/select-subset.helper";
+import { permissionSubsets, userPermissionSubsets } from "../../shared/helpers/select-subset.helper";
 
 export default class PrismaUserPermissionRepository implements UserPermissionRepository {
   private client;
@@ -49,7 +50,7 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
   };
 
   findAllByUserId = async (
-    args: FindAllUserIdArgs
+    args: FindAllByUserIdArgs
   ): Promise<UserPermissionModel[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({
@@ -69,6 +70,32 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
       skip: args.query?.page && args.query?.pageSize ?
         (args.query?.page - 1) * args.query?.pageSize :
         undefined
+    });
+
+    return res.map(item => new UserPermissionModel(item));
+  };
+
+  findAllUserPermissions = async (
+    args: FindAllUserPermissionsArgs
+  ) => {
+    const res = await this.client.findMany({
+      select: {
+        ...userPermissionSubsets,
+        permission: {
+          select: {
+            ...permissionSubsets,
+            deletedAt: false
+          }
+        }
+      },
+      where: {
+        userId: args.userId,
+        permission: {
+          action: args.action,
+          resource: args.resource,
+          organizationId: args.organizationId,
+        },
+      },
     });
 
     return res.map(item => new UserPermissionModel(item));

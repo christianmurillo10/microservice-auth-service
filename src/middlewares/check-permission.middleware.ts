@@ -20,7 +20,7 @@ const checkPermission = (action: string, resource: string) => {
         throw new UnauthorizedException([MESSAGE_DATA_NOT_AUTHORIZED])
       }
 
-      const userPermissions = await userPermissionService.getAllUserPermissions({
+      const userPermissions = await userPermissionService.getAllUserBasedPermissions({
         userId: authId,
         action: action,
         resource: resource,

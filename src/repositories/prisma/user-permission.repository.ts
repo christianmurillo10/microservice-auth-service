@@ -4,7 +4,7 @@ import UserPermissionRepository from "../user-permission.interface";
 import {
   FindAllArgs,
   FindAllByUserIdArgs,
-  FindAllUserPermissionsArgs,
+  FindAllUserBasedPermissionsArgs,
   FindByIdArgs,
   FindByUserIdAndPermissionIdArgs,
   CreateArgs,
@@ -75,8 +75,8 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
     return res.map(item => new UserPermissionModel(item));
   };
 
-  findAllUserPermissions = async (
-    args: FindAllUserPermissionsArgs
+  findAllUserBasedPermissions = async (
+    args: FindAllUserBasedPermissionsArgs
   ) => {
     const res = await this.client.findMany({
       select: {

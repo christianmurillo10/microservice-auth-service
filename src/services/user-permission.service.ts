@@ -3,7 +3,7 @@ import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaUserPermissionRepository from "../repositories/prisma/user-permission.repository";
 import UserPermissionModel from "../models/user-permission.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
-import { CountAllArgs, GetAllArgs, GetAllByUserIdArgs, GetAllUserPermissionsArgs } from "../shared/types/service.type";
+import { CountAllArgs, GetAllArgs, GetAllByUserIdArgs, GetAllUserBasedPermissionsArgs } from "../shared/types/service.type";
 
 export default class UserPermissionService {
   private repository: PrismaUserPermissionRepository;
@@ -33,8 +33,8 @@ export default class UserPermissionService {
     return record;
   };
 
-  getAllUserPermissions = async (args: GetAllUserPermissionsArgs): Promise<UserPermissionModel[]> => {
-    const record = await this.repository.findAllUserPermissions({
+  getAllUserBasedPermissions = async (args: GetAllUserBasedPermissionsArgs): Promise<UserPermissionModel[]> => {
+    const record = await this.repository.findAllUserBasedPermissions({
       userId: args.userId,
       action: args.action,
       resource: args.resource,

@@ -8,7 +8,7 @@ import {
   DeleteManyArgs,
   FindAllArgs,
   FindAllByUserIdArgs,
-  FindAllUserPermissionsArgs,
+  FindAllUserBasedPermissionsArgs,
   FindByIdArgs,
   FindByUserIdAndPermissionIdArgs
 } from "../shared/types/repository.type";
@@ -18,7 +18,7 @@ export default interface UserPermissionRepository {
 
   findAllByUserId: (args: FindAllByUserIdArgs) => Promise<UserPermissionModel[]>;
 
-  findAllUserPermissions: (args: FindAllUserPermissionsArgs) => Promise<UserPermissionModel[]>;
+  findAllUserBasedPermissions: (args: FindAllUserBasedPermissionsArgs) => Promise<UserPermissionModel[]>;
 
   findById: (args: FindByIdArgs<string>) => Promise<UserPermissionModel | null>;
 

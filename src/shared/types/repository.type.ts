@@ -31,7 +31,7 @@ export type FindAllByUserIdArgs = {
   exclude?: string[] | undefined
 };
 
-export type FindAllUserBasedPermissionsArgs = {
+export type FindAllRoleOrUserBasedPermissionsArgs = {
   userId: string,
   organizationId: string,
   action: string,

@@ -24,7 +24,7 @@ export type GetAllByRoleIdArgs = {
   query?: Query
 };
 
-export type GetAllUserBasedPermissionsArgs = {
+export type GetAllRoleOrUserBasedPermissionsArgs = {
   userId: string,
   organizationId: string,
   action: string,

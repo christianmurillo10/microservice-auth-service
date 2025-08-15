@@ -4,6 +4,7 @@ import UserRoleRepository from "../user-role.interface";
 import {
   FindAllArgs,
   FindAllByUserIdArgs,
+  FindAllRoleOrUserBasedPermissionsArgs,
   FindByIdArgs,
   FindByUserIdAndRoleIdArgs,
   CreateArgs,
@@ -69,6 +70,46 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
       skip: args.query?.page && args.query?.pageSize ?
         (args.query?.page - 1) * args.query?.pageSize :
         undefined
+    });
+
+    return res.map(item => new UserRoleModel(item));
+  };
+
+  findAllUserRoleBasedPermissions = async (
+    args: FindAllRoleOrUserBasedPermissionsArgs
+  ): Promise<UserRoleModel[]> => {
+    const res = await this.client.findMany({
+      select: {
+        ...userRoleSubsets,
+        role: {
+          include: {
+            rolePermissions: {
+              include: {
+                permission: {
+                  select: {
+                    action: true,
+                    resource: true,
+                  },
+                }
+              }
+            }
+          }
+        }
+      },
+      where: {
+        userId: args.userId,
+        role: {
+          organizationId: args.organizationId,
+          rolePermissions: {
+            some: {
+              permission: {
+                action: args.action,
+                resource: args.resource
+              }
+            }
+          }
+        }
+      },
     });
 
     return res.map(item => new UserRoleModel(item));

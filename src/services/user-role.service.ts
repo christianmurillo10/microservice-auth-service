@@ -3,7 +3,7 @@ import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaUserRoleRepository from "../repositories/prisma/user-role.repository";
 import UserRoleModel from "../models/user-role.model";
 import NotFoundException from "../shared/exceptions/not-found.exception";
-import { CountAllArgs, GetAllArgs, GetAllByUserIdArgs } from "../shared/types/service.type";
+import { CountAllArgs, GetAllArgs, GetAllByUserIdArgs, GetAllRoleOrUserBasedPermissionsArgs } from "../shared/types/service.type";
 
 export default class UserRoleService {
   private repository: PrismaUserRoleRepository;
@@ -28,6 +28,17 @@ export default class UserRoleService {
       userId: args.userId,
       condition: args.condition,
       query: args?.query
+    });
+
+    return record;
+  };
+
+  getAllUserRoleBasedPermissions = async (args: GetAllRoleOrUserBasedPermissionsArgs): Promise<UserRoleModel[]> => {
+    const record = await this.repository.findAllUserRoleBasedPermissions({
+      userId: args.userId,
+      action: args.action,
+      resource: args.resource,
+      organizationId: args.organizationId,
     });
 
     return record;

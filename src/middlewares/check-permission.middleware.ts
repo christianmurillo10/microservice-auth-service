@@ -2,9 +2,11 @@ import { Request, Response, NextFunction } from "express";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 import { MESSAGE_DATA_NO_PERMISSION, MESSAGE_DATA_NOT_AUTHORIZED } from "../shared/constants/message.constant";
 import UserPermissionService from "../services/user-permission.service";
+import UserRoleService from "../services/user-role.service";
 import ForbiddenException from "../shared/exceptions/forbidden.exception";
 
 const userPermissionService = new UserPermissionService();
+const userRoleService = new UserRoleService();
 
 const checkPermission = (action: string, resource: string) => {
   return async (
@@ -31,9 +33,17 @@ const checkPermission = (action: string, resource: string) => {
         next();
       }
 
-      const rolePermissions = [];
-      const hasRBACPermission = true;
-
+      const rolePermissions = await userRoleService.getAllUserRoleBasedPermissions({
+        userId: authId,
+        action: action,
+        resource: resource,
+        organizationId: organizationId,
+      });
+      const hasRBACPermission = rolePermissions.some((userRole) =>
+        userRole.role?.permissions.some(
+          (rp) => rp.permission.action === action && rp.permission.resource === resource
+        )
+      );
       if (hasRBACPermission) {
         next();
       }

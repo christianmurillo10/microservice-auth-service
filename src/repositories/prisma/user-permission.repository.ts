@@ -77,7 +77,7 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
 
   findAllUserBasedPermissions = async (
     args: FindAllRoleOrUserBasedPermissionsArgs
-  ) => {
+  ): Promise<UserPermissionModel[]> => {
     const res = await this.client.findMany({
       select: {
         ...userPermissionSubsets,

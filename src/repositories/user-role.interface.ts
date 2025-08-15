@@ -8,6 +8,7 @@ import {
   DeleteManyArgs,
   FindAllArgs,
   FindAllByUserIdArgs,
+  FindAllRoleOrUserBasedPermissionsArgs,
   FindByIdArgs,
   FindByUserIdAndRoleIdArgs
 } from "../shared/types/repository.type";
@@ -16,6 +17,8 @@ export default interface UserRoleRepository {
   findAll: (args: FindAllArgs) => Promise<UserRoleModel[]>;
 
   findAllByUserId: (args: FindAllByUserIdArgs) => Promise<UserRoleModel[]>;
+
+  findAllUserRoleBasedPermissions: (args: FindAllRoleOrUserBasedPermissionsArgs) => Promise<UserRoleModel[]>;
 
   findById: (args: FindByIdArgs<string>) => Promise<UserRoleModel | null>;
 

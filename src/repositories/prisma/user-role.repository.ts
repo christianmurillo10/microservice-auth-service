@@ -14,7 +14,7 @@ import {
   CountArgs
 } from "../../shared/types/repository.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
-import { userRoleSubsets } from "../../shared/helpers/select-subset.helper";
+import { permissionSubsets, rolePermissionSubsets, roleSubsets, userRoleSubsets } from "../../shared/helpers/select-subset.helper";
 
 export default class PrismaUserRoleRepository implements UserRoleRepository {
   private client;
@@ -82,13 +82,18 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
       select: {
         ...userRoleSubsets,
         role: {
+          select: {
+            ...roleSubsets
+          },
           include: {
             rolePermissions: {
+              select: {
+                ...rolePermissionSubsets
+              },
               include: {
                 permission: {
                   select: {
-                    action: true,
-                    resource: true,
+                    ...permissionSubsets
                   },
                 }
               }
@@ -159,8 +164,8 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
   create = async (
     args: CreateArgs<UserRoleModel>
   ): Promise<UserRoleModel> => {
-    const exclude = setSelectExclude(args.exclude!);
     const { user, role, ...params } = args.params;
+    const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
         ...userRoleSubsets,

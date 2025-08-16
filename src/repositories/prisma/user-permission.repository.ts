@@ -145,13 +145,14 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
   create = async (
     args: CreateArgs<UserPermissionModel>
   ): Promise<UserPermissionModel> => {
+    const { user, permission, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
         ...userPermissionSubsets,
         ...exclude
       },
-      data: args.params
+      data: params
     });
 
     return new UserPermissionModel(data);

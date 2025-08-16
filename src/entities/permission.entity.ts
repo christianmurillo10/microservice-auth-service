@@ -11,6 +11,6 @@ export default interface Permission {
   updatedAt: Date;
   deletedAt?: Date | null;
   organization?: Organization;
-  rolePermiossions?: RolePermission[];
+  rolePermissions?: RolePermission[];
   userPermissions?: UserPermission[];
 };

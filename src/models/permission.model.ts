@@ -12,7 +12,7 @@ class PermissionModel implements Permission {
   updatedAt: Date = new Date();
   deletedAt?: Date | null = null;
   organization?: Organization;
-  rolePermiossions?: RolePermission[];
+  rolePermissions?: RolePermission[];
   userPermissions?: UserPermission[];
 
   constructor(props: Permission) {
@@ -24,7 +24,7 @@ class PermissionModel implements Permission {
     this.updatedAt = props.updatedAt;
     this.deletedAt = props.deletedAt;
     this.organization = props.organization;
-    this.rolePermiossions = props.rolePermiossions;
+    this.rolePermissions = props.rolePermissions;
     this.userPermissions = props.userPermissions;
   };
 };

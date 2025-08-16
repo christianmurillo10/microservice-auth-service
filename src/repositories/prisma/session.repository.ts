@@ -96,13 +96,14 @@ export default class PrismaSessionRepository implements SessionRepository {
   create = async (
     args: CreateArgs<SessionModel>
   ): Promise<SessionModel> => {
+    const { user, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
         ...sessionSubsets,
         ...exclude
       },
-      data: args.params
+      data: params
     });
 
     return new SessionModel({
@@ -114,6 +115,7 @@ export default class PrismaSessionRepository implements SessionRepository {
   update = async (
     args: UpdateArgs<string, SessionModel>
   ): Promise<SessionModel> => {
+    const { user, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -122,7 +124,7 @@ export default class PrismaSessionRepository implements SessionRepository {
       },
       where: { id: args.id },
       data: {
-        ...args.params,
+        ...params,
         updatedAt: new Date(),
       }
     });

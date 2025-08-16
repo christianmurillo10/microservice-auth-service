@@ -96,13 +96,14 @@ export default class PrismaPermissionRepository implements PermissionRepository 
   create = async (
     args: CreateArgs<PermissionModel>
   ): Promise<PermissionModel> => {
+    const { organization, rolePermissions, userPermissions, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
         ...permissionSubsets,
         ...exclude
       },
-      data: args.params
+      data: params
     });
 
     return new PermissionModel(data);
@@ -111,6 +112,7 @@ export default class PrismaPermissionRepository implements PermissionRepository 
   update = async (
     args: UpdateArgs<string, PermissionModel>
   ): Promise<PermissionModel> => {
+    const { organization, rolePermissions, userPermissions, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -119,7 +121,7 @@ export default class PrismaPermissionRepository implements PermissionRepository 
       },
       where: { id: args.id },
       data: {
-        ...args.params,
+        ...params,
         updatedAt: new Date(),
       }
     });

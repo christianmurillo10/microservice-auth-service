@@ -118,13 +118,14 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
   create = async (
     args: CreateArgs<RolePermissionModel>
   ): Promise<RolePermissionModel> => {
+    const { role, permission, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
         ...rolePermissionSubsets,
         ...exclude
       },
-      data: args.params
+      data: params
     });
 
     return new RolePermissionModel(data);

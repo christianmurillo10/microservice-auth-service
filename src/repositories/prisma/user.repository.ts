@@ -81,13 +81,14 @@ export default class PrismaUserRepository implements UserRepository {
   create = async (
     args: CreateArgs<UserModel>
   ): Promise<UserModel> => {
+    const { organization, session, userRoles, userPermissions, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
         ...userSubsets,
         ...exclude
       },
-      data: args.params
+      data: params
     });
 
     return new UserModel({
@@ -99,6 +100,7 @@ export default class PrismaUserRepository implements UserRepository {
   update = async (
     args: UpdateArgs<string, UserModel>
   ): Promise<UserModel> => {
+    const { organization, session, userRoles, userPermissions, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -107,7 +109,7 @@ export default class PrismaUserRepository implements UserRepository {
       },
       where: { id: args.id },
       data: {
-        ...args.params,
+        ...params,
         updatedAt: new Date(),
       }
     });

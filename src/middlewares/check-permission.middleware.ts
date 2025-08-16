@@ -22,6 +22,7 @@ const checkPermission = (action: string, resource: string) => {
         throw new UnauthorizedException([MESSAGE_DATA_NOT_AUTHORIZED])
       }
 
+      // Check if the user has permission directly
       const userPermissions = await userPermissionService.getAllUserBasedPermissions({
         userId: authId,
         action: action,
@@ -30,9 +31,10 @@ const checkPermission = (action: string, resource: string) => {
       });
 
       if (userPermissions.length > 0) {
-        next();
+        return next();
       }
 
+      // Check if the user has permissions through roles
       const rolePermissions = await userRoleService.getAllUserRoleBasedPermissions({
         userId: authId,
         action: action,
@@ -40,13 +42,16 @@ const checkPermission = (action: string, resource: string) => {
         organizationId: organizationId,
       });
       const hasRBACPermission = rolePermissions.some((userRole) =>
-        userRole.role?.rolePermissions.some(
-          (rp) => rp.permission.action === action && rp.permission.resource === resource
+        userRole.role &&
+        userRole.role.rolePermissions &&
+        userRole.role.rolePermissions.length > 0 &&
+        userRole.role.rolePermissions.some(
+          (rp) => rp.permission?.action === action && rp.permission.resource === resource
         )
       );
 
       if (hasRBACPermission) {
-        next();
+        return next();
       }
 
       throw new ForbiddenException([MESSAGE_DATA_NO_PERMISSION]);

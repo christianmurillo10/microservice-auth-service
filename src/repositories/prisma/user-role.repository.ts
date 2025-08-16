@@ -83,14 +83,10 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
         ...userRoleSubsets,
         role: {
           select: {
-            ...roleSubsets
-          },
-          include: {
+            ...roleSubsets,
             rolePermissions: {
               select: {
-                ...rolePermissionSubsets
-              },
-              include: {
+                ...rolePermissionSubsets,
                 permission: {
                   select: {
                     ...permissionSubsets
@@ -98,7 +94,7 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
                 }
               }
             }
-          }
+          },
         }
       },
       where: {

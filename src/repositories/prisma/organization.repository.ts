@@ -118,13 +118,14 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
   create = async (
     args: CreateArgs<OrganizationModel>
   ): Promise<OrganizationModel> => {
+    const { users, roles, permissions, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
         ...organizationSubsets,
         ...exclude
       },
-      data: args.params
+      data: params
     });
 
     return new OrganizationModel(data);
@@ -133,6 +134,7 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
   update = async (
     args: UpdateArgs<string, OrganizationModel>
   ): Promise<OrganizationModel> => {
+    const { users, roles, permissions, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -141,7 +143,7 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
       },
       where: { id: args.id },
       data: {
-        ...args.params,
+        ...params,
         updatedAt: new Date(),
       }
     });

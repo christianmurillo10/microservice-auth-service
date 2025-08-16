@@ -40,10 +40,11 @@ const checkPermission = (action: string, resource: string) => {
         organizationId: organizationId,
       });
       const hasRBACPermission = rolePermissions.some((userRole) =>
-        userRole.role?.permissions.some(
+        userRole.role?.rolePermissions.some(
           (rp) => rp.permission.action === action && rp.permission.resource === resource
         )
       );
+
       if (hasRBACPermission) {
         next();
       }

@@ -1,4 +1,4 @@
-import { UserAccessTypeValue } from "./user.entity";
+import User, { UserAccessTypeValue } from "./user.entity";
 
 export default interface Session {
   id?: string;
@@ -10,4 +10,5 @@ export default interface Session {
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date | null;
+  user?: User;
 };

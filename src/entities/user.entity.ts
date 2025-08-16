@@ -1,3 +1,8 @@
+import Organization from "./organization.entity";
+import Session from "./session.entity";
+import UserPermission from "./user-permission.entity";
+import UserRole from "./user-role.entity";
+
 export enum UserAccessType {
   Portal = "PORTAL",
   Organization = "ORGANIZATION",
@@ -20,4 +25,8 @@ export default interface User {
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date | null;
+  organization?: Organization;
+  session?: Session[];
+  userRoles?: UserRole[];
+  userPermissions?: UserPermission[];
 };

@@ -160,12 +160,13 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
     args: CreateArgs<UserRoleModel>
   ): Promise<UserRoleModel> => {
     const exclude = setSelectExclude(args.exclude!);
+    const { user, role, ...params } = args.params;
     const data = await this.client.create({
       select: {
         ...userRoleSubsets,
         ...exclude
       },
-      data: args.params
+      data: params
     });
 
     return new UserRoleModel(data);

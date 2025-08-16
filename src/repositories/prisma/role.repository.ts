@@ -95,13 +95,14 @@ export default class PrismaRoleRepository implements RoleRepository {
   create = async (
     args: CreateArgs<RoleModel>
   ): Promise<RoleModel> => {
+    const { organization, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
         ...roleSubsets,
         ...exclude
       },
-      data: args.params
+      data: params
     });
 
     return new RoleModel(data);
@@ -110,6 +111,7 @@ export default class PrismaRoleRepository implements RoleRepository {
   update = async (
     args: UpdateArgs<string, RoleModel>
   ): Promise<RoleModel> => {
+    const { organization, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -118,7 +120,7 @@ export default class PrismaRoleRepository implements RoleRepository {
       },
       where: { id: args.id },
       data: {
-        ...args.params,
+        ...params,
         updatedAt: new Date(),
       }
     });

@@ -1,5 +1,5 @@
 import Session from "../entities/session.entity";
-import { UserAccessTypeValue, UserAccessType } from "../entities/user.entity";
+import User, { UserAccessTypeValue, UserAccessType } from "../entities/user.entity";
 
 class SessionModel implements Session {
   id?: string;
@@ -11,6 +11,7 @@ class SessionModel implements Session {
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
   deletedAt?: Date | null = null;
+  user?: User;
 
   constructor(props: Session) {
     this.id = props.id;
@@ -22,6 +23,7 @@ class SessionModel implements Session {
     this.createdAt = props.createdAt;
     this.updatedAt = props.updatedAt;
     this.deletedAt = props.deletedAt;
+    this.user = props.user;
   };
 };
 

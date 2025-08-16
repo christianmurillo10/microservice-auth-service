@@ -1,4 +1,7 @@
-import Organization from "../entities/organization.enity";
+import Organization from "../entities/organization.entity";
+import Permission from "../entities/permission.entity";
+import Role from "../entities/role.entity";
+import User from "../entities/user.entity";
 
 class OrganizationModel implements Organization {
   id?: string;
@@ -7,6 +10,9 @@ class OrganizationModel implements Organization {
   createdAt: Date = new Date();
   updatedAt: Date = new Date();
   deletedAt?: Date | null = null;
+  users?: User[];
+  roles?: Role[];
+  permissions?: Permission[];
 
   constructor(props: Organization) {
     this.id = props.id;
@@ -15,6 +21,9 @@ class OrganizationModel implements Organization {
     this.createdAt = props.createdAt;
     this.updatedAt = props.updatedAt;
     this.deletedAt = props.deletedAt;
+    this.users = props.users;
+    this.roles = props.roles;
+    this.permissions = props.permissions;
   };
 };
 

@@ -91,8 +91,6 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
       where: {
         userId: args.userId,
         permission: {
-          action: args.action,
-          resource: args.resource,
           organizationId: args.organizationId,
         },
       },

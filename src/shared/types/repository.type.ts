@@ -34,8 +34,6 @@ export type FindAllByUserIdArgs = {
 export type FindAllRoleOrUserBasedPermissionsArgs = {
   userId: string,
   organizationId: string,
-  action: string,
-  resource: string
 };
 
 export type FindByIdArgs<I> = {

@@ -25,8 +25,6 @@ const checkPermission = (action: string, resource: string) => {
       // Check if the user has permission directly
       const userPermissions = await userPermissionService.getAllUserBasedPermissions({
         userId: authId,
-        action: action,
-        resource: resource,
         organizationId: organizationId,
       });
 
@@ -37,8 +35,6 @@ const checkPermission = (action: string, resource: string) => {
       // Check if the user has permissions through roles
       const rolePermissions = await userRoleService.getAllUserRoleBasedPermissions({
         userId: authId,
-        action: action,
-        resource: resource,
         organizationId: organizationId,
       });
       const hasRBACPermission = rolePermissions.some((userRole) =>

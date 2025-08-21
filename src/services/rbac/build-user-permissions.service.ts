@@ -5,6 +5,7 @@ import redisConfig from "../../config/redis.config";
 type State = {
   userId: string;
   organizationId: string;
+  expireInMinutes: number;
 };
 
 export default class BuildUserPermissionsService {
@@ -20,11 +21,12 @@ export default class BuildUserPermissionsService {
   };
 
   private saveToRedis = async (userId: string, permissions: Record<string, string[]>) => {
+    const expireInSeconds = this.state.expireInMinutes * 60;
     await redisConfig.set(
       `user_permissions:${userId}`,
       JSON.stringify(permissions),
       "EX",
-      3600
+      expireInSeconds
     );
   };
 

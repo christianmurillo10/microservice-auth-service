@@ -66,9 +66,10 @@ export default class LoginService {
     email: string,
     accessType: UserAccessTypeValue,
     subject: number,
-    loggedDate: Date
+    loggedDate: Date,
+    expireInMinutes: number
   ) => {
-    const accessTokenExpiryDate = addMinutesToDate(loggedDate, 30);
+    const accessTokenExpiryDate = addMinutesToDate(loggedDate, expireInMinutes);
     const accessTokenExpiry = accessTokenExpiryDate.getTime() / 1000;
     const accessToken = generateAccessToken(
       id,
@@ -100,6 +101,7 @@ export default class LoginService {
   private userUpdates = async (): Promise<Output> => {
     const { input, userRequestHeader } = this.state;
     const { email, password } = input;
+    const expireInMinutes = 30;
     const loggedDate = new Date();
     const userService = new UserService();
     const record = await this.getUser(userService, email);
@@ -110,11 +112,11 @@ export default class LoginService {
     // User updates
     const newRecord = await this.updateUser(userService, record, loggedDate);
 
-
     // Build and cache permissions in Redis
     const buildUserPermissionsService = new BuildUserPermissionsService({
       userId: newRecord.id as string,
-      organizationId: newRecord.organizationId as string
+      organizationId: newRecord.organizationId as string,
+      expireInMinutes
     });
     await buildUserPermissionsService.execute();
 
@@ -124,7 +126,8 @@ export default class LoginService {
       newRecord.email,
       newRecord.accessType,
       newRecord.organizationId as unknown as number,
-      loggedDate
+      loggedDate,
+      expireInMinutes
     );
     const session = await this.createSession(accessToken, record.accessType, record.id as string);
 

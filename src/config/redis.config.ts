@@ -4,7 +4,7 @@ const redisUrl = process.env.REDIS_URL || "";
 const redis = new Redis(redisUrl);
 
 redis.on("connect", () => {
-  console.log("Connected to Redis");
+  console.info("Connected to redis");
 });
 
 redis.on("error", (err) => {

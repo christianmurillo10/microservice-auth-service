@@ -1,5 +1,6 @@
 import { Router } from "express";
 import authenticate from "../../middlewares/authenticate.middleware";
+import authorize from "../../middlewares/authorize.middleware";
 import {
   list as listValidation,
   create as createValidation,
@@ -10,11 +11,51 @@ import * as PermissionController from "../controllers/permission";
 
 const router = Router({ mergeParams: true });
 
-router.get("/", authenticate, listValidation, PermissionController.list);
-router.post("/", authenticate, createValidation, PermissionController.create);
-router.get("/:id", authenticate, PermissionController.read);
-router.put("/:id", authenticate, updateValidation, PermissionController.update);
-router.delete("/:id", authenticate, PermissionController.remove);
-router.post("/delete-by-ids", authenticate, deleteByIdsValidation, PermissionController.deleteByIds);
+router.get(
+  "/",
+  authenticate,
+  authorize("list", "permission"), 
+  listValidation,
+  PermissionController.list
+);
+
+router.post(
+  "/",
+  authenticate,
+  authorize("create", "permission"), 
+  createValidation,
+  PermissionController.create
+);
+
+router.get(
+  "/:id",
+  authenticate,
+  authorize("read", "permission"), 
+  PermissionController.read
+);
+
+router.put(
+  "/:id",
+  authenticate,
+  authorize("update", "permission"), 
+  updateValidation,
+  PermissionController.update
+);
+
+router.delete(
+  "/:id",
+  authenticate,
+  authorize("delete", "permission"), 
+  PermissionController.remove
+);
+
+router.post(
+  "/delete-by-ids",
+  authenticate,
+  authorize("delete", "permission"), 
+  deleteByIdsValidation,
+  PermissionController.deleteByIds
+);
+
 
 export default router;

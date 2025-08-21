@@ -7,6 +7,7 @@ import { addDaysToDate, addMinutesToDate } from "../shared/helpers/common.helper
 import { generateAccessToken } from "../shared/helpers/jwt.helper";
 import SessionService from "./session.service";
 import UserService from "./user.service";
+import BuildUserPermissionsService from "./rbac/build-user-permissions.service";
 import SessionModel from "../models/session.model";
 
 type State = {
@@ -56,8 +57,9 @@ export default class RefreshTokenService {
     email: string,
     accessType: UserAccessTypeValue,
     subject: number,
+    expireInMinutes: number
   ) => {
-    const accessTokenExpiryDate = addMinutesToDate(new Date(), 30);
+    const accessTokenExpiryDate = addMinutesToDate(new Date(), expireInMinutes);
     const accessTokenExpiry = accessTokenExpiryDate.getTime() / 1000;
     const accessToken = generateAccessToken(
       id,
@@ -78,13 +80,24 @@ export default class RefreshTokenService {
     // Validate if refresh token date was expired
     await this.validateRefreshToken(session);
 
-    // Generate Access Token
+    const expireInMinutes = 30;
     const record = await this.getUser(session.userId);
+
+    // Build and cache permissions in Redis
+    const buildUserPermissionsService = new BuildUserPermissionsService({
+      userId: record.id as string,
+      organizationId: record.organizationId as string,
+      expireInMinutes
+    });
+    await buildUserPermissionsService.execute();
+
+    // Generate Access Token
     const { accessTokenExpiryDate, accessToken } = this.getAccessToken(
       record.id as unknown as number,
       record.email,
       session.accessType,
       record.organizationId as unknown as number,
+      expireInMinutes
     );
 
     // Save data to session table

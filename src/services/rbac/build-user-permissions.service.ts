@@ -49,7 +49,6 @@ export default class BuildUserPermissionsService {
         permissions[up.permission.resource].push(up.permission.action);
       });
 
-      console.log("User permissions:", permissions);
       await this.saveToRedis(userId, permissions);
       return;
     }
@@ -60,7 +59,7 @@ export default class BuildUserPermissionsService {
       organizationId,
     });
 
-    if (rolePermissions.length === 0) {
+    if (rolePermissions.length > 0) {
       rolePermissions.forEach(rp => {
         if (!rp.role || !rp.role.rolePermissions) return;
 
@@ -75,12 +74,10 @@ export default class BuildUserPermissionsService {
         });
       });
 
-      console.log("Role permissions:", permissions);
       await this.saveToRedis(userId, permissions);
       return;
     }
 
-    console.log("No permissions found for user or roles.");
     await this.saveToRedis(userId, permissions);
   };
 };

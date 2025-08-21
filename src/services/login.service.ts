@@ -9,6 +9,7 @@ import { generateAccessToken } from "../shared/helpers/jwt.helper";
 import { comparePassword } from "../shared/utils/bcrypt";
 import SessionService from "./session.service";
 import UserService from "./user.service";
+import BuildUserPermissionsService from "./rbac/build-user-permissions.service";
 import { UserAccessTypeValue } from "../entities/user.entity";
 import UserKafkaProducer from "../events/producer/user.producer";
 
@@ -108,6 +109,14 @@ export default class LoginService {
 
     // User updates
     const newRecord = await this.updateUser(userService, record, loggedDate);
+
+
+    // Build and cache permissions in Redis
+    const buildUserPermissionsService = new BuildUserPermissionsService({
+      userId: newRecord.id as string,
+      organizationId: newRecord.organizationId as string
+    });
+    await buildUserPermissionsService.execute();
 
     // Generate access token and create session
     const { accessTokenExpiryDate, accessToken } = this.getAccessToken(

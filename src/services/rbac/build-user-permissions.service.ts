@@ -7,8 +7,6 @@ type State = {
   organizationId: string;
 };
 
-type Output = Record<string, string[]>;
-
 export default class BuildUserPermissionsService {
   private state: State;
 
@@ -30,7 +28,7 @@ export default class BuildUserPermissionsService {
     );
   };
 
-  execute = async (): Promise<Output> => {
+  execute = async (): Promise<void> => {
     const { userId, organizationId } = this.state;
     const permissions: Record<string, string[]> = {};
 
@@ -51,9 +49,9 @@ export default class BuildUserPermissionsService {
         permissions[up.permission.resource].push(up.permission.action);
       });
 
+      console.log("User permissions:", permissions);
       await this.saveToRedis(userId, permissions);
-
-      return permissions;
+      return;
     }
 
     // Fetch all permissions assigned through roles
@@ -77,13 +75,12 @@ export default class BuildUserPermissionsService {
         });
       });
 
+      console.log("Role permissions:", permissions);
       await this.saveToRedis(userId, permissions);
-
-      return permissions;
+      return;
     }
 
+    console.log("No permissions found for user or roles.");
     await this.saveToRedis(userId, permissions);
-
-    return permissions;
   };
 };

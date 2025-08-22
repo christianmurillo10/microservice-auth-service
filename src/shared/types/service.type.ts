@@ -25,8 +25,7 @@ export type GetAllByRoleIdArgs = {
 };
 
 export type GetAllRoleOrUserBasedPermissionsArgs = {
-  userId: string,
-  organizationId: string
+  userId: string
 };
 
 export type GetByIdArgs<I> = {

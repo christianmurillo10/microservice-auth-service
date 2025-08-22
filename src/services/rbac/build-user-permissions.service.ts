@@ -4,7 +4,6 @@ import redisConfig from "../../config/redis.config";
 
 type State = {
   userId: string;
-  organizationId: string;
   expireInMinutes: number;
 };
 
@@ -31,14 +30,11 @@ export default class BuildUserPermissionsService {
   };
 
   execute = async (): Promise<void> => {
-    const { userId, organizationId } = this.state;
+    const { userId } = this.state;
     const permissions: Record<string, string[]> = {};
 
     // Fetch all permissions directly assigned to the user
-    const userPermissions = await this.userPermissionService.getAllUserBasedPermissions({
-      userId,
-      organizationId,
-    });
+    const userPermissions = await this.userPermissionService.getAllUserBasedPermissions({ userId });
 
     if (userPermissions.length > 0) {
       userPermissions.forEach(up => {
@@ -56,10 +52,7 @@ export default class BuildUserPermissionsService {
     }
 
     // Fetch all permissions assigned through roles
-    const rolePermissions = await this.userRoleService.getAllUserRoleBasedPermissions({
-      userId,
-      organizationId,
-    });
+    const rolePermissions = await this.userRoleService.getAllUserRoleBasedPermissions({ userId });
 
     if (rolePermissions.length > 0) {
       rolePermissions.forEach(rp => {

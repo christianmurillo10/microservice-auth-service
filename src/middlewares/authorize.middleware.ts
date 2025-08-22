@@ -27,7 +27,6 @@ const authorize = (action: string, resource: string) =>
       } else {
         const buildUserPermissionsService = new BuildUserPermissionsService({
           userId: authId,
-          organizationId,
           expireInMinutes: 30
         });
         await buildUserPermissionsService.execute();

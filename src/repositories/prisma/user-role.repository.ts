@@ -98,10 +98,7 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
         }
       },
       where: {
-        userId: args.userId,
-        role: {
-          organizationId: args.organizationId
-        }
+        userId: args.userId
       },
     });
 

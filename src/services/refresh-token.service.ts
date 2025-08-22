@@ -86,7 +86,6 @@ export default class RefreshTokenService {
     // Build and cache permissions in Redis
     const buildUserPermissionsService = new BuildUserPermissionsService({
       userId: record.id as string,
-      organizationId: record.organizationId as string,
       expireInMinutes
     });
     await buildUserPermissionsService.execute();

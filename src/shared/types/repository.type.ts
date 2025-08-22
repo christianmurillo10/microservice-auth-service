@@ -32,8 +32,7 @@ export type FindAllByUserIdArgs = {
 };
 
 export type FindAllRoleOrUserBasedPermissionsArgs = {
-  userId: string,
-  organizationId: string,
+  userId: string
 };
 
 export type FindByIdArgs<I> = {

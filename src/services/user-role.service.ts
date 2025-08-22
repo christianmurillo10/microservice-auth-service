@@ -34,10 +34,7 @@ export default class UserRoleService {
   };
 
   getAllUserRoleBasedPermissions = async (args: GetAllRoleOrUserBasedPermissionsArgs): Promise<UserRoleModel[]> => {
-    const record = await this.repository.findAllUserRoleBasedPermissions({
-      userId: args.userId,
-      organizationId: args.organizationId,
-    });
+    const record = await this.repository.findAllUserRoleBasedPermissions({ userId: args.userId });
 
     return record;
   };

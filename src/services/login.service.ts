@@ -115,7 +115,6 @@ export default class LoginService {
     // Build and cache permissions in Redis
     const buildUserPermissionsService = new BuildUserPermissionsService({
       userId: newRecord.id as string,
-      organizationId: newRecord.organizationId as string,
       expireInMinutes
     });
     await buildUserPermissionsService.execute();

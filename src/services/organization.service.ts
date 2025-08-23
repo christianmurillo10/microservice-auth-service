@@ -2,7 +2,7 @@ import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaOrganizationRepository from "../repositories/prisma/organization.repository";
-import OrganizationModel from "../models/organization.model";
+import OrganizationEntity from "../entities/organization.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs } from "../shared/types/service.type";
 import { setUploadPath, uploadFile } from "../shared/helpers/upload.helper";
@@ -14,7 +14,7 @@ export default class OrganizationService {
     this.repository = new PrismaOrganizationRepository();
   };
 
-  getAll = async (args?: GetAllArgs): Promise<OrganizationModel[]> => {
+  getAll = async (args?: GetAllArgs): Promise<OrganizationEntity[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query,
@@ -24,7 +24,7 @@ export default class OrganizationService {
     return record;
   };
 
-  getAllBetweenCreatedAt = async (args: GetAllBetweenCreatedAtArgs): Promise<OrganizationModel[]> => {
+  getAllBetweenCreatedAt = async (args: GetAllBetweenCreatedAtArgs): Promise<OrganizationEntity[]> => {
     const record = await this.repository.findAllBetweenCreatedAt({
       ...args,
       exclude: ["deletedAt"]
@@ -33,7 +33,7 @@ export default class OrganizationService {
     return record;
   };
 
-  getById = async (id: string): Promise<OrganizationModel> => {
+  getById = async (id: string): Promise<OrganizationEntity> => {
     const record = await this.repository.findById({
       id,
       exclude: ["deletedAt"]
@@ -46,7 +46,7 @@ export default class OrganizationService {
     return record;
   };
 
-  getByName = async (name: string): Promise<OrganizationModel> => {
+  getByName = async (name: string): Promise<OrganizationEntity> => {
     const record = await this.repository.findByName({
       name,
       exclude: ["deletedAt"]
@@ -59,10 +59,10 @@ export default class OrganizationService {
     return record;
   };
 
-  save = async (data: OrganizationModel, file?: Express.Multer.File): Promise<OrganizationModel> => {
+  save = async (data: OrganizationEntity, file?: Express.Multer.File): Promise<OrganizationEntity> => {
     const uploadPath = setUploadPath(file, this.repository.logoPath);
-    let record: OrganizationModel;
-    let newData = new OrganizationModel(data);
+    let record: OrganizationEntity;
+    let newData = new OrganizationEntity(data);
     let option = {
       params: newData,
       exclude: ["deletedAt"]
@@ -89,7 +89,7 @@ export default class OrganizationService {
     return record;
   };
 
-  delete = async (id: string): Promise<OrganizationModel> => {
+  delete = async (id: string): Promise<OrganizationEntity> => {
     const record = await this.repository.softDelete({ id: id });
     return record
   };

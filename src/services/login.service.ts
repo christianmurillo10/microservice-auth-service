@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
-import UserModel from "../models/user.model";
-import UserRequestHeaderModel from "../models/user-request-header.model";
+import UserEntity from "../entities/user.entity";
+import UserRequestHeaderEntity from "../entities/user-request-header.entity";
 import { MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS, MESSAGE_DATA_NOT_IMPLEMENTED } from "../shared/constants/message.constant";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
 import NotFoundException from "../shared/exceptions/not-found.exception";
@@ -10,7 +10,7 @@ import { comparePassword } from "../shared/utils/bcrypt";
 import SessionService from "./session.service";
 import UserService from "./user.service";
 import BuildUserPermissionsService from "./rbac/build-user-permissions.service";
-import { UserAccessTypeValue } from "../entities/user.entity";
+import { UserAccessTypeValue } from "../models/user.model";
 import UserKafkaProducer from "../events/producer/user.producer";
 
 type State = {
@@ -19,7 +19,7 @@ type State = {
     email: string,
     password: string,
   }
-  userRequestHeader: UserRequestHeaderModel
+  userRequestHeader: UserRequestHeaderEntity
 };
 
 type Output = {
@@ -45,7 +45,7 @@ export default class LoginService {
     };
   };
 
-  private getUser = async (userService: UserService, email: string): Promise<UserModel> => {
+  private getUser = async (userService: UserService, email: string): Promise<UserEntity> => {
     try {
       return userService.getByUsernameOrEmail(email);
     } catch (error) {
@@ -54,7 +54,7 @@ export default class LoginService {
     }
   };
 
-  private updateUser = async (userService: UserService, user: UserModel, loggedDate: Date) => userService
+  private updateUser = async (userService: UserService, user: UserEntity, loggedDate: Date) => userService
     .save({
       ...user,
       isLogged: true,

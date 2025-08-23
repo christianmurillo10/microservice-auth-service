@@ -1,4 +1,4 @@
-import PermissionModel from "../models/permission.model";
+import PermissionEntity from "../entities/permission.entity";
 import {
   CountArgs,
   CreateArgs,
@@ -12,17 +12,17 @@ import {
 import { GenericObject } from "../shared/types/common.type";
 
 export default interface PermissionRepository {
-  findAll: (args: FindAllArgs) => Promise<PermissionModel[]>;
+  findAll: (args: FindAllArgs) => Promise<PermissionEntity[]>;
 
-  findById: (args: FindByIdArgs<string>) => Promise<PermissionModel | null>;
+  findById: (args: FindByIdArgs<string>) => Promise<PermissionEntity | null>;
 
-  findByOrganizationIdAndActionAndResource: (args: FindByOrganizationIdAndActionAndResourceArgs) => Promise<PermissionModel | null>;
+  findByOrganizationIdAndActionAndResource: (args: FindByOrganizationIdAndActionAndResourceArgs) => Promise<PermissionEntity | null>;
 
-  create: (args: CreateArgs<PermissionModel>) => Promise<PermissionModel>;
+  create: (args: CreateArgs<PermissionEntity>) => Promise<PermissionEntity>;
 
-  update: (args: UpdateArgs<string, PermissionModel>) => Promise<PermissionModel>;
+  update: (args: UpdateArgs<string, PermissionEntity>) => Promise<PermissionEntity>;
 
-  softDelete: (args: SoftDeleteArgs<string>) => Promise<PermissionModel>;
+  softDelete: (args: SoftDeleteArgs<string>) => Promise<PermissionEntity>;
 
   softDeleteMany: (args: SoftDeleteManyArgs<string>) => Promise<GenericObject>;
 

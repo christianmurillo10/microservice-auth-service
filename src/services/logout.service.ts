@@ -3,15 +3,15 @@ import SessionService from "./session.service";
 import UserService from "./user.service";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
-import UserRequestHeaderModel from "../models/user-request-header.model";
-import SessionModel from "../models/session.model";
-import UserModel from "../models/user.model";
+import UserRequestHeaderEntity from "../entities/user-request-header.entity";
+import SessionEntity from "../entities/session.entity";
+import UserEntity from "../entities/user.entity";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
 import UserKafkaProducer from "../events/producer/user.producer";
 
 type State = {
   token: string,
-  userRequestHeader: UserRequestHeaderModel
+  userRequestHeader: UserRequestHeaderEntity
 };
 
 export default class LogoutService {
@@ -23,7 +23,7 @@ export default class LogoutService {
     this.sessionService = new SessionService();
   };
 
-  private getSession = async (token: string): Promise<SessionModel> => {
+  private getSession = async (token: string): Promise<SessionEntity> => {
     try {
       return this.sessionService.getByAccessToken(token)
     } catch (error) {
@@ -32,7 +32,7 @@ export default class LogoutService {
     }
   };
 
-  private getUser = async (userService: UserService, userId: string): Promise<UserModel> => {
+  private getUser = async (userService: UserService, userId: string): Promise<UserEntity> => {
     try {
       return userService.getById(userId);
     } catch (error) {
@@ -41,13 +41,13 @@ export default class LogoutService {
     }
   };
 
-  private updateUser = async (userService: UserService, user: UserModel) => userService
+  private updateUser = async (userService: UserService, user: UserEntity) => userService
     .save({
       ...user,
       isLogged: false
     });
 
-  private userUpdates = async (session: SessionModel) => {
+  private userUpdates = async (session: SessionEntity) => {
     // User updates
     const userService = new UserService();
     const record = await this.getUser(userService, session.userId);

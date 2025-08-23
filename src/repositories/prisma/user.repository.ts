@@ -1,5 +1,5 @@
 import { PrismaClient } from "../../prisma/client";
-import UserModel from "../../models/user.model";
+import UserEntity from "../../entities/user.entity";
 import UserRepository from "../user.interface";
 import {
   FindByIdArgs,
@@ -9,7 +9,7 @@ import {
 } from "../../shared/types/repository.type";
 import { setSelectExclude } from "../../shared/helpers/common.helper";
 import { userSubsets } from "../../shared/helpers/select-subset.helper";
-import { UserAccessTypeValue } from "../../entities/user.entity";
+import { UserAccessTypeValue } from "../../models/user.model";
 
 export default class PrismaUserRepository implements UserRepository {
   private client;
@@ -21,7 +21,7 @@ export default class PrismaUserRepository implements UserRepository {
 
   findById = async (
     args: FindByIdArgs<string>
-  ): Promise<UserModel | null> => {
+  ): Promise<UserEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -37,7 +37,7 @@ export default class PrismaUserRepository implements UserRepository {
 
     if (!res) return null;
 
-    return new UserModel({
+    return new UserEntity({
       ...res,
       accessType: res.accessType as UserAccessTypeValue
     });
@@ -45,7 +45,7 @@ export default class PrismaUserRepository implements UserRepository {
 
   findByUsernameOrEmail = async (
     args: FindByUsernameOrEmailArgs
-  ): Promise<UserModel | null> => {
+  ): Promise<UserEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -72,15 +72,15 @@ export default class PrismaUserRepository implements UserRepository {
 
     if (!res) return null;
 
-    return new UserModel({
+    return new UserEntity({
       ...res,
       accessType: res.accessType as UserAccessTypeValue
     });
   };
 
   create = async (
-    args: CreateArgs<UserModel>
-  ): Promise<UserModel> => {
+    args: CreateArgs<UserEntity>
+  ): Promise<UserEntity> => {
     const { organization, session, userRoles, userPermissions, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
@@ -91,15 +91,15 @@ export default class PrismaUserRepository implements UserRepository {
       data: params
     });
 
-    return new UserModel({
+    return new UserEntity({
       ...data,
       accessType: data.accessType as UserAccessTypeValue
     });
   };
 
   update = async (
-    args: UpdateArgs<string, UserModel>
-  ): Promise<UserModel> => {
+    args: UpdateArgs<string, UserEntity>
+  ): Promise<UserEntity> => {
     const { organization, session, userRoles, userPermissions, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
@@ -114,7 +114,7 @@ export default class PrismaUserRepository implements UserRepository {
       }
     });
 
-    return new UserModel({
+    return new UserEntity({
       ...data,
       accessType: data.accessType as UserAccessTypeValue
     });

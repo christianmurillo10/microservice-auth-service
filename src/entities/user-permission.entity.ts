@@ -1,11 +1,23 @@
-import User from "./user.entity";
-import Permission from "./permission.entity";
+import Permission from "../models/permission.model";
+import UserPermission from "../models/user-permission.model";
+import User from "../models/user.model";
 
-export default interface UserPermission {
+class UserPermissionEntity implements UserPermission {
   id?: string;
   userId: string;
   permissionId: string;
-  grantedAt: Date;
+  grantedAt: Date = new Date();
   user?: User;
   permission?: Permission;
+
+  constructor(props: UserPermission) {
+    this.id = props.id;
+    this.userId = props.userId;
+    this.permissionId = props.permissionId;
+    this.grantedAt = props.grantedAt;
+    this.user = props.user;
+    this.permission = props.permission;
+  };
 };
+
+export default UserPermissionEntity;

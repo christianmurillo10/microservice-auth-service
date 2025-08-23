@@ -1,7 +1,7 @@
 import { PrismaClient } from "../prisma/client";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaUserRoleRepository from "../repositories/prisma/user-role.repository";
-import UserRoleModel from "../models/user-role.model";
+import UserRoleEntity from "../entities/user-role.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllByUserIdArgs, GetAllRoleOrUserBasedPermissionsArgs } from "../shared/types/service.type";
 
@@ -14,7 +14,7 @@ export default class UserRoleService {
     this.prisma = new PrismaClient();
   };
 
-  getAll = async (args?: GetAllArgs): Promise<UserRoleModel[]> => {
+  getAll = async (args?: GetAllArgs): Promise<UserRoleEntity[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query
@@ -23,7 +23,7 @@ export default class UserRoleService {
     return record;
   };
 
-  getAllByUsereId = async (args: GetAllByUserIdArgs): Promise<UserRoleModel[]> => {
+  getAllByUsereId = async (args: GetAllByUserIdArgs): Promise<UserRoleEntity[]> => {
     const record = await this.repository.findAllByUserId({
       userId: args.userId,
       condition: args.condition,
@@ -33,13 +33,13 @@ export default class UserRoleService {
     return record;
   };
 
-  getAllUserRoleBasedPermissions = async (args: GetAllRoleOrUserBasedPermissionsArgs): Promise<UserRoleModel[]> => {
+  getAllUserRoleBasedPermissions = async (args: GetAllRoleOrUserBasedPermissionsArgs): Promise<UserRoleEntity[]> => {
     const record = await this.repository.findAllUserRoleBasedPermissions({ userId: args.userId });
 
     return record;
   };
 
-  getById = async (id: string): Promise<UserRoleModel> => {
+  getById = async (id: string): Promise<UserRoleEntity> => {
     const record = await this.repository.findById({ id });
 
     if (!record) {
@@ -49,7 +49,7 @@ export default class UserRoleService {
     return record;
   };
 
-  getByUserIdAndRoleId = async (userId: string, roleId: string): Promise<UserRoleModel> => {
+  getByUserIdAndRoleId = async (userId: string, roleId: string): Promise<UserRoleEntity> => {
     const record = await this.repository.findByUserIdAndRoleId({ userId, roleId });
 
     if (!record) {
@@ -59,8 +59,8 @@ export default class UserRoleService {
     return record;
   };
 
-  save = async (data: UserRoleModel): Promise<UserRoleModel> => {
-    return await this.repository.create({ params: new UserRoleModel(data) });
+  save = async (data: UserRoleEntity): Promise<UserRoleEntity> => {
+    return await this.repository.create({ params: new UserRoleEntity(data) });
   };
 
   delete = async (id: string): Promise<void> => {
@@ -77,7 +77,7 @@ export default class UserRoleService {
 
     // Set toCreate data
     const newPermissionIds = roleIds.filter(id => !existingPermissionIds.has(id));
-    const toCreate: UserRoleModel[] = newPermissionIds.map(val => new UserRoleModel({
+    const toCreate: UserRoleEntity[] = newPermissionIds.map(val => new UserRoleEntity({
       userId,
       roleId: val,
       assignedAt: new Date()

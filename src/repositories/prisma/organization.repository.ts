@@ -1,5 +1,5 @@
 import { PrismaClient } from "../../prisma/client";
-import OrganizationModel from "../../models/organization.model";
+import OrganizationEntity from "../../entities/organization.entity";
 import OrganizationRepository from "../organization.interface";
 import {
   FindAllArgs,
@@ -28,7 +28,7 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
 
   findAll = async (
     args: FindAllArgs
-  ): Promise<OrganizationModel[]> => {
+  ): Promise<OrganizationEntity[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({
       select: {
@@ -49,12 +49,12 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
         undefined
     });
 
-    return res.map(item => new OrganizationModel(item));
+    return res.map(item => new OrganizationEntity(item));
   };
 
   findAllBetweenCreatedAt = async (
     args: FindAllByBetweenCreatedAtArgs
-  ): Promise<OrganizationModel[]> => {
+  ): Promise<OrganizationEntity[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const betweenCreatedAt = args.dateFrom && args.dateTo
       ? { createdAt: { gte: new Date(args.dateFrom), lte: new Date(args.dateTo) } }
@@ -70,12 +70,12 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
       }
     });
 
-    return res.map(item => new OrganizationModel(item));
+    return res.map(item => new OrganizationEntity(item));
   };
 
   findById = async (
     args: FindByIdArgs<string>
-  ): Promise<OrganizationModel | null> => {
+  ): Promise<OrganizationEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -91,12 +91,12 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
 
     if (!res) return null;
 
-    return new OrganizationModel(res);
+    return new OrganizationEntity(res);
   };
 
   findByName = async (
     args: FindByNameArgs
-  ): Promise<OrganizationModel | null> => {
+  ): Promise<OrganizationEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -112,12 +112,12 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
 
     if (!res) return null;
 
-    return new OrganizationModel(res);
+    return new OrganizationEntity(res);
   };
 
   create = async (
-    args: CreateArgs<OrganizationModel>
-  ): Promise<OrganizationModel> => {
+    args: CreateArgs<OrganizationEntity>
+  ): Promise<OrganizationEntity> => {
     const { users, roles, permissions, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
@@ -128,12 +128,12 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
       data: params
     });
 
-    return new OrganizationModel(data);
+    return new OrganizationEntity(data);
   };
 
   update = async (
-    args: UpdateArgs<string, OrganizationModel>
-  ): Promise<OrganizationModel> => {
+    args: UpdateArgs<string, OrganizationEntity>
+  ): Promise<OrganizationEntity> => {
     const { users, roles, permissions, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
@@ -148,12 +148,12 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
       }
     });
 
-    return new OrganizationModel(data);
+    return new OrganizationEntity(data);
   };
 
   softDelete = async (
     args: SoftDeleteArgs<string>
-  ): Promise<OrganizationModel> => {
+  ): Promise<OrganizationEntity> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -166,7 +166,7 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
       }
     });
 
-    return new OrganizationModel(data);
+    return new OrganizationEntity(data);
   };
 
   softDeleteMany = async (

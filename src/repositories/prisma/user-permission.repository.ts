@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient } from "../../prisma/client";
-import UserPermissionModel from "../../models/user-permission.model";
+import UserPermissionEntity from "../../entities/user-permission.entity";
 import UserPermissionRepository from "../user-permission.interface";
 import {
   FindAllArgs,
@@ -26,7 +26,7 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
 
   findAll = async (
     args: FindAllArgs
-  ): Promise<UserPermissionModel[]> => {
+  ): Promise<UserPermissionEntity[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({
       select: {
@@ -46,12 +46,12 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
         undefined
     });
 
-    return res.map(item => new UserPermissionModel(item));
+    return res.map(item => new UserPermissionEntity(item));
   };
 
   findAllByUserId = async (
     args: FindAllByUserIdArgs
-  ): Promise<UserPermissionModel[]> => {
+  ): Promise<UserPermissionEntity[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({
       select: {
@@ -72,12 +72,12 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
         undefined
     });
 
-    return res.map(item => new UserPermissionModel(item));
+    return res.map(item => new UserPermissionEntity(item));
   };
 
   findAllUserBasedPermissions =   async (
     args: FindAllRoleOrUserBasedPermissionsArgs
-  ): Promise<UserPermissionModel[]> => {
+  ): Promise<UserPermissionEntity[]> => {
     const res = await this.client.findMany({
       select: {
         ...userPermissionSubsets,
@@ -93,12 +93,12 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
       },
     });
 
-    return res.map(item => new UserPermissionModel(item));
+    return res.map(item => new UserPermissionEntity(item));
   };
 
   findById = async (
     args: FindByIdArgs<string>
-  ): Promise<UserPermissionModel | null> => {
+  ): Promise<UserPermissionEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -113,12 +113,12 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
 
     if (!res) return null;
 
-    return new UserPermissionModel(res);
+    return new UserPermissionEntity(res);
   };
 
   findByUserIdAndPermissionId = async (
     args: FindByUserIdAndPermissionIdArgs
-  ): Promise<UserPermissionModel | null> => {
+  ): Promise<UserPermissionEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -134,12 +134,12 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
 
     if (!res) return null;
 
-    return new UserPermissionModel(res);
+    return new UserPermissionEntity(res);
   };
 
   create = async (
-    args: CreateArgs<UserPermissionModel>
-  ): Promise<UserPermissionModel> => {
+    args: CreateArgs<UserPermissionEntity>
+  ): Promise<UserPermissionEntity> => {
     const { user, permission, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
@@ -150,7 +150,7 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
       data: params
     });
 
-    return new UserPermissionModel(data);
+    return new UserPermissionEntity(data);
   };
 
   delete = async (
@@ -175,7 +175,7 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
   };
 
   syncCreateMany = (
-    args: CreateManyArgs<UserPermissionModel>,
+    args: CreateManyArgs<UserPermissionEntity>,
   ): Prisma.PrismaPromise<Prisma.BatchPayload> => {
     return this.client.createMany({
       data: args.params

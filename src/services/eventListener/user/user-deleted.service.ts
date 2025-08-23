@@ -1,10 +1,10 @@
-import UserModel from "../../../models/user.model";
+import UserEntity from "../../../entities/user.entity";
 import EventListenerAbstract from "../event-listener.abstract";
 import EventListenerService from "../event-listener.interface";
 import UserService from "../../user.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 
-export default class UserDeletedEventListenerService extends EventListenerAbstract<UserModel> implements EventListenerService<UserModel> {
+export default class UserDeletedEventListenerService extends EventListenerAbstract<UserEntity> implements EventListenerService<UserEntity> {
   private userService: UserService;
 
   constructor() {
@@ -33,7 +33,7 @@ export default class UserDeletedEventListenerService extends EventListenerAbstra
       return;
     }
 
-    const user = new UserModel({
+    const user = new UserEntity({
       ...existingUser,
       ...this.state.newDetails
     });

@@ -1,7 +1,7 @@
 import EventListenerAbstract from "../event-listener.abstract";
 import EventListenerService from "../event-listener.interface";
 import UserService from "../../user.service";
-import UserModel from "../../../models/user.model";
+import UserEntity from "../../../entities/user.entity";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 
 export default class UserBulkDeletedEventListenerService extends EventListenerAbstract<Record<string, string[]>> implements EventListenerService<Record<string, string[]>> {
@@ -35,7 +35,7 @@ export default class UserBulkDeletedEventListenerService extends EventListenerAb
         return;
       }
 
-      const user = new UserModel({
+      const user = new UserEntity({
         ...existingUser,
         deletedAt: new Date()
       });

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaUserRepository from "../repositories/prisma/user.repository";
-import UserModel from "../models/user.model";
+import UserEntity from "../entities/user.entity";
 import { hashPassword } from "../shared/utils/bcrypt";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 
@@ -12,7 +12,7 @@ export default class UserService {
     this.repository = new PrismaUserRepository();
   };
 
-  getById = async (id: string): Promise<UserModel> => {
+  getById = async (id: string): Promise<UserEntity> => {
     const record = await this.repository.findById({
       id,
       exclude: ["deletedAt"]
@@ -25,7 +25,7 @@ export default class UserService {
     return record;
   };
 
-  getByUsernameOrEmail = async (value: string): Promise<UserModel> => {
+  getByUsernameOrEmail = async (value: string): Promise<UserEntity> => {
     const record = await this.repository.findByUsernameOrEmail({
       username: value,
       email: value,
@@ -39,9 +39,9 @@ export default class UserService {
     return record;
   };
 
-  save = async (data: UserModel): Promise<UserModel> => {
-    let record: UserModel;
-    let newData = new UserModel(data);
+  save = async (data: UserEntity): Promise<UserEntity> => {
+    let record: UserEntity;
+    let newData = new UserEntity(data);
     let option = {
       params: newData,
       exclude: ["deletedAt"]

@@ -1,9 +1,9 @@
-import UserModel from "../../../models/user.model";
+import UserEntity from "../../../entities/user.entity";
 import EventListenerAbstract from "../event-listener.abstract";
 import EventListenerService from "../event-listener.interface";
 import UserService from "../../user.service";
 
-export default class UserCreatedEventListenerService extends EventListenerAbstract<UserModel> implements EventListenerService<UserModel> {
+export default class UserCreatedEventListenerService extends EventListenerAbstract<UserEntity> implements EventListenerService<UserEntity> {
   private userService: UserService;
 
   constructor() {
@@ -17,7 +17,7 @@ export default class UserCreatedEventListenerService extends EventListenerAbstra
       return;
     };
 
-    const user = new UserModel(this.state.newDetails);
+    const user = new UserEntity(this.state.newDetails);
     await this.userService.save(user)
       .catch(err => {
         console.log("Error on creating user", err);

@@ -1,30 +1,15 @@
-import Organization from "../entities/organization.entity";
-import Permission from "../entities/permission.entity";
-import Role from "../entities/role.entity";
-import User from "../entities/user.entity";
+import Permission from "./permission.model";
+import Role from "./role.model";
+import User from "./user.model";
 
-class OrganizationModel implements Organization {
+export default interface Organization {
   id?: string;
-  name: string = "";
-  logoPath?: string | null = null;
-  createdAt: Date = new Date();
-  updatedAt: Date = new Date();
-  deletedAt?: Date | null = null;
+  name: string;
+  logoPath?: string | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
   users?: User[];
   roles?: Role[];
   permissions?: Permission[];
-
-  constructor(props: Organization) {
-    this.id = props.id;
-    this.name = props.name;
-    this.logoPath = props.logoPath;
-    this.createdAt = props.createdAt;
-    this.updatedAt = props.updatedAt;
-    this.deletedAt = props.deletedAt;
-    this.users = props.users;
-    this.roles = props.roles;
-    this.permissions = props.permissions;
-  };
 };
-
-export default OrganizationModel;

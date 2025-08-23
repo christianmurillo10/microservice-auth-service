@@ -1,7 +1,7 @@
 import { PrismaClient } from "../prisma/client";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaRolePermissionRepository from "../repositories/prisma/role-permission.repository";
-import RolePermissionModel from "../models/role-permission.model";
+import RolePermissionEntity from "../entities/role-permission.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllByRoleIdArgs } from "../shared/types/service.type";
 
@@ -14,7 +14,7 @@ export default class RolePermissionService {
     this.prisma = new PrismaClient();
   };
 
-  getAll = async (args?: GetAllArgs): Promise<RolePermissionModel[]> => {
+  getAll = async (args?: GetAllArgs): Promise<RolePermissionEntity[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query
@@ -23,7 +23,7 @@ export default class RolePermissionService {
     return record;
   };
 
-  getAllByRoleId = async (args: GetAllByRoleIdArgs): Promise<RolePermissionModel[]> => {
+  getAllByRoleId = async (args: GetAllByRoleIdArgs): Promise<RolePermissionEntity[]> => {
     const record = await this.repository.findAllByRoleId({
       roleId: args.roleId,
       condition: args.condition,
@@ -33,7 +33,7 @@ export default class RolePermissionService {
     return record;
   };
 
-  getById = async (id: string): Promise<RolePermissionModel> => {
+  getById = async (id: string): Promise<RolePermissionEntity> => {
     const record = await this.repository.findById({ id });
 
     if (!record) {
@@ -43,7 +43,7 @@ export default class RolePermissionService {
     return record;
   };
 
-  getByRoleIdAndPermissionId = async (roleId: string, permissionId: string): Promise<RolePermissionModel> => {
+  getByRoleIdAndPermissionId = async (roleId: string, permissionId: string): Promise<RolePermissionEntity> => {
     const record = await this.repository.findByRoleIdAndPermissionId({ roleId, permissionId });
 
     if (!record) {
@@ -53,8 +53,8 @@ export default class RolePermissionService {
     return record;
   };
 
-  save = async (data: RolePermissionModel): Promise<RolePermissionModel> => {
-    return await this.repository.create({ params: new RolePermissionModel(data) });
+  save = async (data: RolePermissionEntity): Promise<RolePermissionEntity> => {
+    return await this.repository.create({ params: new RolePermissionEntity(data) });
   };
 
   delete = async (id: string): Promise<void> => {
@@ -71,7 +71,7 @@ export default class RolePermissionService {
 
     // Set toCreate data
     const newPermissionIds = permissionIds.filter(id => !existingPermissionIds.has(id));
-    const toCreate: RolePermissionModel[] = newPermissionIds.map(val => new RolePermissionModel({
+    const toCreate: RolePermissionEntity[] = newPermissionIds.map(val => new RolePermissionEntity({
       roleId,
       permissionId: val,
       grantedAt: new Date()

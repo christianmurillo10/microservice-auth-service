@@ -1,7 +1,7 @@
 
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaRoleRepository from "../repositories/prisma/role.repository";
-import RoleModel from "../models/role.model";
+import RoleEntity from "../entities/role.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs } from "../shared/types/service.type";
 
@@ -12,7 +12,7 @@ export default class RoleService {
     this.repository = new PrismaRoleRepository();
   };
 
-  getAll = async (args?: GetAllArgs): Promise<RoleModel[]> => {
+  getAll = async (args?: GetAllArgs): Promise<RoleEntity[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query,
@@ -22,7 +22,7 @@ export default class RoleService {
     return record;
   };
 
-  getById = async (id: string): Promise<RoleModel> => {
+  getById = async (id: string): Promise<RoleEntity> => {
     const record = await this.repository.findById({
       id,
       exclude: ["deletedAt"]
@@ -35,7 +35,7 @@ export default class RoleService {
     return record;
   };
 
-  getByOrganizationIdAndName = async (organizationId: string, name: string): Promise<RoleModel> => {
+  getByOrganizationIdAndName = async (organizationId: string, name: string): Promise<RoleEntity> => {
     const record = await this.repository.findByOrganizationIdAndName({
       organizationId,
       name,
@@ -49,9 +49,9 @@ export default class RoleService {
     return record;
   };
 
-  save = async (data: RoleModel): Promise<RoleModel> => {
-    let record: RoleModel;
-    let newData = new RoleModel(data);
+  save = async (data: RoleEntity): Promise<RoleEntity> => {
+    let record: RoleEntity;
+    let newData = new RoleEntity(data);
     let option = {
       params: newData,
       exclude: ["deletedAt"]
@@ -71,7 +71,7 @@ export default class RoleService {
     return record;
   };
 
-  delete = async (id: string): Promise<RoleModel> => {
+  delete = async (id: string): Promise<RoleEntity> => {
     return await this.repository.softDelete({ id: id });
   };
 

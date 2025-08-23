@@ -1,5 +1,5 @@
 import { PrismaClient } from "../../prisma/client";
-import SessionModel from "../../models/session.model";
+import SessionEntity from "../../entities/session.entity";
 import SessionRepository from "../session.interface";
 import {
   FindByIdArgs,
@@ -11,7 +11,7 @@ import {
 } from "../../shared/types/repository.type";
 import { setSelectExclude } from "../../shared/helpers/common.helper";
 import { sessionSubsets } from "../../shared/helpers/select-subset.helper";
-import { UserAccessTypeValue } from "../../entities/user.entity";
+import { UserAccessTypeValue } from "../../models/user.model";
 
 export default class PrismaSessionRepository implements SessionRepository {
   private client;
@@ -23,7 +23,7 @@ export default class PrismaSessionRepository implements SessionRepository {
 
   findById = async (
     args: FindByIdArgs<string>
-  ): Promise<SessionModel | null> => {
+  ): Promise<SessionEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -39,7 +39,7 @@ export default class PrismaSessionRepository implements SessionRepository {
 
     if (!res) return null;
 
-    return new SessionModel({
+    return new SessionEntity({
       ...res,
       accessType: res.accessType as UserAccessTypeValue
     });
@@ -47,7 +47,7 @@ export default class PrismaSessionRepository implements SessionRepository {
 
   findByAccessToken = async (
     args: FindByAccessTokenArgs
-  ): Promise<SessionModel | null> => {
+  ): Promise<SessionEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -63,7 +63,7 @@ export default class PrismaSessionRepository implements SessionRepository {
 
     if (!res) return null;
 
-    return new SessionModel({
+    return new SessionEntity({
       ...res,
       accessType: res.accessType as UserAccessTypeValue
     });
@@ -71,7 +71,7 @@ export default class PrismaSessionRepository implements SessionRepository {
 
   findByRefreshToken = async (
     args: FindByRefreshTokenArgs
-  ): Promise<SessionModel | null> => {
+  ): Promise<SessionEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -87,15 +87,15 @@ export default class PrismaSessionRepository implements SessionRepository {
 
     if (!res) return null;
 
-    return new SessionModel({
+    return new SessionEntity({
       ...res,
       accessType: res.accessType as UserAccessTypeValue
     });
   };
 
   create = async (
-    args: CreateArgs<SessionModel>
-  ): Promise<SessionModel> => {
+    args: CreateArgs<SessionEntity>
+  ): Promise<SessionEntity> => {
     const { user, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
@@ -106,15 +106,15 @@ export default class PrismaSessionRepository implements SessionRepository {
       data: params
     });
 
-    return new SessionModel({
+    return new SessionEntity({
       ...data,
       accessType: data.accessType as UserAccessTypeValue
     });
   };
 
   update = async (
-    args: UpdateArgs<string, SessionModel>
-  ): Promise<SessionModel> => {
+    args: UpdateArgs<string, SessionEntity>
+  ): Promise<SessionEntity> => {
     const { user, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
@@ -129,7 +129,7 @@ export default class PrismaSessionRepository implements SessionRepository {
       }
     });
 
-    return new SessionModel({
+    return new SessionEntity({
       ...data,
       accessType: data.accessType as UserAccessTypeValue
     });
@@ -137,7 +137,7 @@ export default class PrismaSessionRepository implements SessionRepository {
 
   softDelete = async (
     args: SoftDeleteArgs<string>
-  ): Promise<SessionModel> => {
+  ): Promise<SessionEntity> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -150,7 +150,7 @@ export default class PrismaSessionRepository implements SessionRepository {
       }
     });
 
-    return new SessionModel({
+    return new SessionEntity({
       ...data,
       accessType: data.accessType as UserAccessTypeValue
     });

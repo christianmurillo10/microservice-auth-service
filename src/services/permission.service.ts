@@ -1,7 +1,7 @@
 
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaPermissionRepository from "../repositories/prisma/permission.repository";
-import PermissionModel from "../models/permission.model";
+import PermissionEntity from "../entities/permission.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs } from "../shared/types/service.type";
 
@@ -12,7 +12,7 @@ export default class PermissionService {
     this.repository = new PrismaPermissionRepository();
   };
 
-  getAll = async (args?: GetAllArgs): Promise<PermissionModel[]> => {
+  getAll = async (args?: GetAllArgs): Promise<PermissionEntity[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query,
@@ -22,7 +22,7 @@ export default class PermissionService {
     return record;
   };
 
-  getById = async (id: string): Promise<PermissionModel> => {
+  getById = async (id: string): Promise<PermissionEntity> => {
     const record = await this.repository.findById({
       id,
       exclude: ["deletedAt"]
@@ -35,7 +35,7 @@ export default class PermissionService {
     return record;
   };
 
-  getByOrganizationIdAndActionAndResource = async (organizationId: string, action: string, resource: string): Promise<PermissionModel> => {
+  getByOrganizationIdAndActionAndResource = async (organizationId: string, action: string, resource: string): Promise<PermissionEntity> => {
     const record = await this.repository.findByOrganizationIdAndActionAndResource({
       organizationId,
       action,
@@ -50,9 +50,9 @@ export default class PermissionService {
     return record;
   };
 
-  save = async (data: PermissionModel): Promise<PermissionModel> => {
-    let record: PermissionModel;
-    let newData = new PermissionModel(data);
+  save = async (data: PermissionEntity): Promise<PermissionEntity> => {
+    let record: PermissionEntity;
+    let newData = new PermissionEntity(data);
     let option = {
       params: newData,
       exclude: ["deletedAt"]
@@ -72,7 +72,7 @@ export default class PermissionService {
     return record;
   };
 
-  delete = async (id: string): Promise<PermissionModel> => {
+  delete = async (id: string): Promise<PermissionEntity> => {
     return await this.repository.softDelete({ id: id });
   };
 

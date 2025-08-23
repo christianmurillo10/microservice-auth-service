@@ -1,4 +1,4 @@
-import OrganizationModel from "../models/organization.model";
+import OrganizationEntity from "../entities/organization.entity";
 import {
   CountArgs,
   CreateArgs,
@@ -13,19 +13,19 @@ import {
 import { GenericObject } from "../shared/types/common.type";
 
 export default interface OrganizationRepository {
-  findAll: (args: FindAllArgs) => Promise<OrganizationModel[]>;
+  findAll: (args: FindAllArgs) => Promise<OrganizationEntity[]>;
 
-  findAllBetweenCreatedAt: (args: FindAllByBetweenCreatedAtArgs) => Promise<OrganizationModel[]>;
+  findAllBetweenCreatedAt: (args: FindAllByBetweenCreatedAtArgs) => Promise<OrganizationEntity[]>;
 
-  findById: (args: FindByIdArgs<string>) => Promise<OrganizationModel | null>;
+  findById: (args: FindByIdArgs<string>) => Promise<OrganizationEntity | null>;
 
-  findByName: (args: FindByNameArgs) => Promise<OrganizationModel | null>;
+  findByName: (args: FindByNameArgs) => Promise<OrganizationEntity | null>;
 
-  create: (args: CreateArgs<OrganizationModel>) => Promise<OrganizationModel>;
+  create: (args: CreateArgs<OrganizationEntity>) => Promise<OrganizationEntity>;
 
-  update: (args: UpdateArgs<string, OrganizationModel>) => Promise<OrganizationModel>;
+  update: (args: UpdateArgs<string, OrganizationEntity>) => Promise<OrganizationEntity>;
 
-  softDelete: (args: SoftDeleteArgs<string>) => Promise<OrganizationModel>;
+  softDelete: (args: SoftDeleteArgs<string>) => Promise<OrganizationEntity>;
 
   softDeleteMany: (args: SoftDeleteManyArgs<string>) => Promise<GenericObject>;
 

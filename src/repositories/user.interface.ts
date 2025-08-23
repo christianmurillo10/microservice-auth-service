@@ -1,4 +1,4 @@
-import UserRequestHeader from "../models/user.model";
+import UserRequestHeader from "../entities/user.entity";
 import {
   FindByIdArgs,
   FindByUsernameOrEmailArgs,

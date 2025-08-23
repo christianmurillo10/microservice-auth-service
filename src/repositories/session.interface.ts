@@ -1,4 +1,4 @@
-import SessionModel from "../models/session.model";
+import SessionEntity from "../entities/session.entity";
 import {
   FindByIdArgs,
   FindByRefreshTokenArgs,
@@ -7,11 +7,11 @@ import {
 } from "../shared/types/repository.type";
 
 export default interface SessionRepository {
-  findById: (args: FindByIdArgs<string>) => Promise<SessionModel | null>;
+  findById: (args: FindByIdArgs<string>) => Promise<SessionEntity | null>;
 
-  findByRefreshToken: (args: FindByRefreshTokenArgs) => Promise<SessionModel | null>;
+  findByRefreshToken: (args: FindByRefreshTokenArgs) => Promise<SessionEntity | null>;
 
-  create: (args: CreateArgs<SessionModel>) => Promise<SessionModel>;
+  create: (args: CreateArgs<SessionEntity>) => Promise<SessionEntity>;
 
-  update: (args: UpdateArgs<string, SessionModel>) => Promise<SessionModel>;
+  update: (args: UpdateArgs<string, SessionEntity>) => Promise<SessionEntity>;
 };

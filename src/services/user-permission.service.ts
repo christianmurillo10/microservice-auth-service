@@ -1,7 +1,7 @@
 import { PrismaClient } from "../prisma/client";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaUserPermissionRepository from "../repositories/prisma/user-permission.repository";
-import UserPermissionModel from "../models/user-permission.model";
+import UserPermissionEntity from "../entities/user-permission.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllByUserIdArgs, GetAllRoleOrUserBasedPermissionsArgs } from "../shared/types/service.type";
 
@@ -14,7 +14,7 @@ export default class UserPermissionService {
     this.prisma = new PrismaClient();
   };
 
-  getAll = async (args?: GetAllArgs): Promise<UserPermissionModel[]> => {
+  getAll = async (args?: GetAllArgs): Promise<UserPermissionEntity[]> => {
     const record = await this.repository.findAll({
       condition: args?.condition,
       query: args?.query
@@ -23,7 +23,7 @@ export default class UserPermissionService {
     return record;
   };
 
-  getAllByUserId = async (args: GetAllByUserIdArgs): Promise<UserPermissionModel[]> => {
+  getAllByUserId = async (args: GetAllByUserIdArgs): Promise<UserPermissionEntity[]> => {
     const record = await this.repository.findAllByUserId({
       userId: args.userId,
       condition: args.condition,
@@ -33,13 +33,13 @@ export default class UserPermissionService {
     return record;
   };
 
-  getAllUserBasedPermissions = async (args: GetAllRoleOrUserBasedPermissionsArgs): Promise<UserPermissionModel[]> => {
+  getAllUserBasedPermissions = async (args: GetAllRoleOrUserBasedPermissionsArgs): Promise<UserPermissionEntity[]> => {
     const record = await this.repository.findAllUserBasedPermissions({ userId: args.userId });
 
     return record;
   };
 
-  getById = async (id: string): Promise<UserPermissionModel> => {
+  getById = async (id: string): Promise<UserPermissionEntity> => {
     const record = await this.repository.findById({ id });
 
     if (!record) {
@@ -49,7 +49,7 @@ export default class UserPermissionService {
     return record;
   };
 
-  getByUserIdAndPermissionId = async (userId: string, permissionId: string): Promise<UserPermissionModel> => {
+  getByUserIdAndPermissionId = async (userId: string, permissionId: string): Promise<UserPermissionEntity> => {
     const record = await this.repository.findByUserIdAndPermissionId({ userId, permissionId });
 
     if (!record) {
@@ -59,8 +59,8 @@ export default class UserPermissionService {
     return record;
   };
 
-  save = async (data: UserPermissionModel): Promise<UserPermissionModel> => {
-    return await this.repository.create({ params: new UserPermissionModel(data) });
+  save = async (data: UserPermissionEntity): Promise<UserPermissionEntity> => {
+    return await this.repository.create({ params: new UserPermissionEntity(data) });
   };
 
   delete = async (id: string): Promise<void> => {
@@ -77,7 +77,7 @@ export default class UserPermissionService {
 
     // Set toCreate data
     const newPermissionIds = permissionIds.filter(id => !existingPermissionIds.has(id));
-    const toCreate: UserPermissionModel[] = newPermissionIds.map(val => new UserPermissionModel({
+    const toCreate: UserPermissionEntity[] = newPermissionIds.map(val => new UserPermissionEntity({
       userId,
       permissionId: val,
       grantedAt: new Date()

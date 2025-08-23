@@ -1,5 +1,5 @@
 import { Prisma, PrismaClient } from "../../prisma/client";
-import RolePermissionModel from "../../models/role-permission.model";
+import RolePermissionEntity from "../../entities/role-permission.entity";
 import RolePermissionRepository from "../role-permission.interface";
 import {
   FindAllArgs,
@@ -25,7 +25,7 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
 
   findAll = async (
     args: FindAllArgs
-  ): Promise<RolePermissionModel[]> => {
+  ): Promise<RolePermissionEntity[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({
       select: {
@@ -45,12 +45,12 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
         undefined
     });
 
-    return res.map(item => new RolePermissionModel(item));
+    return res.map(item => new RolePermissionEntity(item));
   };
 
   findAllByRoleId = async (
     args: FindAllByRoleIdArgs
-  ): Promise<RolePermissionModel[]> => {
+  ): Promise<RolePermissionEntity[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({
       select: {
@@ -71,12 +71,12 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
         undefined
     });
 
-    return res.map(item => new RolePermissionModel(item));
+    return res.map(item => new RolePermissionEntity(item));
   };
 
   findById = async (
     args: FindByIdArgs<string>
-  ): Promise<RolePermissionModel | null> => {
+  ): Promise<RolePermissionEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -91,12 +91,12 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
 
     if (!res) return null;
 
-    return new RolePermissionModel(res);
+    return new RolePermissionEntity(res);
   };
 
   findByRoleIdAndPermissionId = async (
     args: FindByRoleIdAndPermissionIdArgs
-  ): Promise<RolePermissionModel | null> => {
+  ): Promise<RolePermissionEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -112,12 +112,12 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
 
     if (!res) return null;
 
-    return new RolePermissionModel(res);
+    return new RolePermissionEntity(res);
   };
 
   create = async (
-    args: CreateArgs<RolePermissionModel>
-  ): Promise<RolePermissionModel> => {
+    args: CreateArgs<RolePermissionEntity>
+  ): Promise<RolePermissionEntity> => {
     const { role, permission, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
@@ -128,7 +128,7 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
       data: params
     });
 
-    return new RolePermissionModel(data);
+    return new RolePermissionEntity(data);
   };
 
   delete = async (
@@ -153,7 +153,7 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
   };
 
   syncCreateMany = (
-    args: CreateManyArgs<RolePermissionModel>,
+    args: CreateManyArgs<RolePermissionEntity>,
   ): Prisma.PrismaPromise<Prisma.BatchPayload> => {
     return this.client.createMany({
       data: args.params

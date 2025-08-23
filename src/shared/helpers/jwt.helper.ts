@@ -1,5 +1,5 @@
-import JWTModel from "../../models/jwt.model";
-import { UserAccessTypeValue } from "../../entities/user.entity";
+import JWTEntity from "../../entities/jwt.entity";
+import { UserAccessTypeValue } from "../../models/user.model";
 
 export const generateAccessToken = (
   id: number,
@@ -8,7 +8,7 @@ export const generateAccessToken = (
   subject: number,
   exp: number
 ) => {
-  const jwt = new JWTModel({
+  const jwt = new JWTEntity({
     id: id as unknown as number,
     email: email,
     client: accessType,
@@ -23,7 +23,7 @@ export const generateAccessToken = (
 
 export const verifyToken = (token: string) => {
   try {
-    return JWTModel.decodeToken(token);
+    return JWTEntity.decodeToken(token);
   } catch (error) {
     return null;
   }

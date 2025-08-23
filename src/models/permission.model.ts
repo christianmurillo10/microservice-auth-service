@@ -1,32 +1,16 @@
-import Organization from "../entities/organization.entity";
-import Permission from "../entities/permission.entity";
-import RolePermission from "../entities/role-permission.entity";
-import UserPermission from "../entities/user-permission.entity";
+import Organization from "./organization.model";
+import RolePermission from "./role-permission.model";
+import UserPermission from "./user-permission.model";
 
-class PermissionModel implements Permission {
+export default interface Permission {
   id?: string;
   action: string;
   resource: string;
   organizationId: string;
-  createdAt: Date = new Date();
-  updatedAt: Date = new Date();
-  deletedAt?: Date | null = null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
   organization?: Organization;
   rolePermissions?: RolePermission[];
   userPermissions?: UserPermission[];
-
-  constructor(props: Permission) {
-    this.id = props.id;
-    this.action = props.action;
-    this.resource = props.resource;
-    this.organizationId = props.organizationId;
-    this.createdAt = props.createdAt;
-    this.updatedAt = props.updatedAt;
-    this.deletedAt = props.deletedAt;
-    this.organization = props.organization;
-    this.rolePermissions = props.rolePermissions;
-    this.userPermissions = props.userPermissions;
-  };
 };
-
-export default PermissionModel;

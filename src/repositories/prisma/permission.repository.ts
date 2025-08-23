@@ -1,5 +1,5 @@
 import { PrismaClient } from "../../prisma/client";
-import PermissionModel from "../../models/permission.model";
+import PermissionEntity from "../../entities/permission.entity";
 import PermissionRepository from "../permission.interface";
 import {
   FindAllArgs,
@@ -25,7 +25,7 @@ export default class PrismaPermissionRepository implements PermissionRepository 
 
   findAll = async (
     args: FindAllArgs
-  ): Promise<PermissionModel[]> => {
+  ): Promise<PermissionEntity[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({
       select: {
@@ -46,12 +46,12 @@ export default class PrismaPermissionRepository implements PermissionRepository 
         undefined
     });
 
-    return res.map(item => new PermissionModel(item));
+    return res.map(item => new PermissionEntity(item));
   };
 
   findById = async (
     args: FindByIdArgs<string>
-  ): Promise<PermissionModel | null> => {
+  ): Promise<PermissionEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -67,12 +67,12 @@ export default class PrismaPermissionRepository implements PermissionRepository 
 
     if (!res) return null;
 
-    return new PermissionModel(res);
+    return new PermissionEntity(res);
   };
 
   findByOrganizationIdAndActionAndResource = async (
     args: FindByOrganizationIdAndActionAndResourceArgs
-  ): Promise<PermissionModel | null> => {
+  ): Promise<PermissionEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -90,12 +90,12 @@ export default class PrismaPermissionRepository implements PermissionRepository 
 
     if (!res) return null;
 
-    return new PermissionModel(res);
+    return new PermissionEntity(res);
   };
 
   create = async (
-    args: CreateArgs<PermissionModel>
-  ): Promise<PermissionModel> => {
+    args: CreateArgs<PermissionEntity>
+  ): Promise<PermissionEntity> => {
     const { organization, rolePermissions, userPermissions, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
@@ -106,12 +106,12 @@ export default class PrismaPermissionRepository implements PermissionRepository 
       data: params
     });
 
-    return new PermissionModel(data);
+    return new PermissionEntity(data);
   };
 
   update = async (
-    args: UpdateArgs<string, PermissionModel>
-  ): Promise<PermissionModel> => {
+    args: UpdateArgs<string, PermissionEntity>
+  ): Promise<PermissionEntity> => {
     const { organization, rolePermissions, userPermissions, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
@@ -126,12 +126,12 @@ export default class PrismaPermissionRepository implements PermissionRepository 
       }
     });
 
-    return new PermissionModel(data);
+    return new PermissionEntity(data);
   };
 
   softDelete = async (
     args: SoftDeleteArgs<string>
-  ): Promise<PermissionModel> => {
+  ): Promise<PermissionEntity> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -144,7 +144,7 @@ export default class PrismaPermissionRepository implements PermissionRepository 
       }
     });
 
-    return new PermissionModel(data);
+    return new PermissionEntity(data);
   };
 
   softDeleteMany = async (

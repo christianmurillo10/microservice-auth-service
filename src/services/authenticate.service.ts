@@ -1,6 +1,6 @@
-import { UserAccessType } from "../entities/user.entity";
-import OrganizationModel from "../models/organization.model";
-import UserModel from "../models/user.model";
+import { UserAccessType } from "../models/user.model";
+import OrganizationEntity from "../entities/organization.entity";
+import UserEntity from "../entities/user.entity";
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_NOT_LOGGED, MESSAGE_DATA_NOT_PERMITTED } from "../shared/constants/message.constant";
 import ForbiddenException from "../shared/exceptions/forbidden.exception";
 import NotFoundException from "../shared/exceptions/not-found.exception";
@@ -14,8 +14,8 @@ type Input = {
 };
 
 type Output = {
-  organization?: OrganizationModel,
-  user: UserModel
+  organization?: OrganizationEntity,
+  user: UserEntity
 };
 
 export default class AuthenticateService {

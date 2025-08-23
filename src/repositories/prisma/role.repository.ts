@@ -1,5 +1,5 @@
 import { PrismaClient } from "../../prisma/client";
-import RoleModel from "../../models/role.model";
+import RoleEntity from "../../entities/role.entity";
 import RoleRepository from "../role.interface";
 import {
   FindAllArgs,
@@ -25,7 +25,7 @@ export default class PrismaRoleRepository implements RoleRepository {
 
   findAll = async (
     args: FindAllArgs
-  ): Promise<RoleModel[]> => {
+  ): Promise<RoleEntity[]> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findMany({
       select: {
@@ -46,12 +46,12 @@ export default class PrismaRoleRepository implements RoleRepository {
         undefined
     });
 
-    return res.map(item => new RoleModel(item));
+    return res.map(item => new RoleEntity(item));
   };
 
   findById = async (
     args: FindByIdArgs<string>
-  ): Promise<RoleModel | null> => {
+  ): Promise<RoleEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -67,12 +67,12 @@ export default class PrismaRoleRepository implements RoleRepository {
 
     if (!res) return null;
 
-    return new RoleModel(res);
+    return new RoleEntity(res);
   };
 
   findByOrganizationIdAndName = async (
     args: FindByOrganizationIdAndNameArgs
-  ): Promise<RoleModel | null> => {
+  ): Promise<RoleEntity | null> => {
     const exclude = setSelectExclude(args.exclude!);
     const res = await this.client.findFirst({
       select: {
@@ -89,12 +89,12 @@ export default class PrismaRoleRepository implements RoleRepository {
 
     if (!res) return null;
 
-    return new RoleModel(res);
+    return new RoleEntity(res);
   };
 
   create = async (
-    args: CreateArgs<RoleModel>
-  ): Promise<RoleModel> => {
+    args: CreateArgs<RoleEntity>
+  ): Promise<RoleEntity> => {
     const { organization, rolePermissions, userRoles, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
@@ -105,12 +105,12 @@ export default class PrismaRoleRepository implements RoleRepository {
       data: params
     });
 
-    return new RoleModel(data);
+    return new RoleEntity(data);
   };
 
   update = async (
-    args: UpdateArgs<string, RoleModel>
-  ): Promise<RoleModel> => {
+    args: UpdateArgs<string, RoleEntity>
+  ): Promise<RoleEntity> => {
     const { organization, rolePermissions, userRoles, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
@@ -125,12 +125,12 @@ export default class PrismaRoleRepository implements RoleRepository {
       }
     });
 
-    return new RoleModel(data);
+    return new RoleEntity(data);
   };
 
   softDelete = async (
     args: SoftDeleteArgs<string>
-  ): Promise<RoleModel> => {
+  ): Promise<RoleEntity> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -143,7 +143,7 @@ export default class PrismaRoleRepository implements RoleRepository {
       }
     });
 
-    return new RoleModel(data);
+    return new RoleEntity(data);
   };
 
   softDeleteMany = async (

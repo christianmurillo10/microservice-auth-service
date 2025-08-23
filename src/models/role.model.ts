@@ -1,32 +1,16 @@
-import Organization from "../entities/organization.entity";
-import RolePermission from "../entities/role-permission.entity";
-import Role from "../entities/role.entity";
-import UserRole from "../entities/user-role.entity";
+import Organization from "./organization.model";
+import RolePermission from "./role-permission.model";
+import UserRole from "./user-role.model";
 
-class RoleModel implements Role {
+export default interface Role {
   id?: string;
-  name: string = "";
+  name: string;
   description?: string | null;
   organizationId: string;
-  createdAt: Date = new Date();
-  updatedAt: Date = new Date();
-  deletedAt?: Date | null = null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
   organization?: Organization;
   rolePermissions?: RolePermission[];
   userRoles?: UserRole[];
-
-  constructor(props: Role) {
-    this.id = props.id;
-    this.name = props.name;
-    this.description = props.description;
-    this.organizationId = props.organizationId;
-    this.createdAt = props.createdAt;
-    this.updatedAt = props.updatedAt;
-    this.deletedAt = props.deletedAt;
-    this.organization = props.organization;
-    this.rolePermissions = props.rolePermissions;
-    this.userRoles = props.userRoles;
-  };
 };
-
-export default RoleModel;

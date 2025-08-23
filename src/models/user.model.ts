@@ -1,47 +1,32 @@
-import Organization from "../entities/organization.entity";
-import Session from "../entities/session.entity";
-import UserPermission from "../entities/user-permission.entity";
-import UserRole from "../entities/user-role.entity";
-import User, { UserAccessTypeValue, UserAccessType } from "../entities/user.entity";
+import Organization from "./organization.model";
+import Session from "./session.model";
+import UserPermission from "./user-permission.model";
+import UserRole from "./user-role.model";
 
-class UserModel implements User {
+export enum UserAccessType {
+  Portal = "PORTAL",
+  Organization = "ORGANIZATION",
+  AppRecognized = "APP_RECOGNIZED"
+};
+
+export type UserAccessTypeValue = UserAccessType.Portal | UserAccessType.Organization | UserAccessType.AppRecognized;
+
+export default interface User {
   id?: string;
-  name: string = "";
-  username: string = "";
-  email: string = "";
-  password: string = "";
-  accessType: UserAccessTypeValue = UserAccessType.Organization;
-  organizationId?: string | null = null;
-  isActive: boolean = true;
-  isLogged: boolean = false;
-  lastLoggedAt?: Date | null = null;
-  createdAt: Date = new Date();
-  updatedAt: Date = new Date();
-  deletedAt?: Date | null = null;
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+  accessType: UserAccessTypeValue;
+  organizationId?: string | null;
+  isActive: boolean;
+  isLogged: boolean;
+  lastLoggedAt?: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
   organization?: Organization;
   session?: Session[];
   userRoles?: UserRole[];
   userPermissions?: UserPermission[];
-
-  constructor(props: User) {
-    this.id = props.id;
-    this.name = props.name;
-    this.username = props.username;
-    this.email = props.email;
-    this.password = props.password;
-    this.accessType = props.accessType;
-    this.organizationId = props.organizationId;
-    this.isActive = props.isActive;
-    this.isLogged = props.isLogged;
-    this.lastLoggedAt = props.lastLoggedAt;
-    this.createdAt = props.createdAt;
-    this.updatedAt = props.updatedAt;
-    this.deletedAt = props.deletedAt;
-    this.organization = props.organization;
-    this.session = props.session;
-    this.userRoles = props.userRoles;
-    this.userPermissions = props.userPermissions;
-  };
 };
-
-export default UserModel;

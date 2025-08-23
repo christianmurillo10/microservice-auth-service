@@ -1,11 +1,23 @@
-import Role from "./role.entity";
-import Permission from "./permission.entity";
+import Permission from "../models/permission.model";
+import RolePermission from "../models/role-permission.model";
+import Role from "../models/role.model";
 
-export default interface RolePermission {
+class RolePermissionEntity implements RolePermission {
   id?: string;
   roleId: string;
   permissionId: string;
-  grantedAt: Date;
+  grantedAt: Date = new Date();
   role?: Role;
   permission?: Permission;
+
+  constructor(props: RolePermission) {
+    this.id = props.id;
+    this.roleId = props.roleId;
+    this.permissionId = props.permissionId;
+    this.grantedAt = props.grantedAt;
+    this.role = props.role;
+    this.permission = props.permission;
+  };
 };
+
+export default RolePermissionEntity;

@@ -1,11 +1,22 @@
-import Role from "./role.entity";
-import User from "./user.entity";
+import Role from "../models/role.model";
+import UserRole from "../models/user-role.model";
+import User from "../models/user.model";
 
-export default interface UserRole {
+class UserRoleEntity implements UserRole {
   id?: string;
   userId: string;
   roleId: string;
-  assignedAt: Date;
+  assignedAt: Date = new Date();
   user?: User;
   role?: Role;
+
+  constructor(props: UserRole) {
+    this.id = props.id;
+    this.userId = props.userId;
+    this.roleId = props.roleId;
+    this.user = props.user;
+    this.role = props.role;
+  };
 };
+
+export default UserRoleEntity;

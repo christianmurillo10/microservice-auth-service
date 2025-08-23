@@ -1,5 +1,5 @@
 import { Prisma } from "../prisma/client";
-import RolePermissionModel from "../models/role-permission.model";
+import RolePermissionEntity from "../entities/role-permission.entity";
 import {
   CountArgs,
   CreateArgs,
@@ -13,21 +13,21 @@ import {
 } from "../shared/types/repository.type";
 
 export default interface RolePermissionRepository {
-  findAll: (args: FindAllArgs) => Promise<RolePermissionModel[]>;
+  findAll: (args: FindAllArgs) => Promise<RolePermissionEntity[]>;
 
-  findAllByRoleId: (args: FindAllByRoleIdArgs) => Promise<RolePermissionModel[]>;
+  findAllByRoleId: (args: FindAllByRoleIdArgs) => Promise<RolePermissionEntity[]>;
 
-  findById: (args: FindByIdArgs<string>) => Promise<RolePermissionModel | null>;
+  findById: (args: FindByIdArgs<string>) => Promise<RolePermissionEntity | null>;
 
-  findByRoleIdAndPermissionId: (args: FindByRoleIdAndPermissionIdArgs) => Promise<RolePermissionModel | null>;
+  findByRoleIdAndPermissionId: (args: FindByRoleIdAndPermissionIdArgs) => Promise<RolePermissionEntity | null>;
 
-  create: (args: CreateArgs<RolePermissionModel>) => Promise<RolePermissionModel>;
+  create: (args: CreateArgs<RolePermissionEntity>) => Promise<RolePermissionEntity>;
 
   delete: (args: DeleteArgs<string>) => Promise<void>;
 
   count: (args?: CountArgs) => Promise<number>;
 
-  syncCreateMany: (args: CreateManyArgs<RolePermissionModel>) => Prisma.PrismaPromise<Prisma.BatchPayload>;
+  syncCreateMany: (args: CreateManyArgs<RolePermissionEntity>) => Prisma.PrismaPromise<Prisma.BatchPayload>;
 
   syncDeleteMany: (args: DeleteManyArgs<string>) => Prisma.PrismaPromise<Prisma.BatchPayload>;
 };

@@ -41,9 +41,8 @@ export default class UserService {
 
   save = async (data: UserEntity): Promise<UserEntity> => {
     let record: UserEntity;
-    let newData = new UserEntity(data);
     let option = {
-      params: newData,
+      params: data,
       exclude: ["deletedAt"]
     };
 

@@ -19,7 +19,7 @@ export default class UserPasswordChangedEventListenerService extends EventListen
     };
 
     const userId = this.state.newDetails.id!;
-    const existingUser = await this.userService.getById(userId)
+    const user = await this.userService.getById(userId)
       .catch(err => {
         if (err instanceof NotFoundException) {
           console.log(`User ${userId} not exist!`);
@@ -29,15 +29,11 @@ export default class UserPasswordChangedEventListenerService extends EventListen
         throw err;
       });
 
-    if (!existingUser) {
+    if (!user) {
       return;
     }
 
-    const user = new UserEntity({
-      ...existingUser,
-      password: this.state.newDetails.password,
-      updatedAt: this.state.newDetails.updatedAt
-    });
+    user.changePassword(this.state.newDetails.password);
     await this.userService.save(user)
       .catch(err => {
         console.log("Error on changing user password", err);

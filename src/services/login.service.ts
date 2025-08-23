@@ -6,7 +6,6 @@ import BadRequestException from "../shared/exceptions/bad-request.exception";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { addDaysToDate, addMinutesToDate } from "../shared/helpers/common.helper";
 import { generateAccessToken } from "../shared/helpers/jwt.helper";
-import { comparePassword } from "../shared/utils/bcrypt";
 import SessionService from "./session.service";
 import UserService from "./user.service";
 import BuildUserPermissionsService from "./rbac/build-user-permissions.service";
@@ -37,14 +36,6 @@ export default class LoginService {
     this.state = state;
   };
 
-  private validatePassword = async (password: string, hashPassword: string) => {
-    const validatePassword = comparePassword(password, hashPassword);
-
-    if (!validatePassword) {
-      throw new BadRequestException([MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS]);
-    };
-  };
-
   private getUser = async (userService: UserService, email: string): Promise<UserEntity> => {
     try {
       return userService.getByUsernameOrEmail(email);
@@ -53,13 +44,6 @@ export default class LoginService {
       throw error;
     }
   };
-
-  private updateUser = async (userService: UserService, user: UserEntity, loggedDate: Date) => userService
-    .save({
-      ...user,
-      isLogged: true,
-      lastLoggedAt: loggedDate
-    });
 
   private getAccessToken = (
     id: number,
@@ -107,10 +91,14 @@ export default class LoginService {
     const record = await this.getUser(userService, email);
 
     // Validate password
-    await this.validatePassword(password, record.password as string);
+    const validatePassword = record.checkPassword(password);
+    if (!validatePassword) {
+      throw new BadRequestException([MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS]);
+    };
 
     // User updates
-    const newRecord = await this.updateUser(userService, record, loggedDate);
+    record.markLoggedIn()
+    const newRecord = await userService.save(record);
 
     // Build and cache permissions in Redis
     const buildUserPermissionsService = new BuildUserPermissionsService({

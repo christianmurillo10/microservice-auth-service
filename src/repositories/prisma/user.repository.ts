@@ -1,4 +1,5 @@
 import { PrismaClient } from "../../prisma/client";
+import type { User as UserRecord } from "../../prisma/client";
 import UserEntity from "../../entities/user.entity";
 import UserRepository from "../user.interface";
 import {
@@ -10,6 +11,24 @@ import {
 import { setSelectExclude } from "../../shared/helpers/common.helper";
 import { userSubsets } from "../../shared/helpers/select-subset.helper";
 import { UserAccessTypeValue } from "../../models/user.model";
+
+function toEntity(user: UserRecord): UserEntity {
+  return new UserEntity(
+    user.id,
+    user.name,
+    user.username,
+    user.email,
+    user.password,
+    user.accessType as UserAccessTypeValue,
+    user.organizationId ?? null,
+    user.isActive,
+    user.isLogged,
+    user.lastLoggedAt ?? null,
+    user.createdAt,
+    user.updatedAt,
+    user.deletedAt
+  );
+};
 
 export default class PrismaUserRepository implements UserRepository {
   private client;
@@ -37,10 +56,7 @@ export default class PrismaUserRepository implements UserRepository {
 
     if (!res) return null;
 
-    return new UserEntity({
-      ...res,
-      accessType: res.accessType as UserAccessTypeValue
-    });
+    return toEntity(res);
   };
 
   findByUsernameOrEmail = async (
@@ -72,10 +88,7 @@ export default class PrismaUserRepository implements UserRepository {
 
     if (!res) return null;
 
-    return new UserEntity({
-      ...res,
-      accessType: res.accessType as UserAccessTypeValue
-    });
+    return toEntity(res);
   };
 
   create = async (
@@ -91,10 +104,7 @@ export default class PrismaUserRepository implements UserRepository {
       data: params
     });
 
-    return new UserEntity({
-      ...data,
-      accessType: data.accessType as UserAccessTypeValue
-    });
+    return toEntity(data);
   };
 
   update = async (
@@ -114,9 +124,6 @@ export default class PrismaUserRepository implements UserRepository {
       }
     });
 
-    return new UserEntity({
-      ...data,
-      accessType: data.accessType as UserAccessTypeValue
-    });
+    return toEntity(data);
   };
 };

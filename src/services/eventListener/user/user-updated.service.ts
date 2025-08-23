@@ -33,10 +33,25 @@ export default class UserUpdatedEventListenerService extends UserEventListenerSe
       return;
     }
 
-    const user = new UserEntity({
+    const newUser = {
       ...existingUser,
       ...this.state.newDetails
-    });
+    };
+    const user = new UserEntity(
+      newUser.id,
+      newUser.name,
+      newUser.username,
+      newUser.email,
+      newUser.password,
+      newUser.accessType,
+      newUser.organizationId,
+      newUser.isActive,
+      newUser.isLogged,
+      newUser.lastLoggedAt,
+      newUser.createdAt,
+      newUser.updatedAt,
+      newUser.deletedAt
+    );
     await this.userService.save(user)
       .catch(err => {
         console.log("Error on updating user", err);

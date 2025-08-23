@@ -19,7 +19,7 @@ export default class UserDeletedEventListenerService extends EventListenerAbstra
     };
 
     const userId = this.state.newDetails.id!;
-    const existingUser = await this.userService.getById(userId)
+    const user = await this.userService.getById(userId)
       .catch(err => {
         if (err instanceof NotFoundException) {
           console.log(`User ${userId} not exist!`);
@@ -29,14 +29,11 @@ export default class UserDeletedEventListenerService extends EventListenerAbstra
         throw err;
       });
 
-    if (!existingUser) {
+    if (!user) {
       return;
     }
 
-    const user = new UserEntity({
-      ...existingUser,
-      ...this.state.newDetails
-    });
+    user.delete();
     await this.userService.save(user)
       .catch(err => {
         console.log("Error on deleting user", err);

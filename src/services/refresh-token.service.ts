@@ -83,6 +83,10 @@ export default class RefreshTokenService {
     const expireInMinutes = 30;
     const record = await this.getUser(session.userId);
 
+    // User updates
+    record.markLoggedIn()
+    await this.userService.save(record);
+
     // Build and cache permissions in Redis
     const buildUserPermissionsService = new BuildUserPermissionsService({
       userId: record.id as string,

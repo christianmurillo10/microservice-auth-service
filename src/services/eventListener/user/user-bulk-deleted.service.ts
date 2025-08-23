@@ -1,7 +1,6 @@
 import EventListenerAbstract from "../event-listener.abstract";
 import EventListenerService from "../event-listener.interface";
 import UserService from "../../user.service";
-import UserEntity from "../../../entities/user.entity";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 
 export default class UserBulkDeletedEventListenerService extends EventListenerAbstract<Record<string, string[]>> implements EventListenerService<Record<string, string[]>> {
@@ -21,7 +20,7 @@ export default class UserBulkDeletedEventListenerService extends EventListenerAb
     const userIds = this.state.newDetails.ids;
 
     for (const userId of userIds) {
-      const existingUser = await this.userService.getById(userId)
+      const user = await this.userService.getById(userId)
         .catch(err => {
           if (err instanceof NotFoundException) {
             console.log(`User ${userId} not exist!`);
@@ -31,14 +30,11 @@ export default class UserBulkDeletedEventListenerService extends EventListenerAb
           throw err;
         });
 
-      if (!existingUser) {
+      if (!user) {
         return;
       }
 
-      const user = new UserEntity({
-        ...existingUser,
-        deletedAt: new Date()
-      });
+      user.delete();
       await this.userService.save(user)
         .catch(err => {
           console.log("Error on deleting user", err);

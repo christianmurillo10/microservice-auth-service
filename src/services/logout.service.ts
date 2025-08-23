@@ -41,17 +41,12 @@ export default class LogoutService {
     }
   };
 
-  private updateUser = async (userService: UserService, user: UserEntity) => userService
-    .save({
-      ...user,
-      isLogged: false
-    });
-
   private userUpdates = async (session: SessionEntity) => {
     // User updates
     const userService = new UserService();
     const record = await this.getUser(userService, session.userId);
-    const newRecord = await this.updateUser(userService, record);
+    record.markLoggedOut()
+    const newRecord = await userService.save(record);
 
     // Send to Kafka
     const userProducer = new UserKafkaProducer();

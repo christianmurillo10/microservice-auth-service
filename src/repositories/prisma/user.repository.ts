@@ -13,21 +13,10 @@ import { userSubsets } from "../../shared/helpers/select-subset.helper";
 import { UserAccessTypeValue } from "../../models/user.model";
 
 function toEntity(user: UserRecord): UserEntity {
-  return new UserEntity(
-    user.id,
-    user.name,
-    user.username,
-    user.email,
-    user.password,
-    user.accessType as UserAccessTypeValue,
-    user.organizationId ?? null,
-    user.isActive,
-    user.isLogged,
-    user.lastLoggedAt ?? null,
-    user.createdAt,
-    user.updatedAt,
-    user.deletedAt
-  );
+  return new UserEntity({
+    ...user,
+    accessType: user.accessType as UserAccessTypeValue
+  });
 };
 
 export default class PrismaUserRepository implements UserRepository {

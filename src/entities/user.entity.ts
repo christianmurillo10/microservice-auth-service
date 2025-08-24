@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import Organization from "../models/organization.model";
 import Session from "../models/session.model";
 import UserPermission from "../models/user-permission.model";
@@ -25,7 +26,7 @@ class UserEntity implements User {
   userPermissions?: UserPermission[];
 
   constructor(props: User) {
-    this.id = props.id ?? "";
+    this.id = props.id ?? uuidv4();
     this.name = props.name;
     this.username = props.username;
     this.email = props.email;

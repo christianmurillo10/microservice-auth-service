@@ -2,6 +2,7 @@ export const organizationSubsets = {
   id: true,
   name: true,
   logoPath: true,
+  isActive: true,
   createdAt: true,
   updatedAt: true,
   deletedAt: true

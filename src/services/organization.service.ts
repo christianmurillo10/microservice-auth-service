@@ -62,9 +62,8 @@ export default class OrganizationService {
   save = async (data: OrganizationEntity, file?: Express.Multer.File): Promise<OrganizationEntity> => {
     const uploadPath = setUploadPath(file, this.repository.logoPath);
     let record: OrganizationEntity;
-    let newData = new OrganizationEntity(data);
     let option = {
-      params: newData,
+      params: data,
       exclude: ["deletedAt"]
     };
 

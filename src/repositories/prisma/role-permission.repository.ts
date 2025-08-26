@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from "../../prisma/client";
+import type { RolePermission as RolePermissionRecord } from "../../prisma/client";
 import RolePermissionEntity from "../../entities/role-permission.entity";
 import RolePermissionRepository from "../role-permission.interface";
 import {
@@ -14,6 +15,10 @@ import {
 } from "../../shared/types/repository.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { rolePermissionSubsets } from "../../shared/helpers/select-subset.helper";
+
+function toEntity(rolePermission: RolePermissionRecord): RolePermissionEntity {
+  return new RolePermissionEntity(rolePermission);
+};
 
 export default class PrismaRolePermissionRepository implements RolePermissionRepository {
   private client;
@@ -45,7 +50,7 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
         undefined
     });
 
-    return res.map(item => new RolePermissionEntity(item));
+    return res.map(item => toEntity(item));
   };
 
   findAllByRoleId = async (
@@ -71,7 +76,7 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
         undefined
     });
 
-    return res.map(item => new RolePermissionEntity(item));
+    return res.map(item => toEntity(item));
   };
 
   findById = async (
@@ -91,7 +96,7 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
 
     if (!res) return null;
 
-    return new RolePermissionEntity(res);
+    return toEntity(res);
   };
 
   findByRoleIdAndPermissionId = async (
@@ -112,7 +117,7 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
 
     if (!res) return null;
 
-    return new RolePermissionEntity(res);
+    return toEntity(res);
   };
 
   create = async (
@@ -128,7 +133,7 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
       data: params
     });
 
-    return new RolePermissionEntity(data);
+    return toEntity(data);
   };
 
   delete = async (

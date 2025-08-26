@@ -6,7 +6,7 @@ class RolePermissionEntity implements RolePermission {
   id?: string;
   roleId: string;
   permissionId: string;
-  grantedAt: Date = new Date();
+  grantedAt: Date;
   role?: Role;
   permission?: Permission;
 
@@ -14,7 +14,7 @@ class RolePermissionEntity implements RolePermission {
     this.id = props.id;
     this.roleId = props.roleId;
     this.permissionId = props.permissionId;
-    this.grantedAt = props.grantedAt;
+    this.grantedAt = props.grantedAt ?? new Date();
     this.role = props.role;
     this.permission = props.permission;
   };

@@ -26,6 +26,10 @@ class SessionEntity implements Session {
     this.deletedAt = props.deletedAt ?? null;
     this.user = props.user;
   };
+
+  isRefreshExpired(at: Date = new Date()): boolean {
+    return this.refreshTokenExpiresAt.getTime() <= at.getTime();
+  };
 };
 
 export default SessionEntity;

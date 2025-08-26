@@ -8,7 +8,6 @@ import { generateAccessToken } from "../shared/helpers/jwt.helper";
 import SessionService from "./session.service";
 import UserService from "./user.service";
 import BuildUserPermissionsService from "./rbac/build-user-permissions.service";
-import SessionEntity from "../entities/session.entity";
 
 type State = {
   token: string,
@@ -32,15 +31,6 @@ export default class RefreshTokenService {
     this.state = state;
     this.sessionService = new SessionService();
     this.userService = new UserService();
-  };
-
-  private validateRefreshToken = async (session: SessionEntity) => {
-    const refreshTokenExpiryDate = new Date(session.refreshTokenExpiresAt);
-    const currentDate = new Date();
-    if (refreshTokenExpiryDate < currentDate) {
-      await this.sessionService.delete(session.id!);
-      throw new UnauthorizedException([MESSAGE_DATA_TOKEN_EXPIRED]);
-    }
   };
 
   private getUser = async (id: string) => {
@@ -78,7 +68,10 @@ export default class RefreshTokenService {
     }
 
     // Validate if refresh token date was expired
-    await this.validateRefreshToken(session);
+    if (session.isRefreshExpired()) {
+      await this.sessionService.delete(session.id!);
+      throw new UnauthorizedException([MESSAGE_DATA_TOKEN_EXPIRED]);
+    }
 
     const expireInMinutes = 30;
     const record = await this.getUser(session.userId);

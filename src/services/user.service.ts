@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaUserRepository from "../repositories/prisma/user.repository";
 import UserEntity from "../entities/user.entity";
@@ -40,25 +39,19 @@ export default class UserService {
   };
 
   save = async (data: UserEntity): Promise<UserEntity> => {
-    let record: UserEntity;
     let option = {
       params: data,
       exclude: ["deletedAt"]
     };
 
     if (data.id) {
-      // Update
-      record = await this.repository.update({
+      return await this.repository.update({
         id: data.id,
         ...option
       });
-    } else {
-      // Create
-      option.params.id = uuidv4();
-      option.params.password = hashPassword(option.params.password as string);
-      record = await this.repository.create(option);
     }
 
-    return record;
+    option.params.password = hashPassword(option.params.password as string);
+    return await this.repository.create(option);;
   };
 };

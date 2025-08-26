@@ -7,7 +7,7 @@ import User, { UserAccessTypeValue } from "../models/user.model";
 import { comparePassword } from "../shared/utils/bcrypt";
 
 class UserEntity implements User {
-  id: string;
+  id?: string;
   name: string;
   username: string;
   email: string;

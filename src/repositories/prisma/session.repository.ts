@@ -1,4 +1,5 @@
 import { PrismaClient } from "../../prisma/client";
+import type { Session as SessionRecord } from "../../prisma/client";
 import SessionEntity from "../../entities/session.entity";
 import SessionRepository from "../session.interface";
 import {
@@ -12,6 +13,13 @@ import {
 import { setSelectExclude } from "../../shared/helpers/common.helper";
 import { sessionSubsets } from "../../shared/helpers/select-subset.helper";
 import { UserAccessTypeValue } from "../../models/user.model";
+
+function toEntity(session: SessionRecord): SessionEntity {
+  return new SessionEntity({
+    ...session,
+    accessType: session.accessType as UserAccessTypeValue
+  });
+};
 
 export default class PrismaSessionRepository implements SessionRepository {
   private client;
@@ -39,10 +47,7 @@ export default class PrismaSessionRepository implements SessionRepository {
 
     if (!res) return null;
 
-    return new SessionEntity({
-      ...res,
-      accessType: res.accessType as UserAccessTypeValue
-    });
+    return toEntity(res);
   };
 
   findByAccessToken = async (
@@ -63,10 +68,7 @@ export default class PrismaSessionRepository implements SessionRepository {
 
     if (!res) return null;
 
-    return new SessionEntity({
-      ...res,
-      accessType: res.accessType as UserAccessTypeValue
-    });
+    return toEntity(res);
   };
 
   findByRefreshToken = async (
@@ -87,10 +89,7 @@ export default class PrismaSessionRepository implements SessionRepository {
 
     if (!res) return null;
 
-    return new SessionEntity({
-      ...res,
-      accessType: res.accessType as UserAccessTypeValue
-    });
+    return toEntity(res);
   };
 
   create = async (
@@ -106,10 +105,7 @@ export default class PrismaSessionRepository implements SessionRepository {
       data: params
     });
 
-    return new SessionEntity({
-      ...data,
-      accessType: data.accessType as UserAccessTypeValue
-    });
+    return toEntity(data);
   };
 
   update = async (
@@ -129,10 +125,7 @@ export default class PrismaSessionRepository implements SessionRepository {
       }
     });
 
-    return new SessionEntity({
-      ...data,
-      accessType: data.accessType as UserAccessTypeValue
-    });
+    return toEntity(data);
   };
 
   softDelete = async (
@@ -150,9 +143,6 @@ export default class PrismaSessionRepository implements SessionRepository {
       }
     });
 
-    return new SessionEntity({
-      ...data,
-      accessType: data.accessType as UserAccessTypeValue
-    });
+    return toEntity(data);
   };
 };

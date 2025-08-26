@@ -5,7 +5,7 @@ import Role from "../models/role.model";
 import User from "../models/user.model";
 
 class OrganizationEntity implements Organization {
-  id: string;
+  id?: string;
   name: string;
   logoPath?: string | null;
   isActive: boolean;

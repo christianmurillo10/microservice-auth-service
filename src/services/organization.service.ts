@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaOrganizationRepository from "../repositories/prisma/organization.repository";
@@ -76,7 +75,6 @@ export default class OrganizationService {
       });
     } else {
       // Create
-      option.params.id = uuidv4();
       option.params.logoPath = uploadPath;
       record = await this.repository.create(option);
     }

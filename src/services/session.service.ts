@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaSessionRepository from "../repositories/prisma/session.repository";
 import SessionEntity from "../entities/session.entity";
@@ -51,26 +50,19 @@ export default class SessionService {
   };
 
   save = async (data: SessionEntity): Promise<SessionEntity> => {
-    let record: SessionEntity;
-    let newData = new SessionEntity(data);
-    let option = {
-      params: newData,
+    const option = {
+      params: data,
       exclude: ["deletedAt"]
     };
 
     if (data.id) {
-      // Update
-      record = await this.repository.update({
+      return await this.repository.update({
         id: data.id,
         ...option
       });
-    } else {
-      // Create
-      option.params.id = uuidv4();
-      record = await this.repository.create(option);
     }
 
-    return record;
+    return await this.repository.create(option);;
   };
 
   delete = async (id: string): Promise<SessionEntity> => {

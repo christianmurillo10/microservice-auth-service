@@ -6,7 +6,7 @@ class UserRoleEntity implements UserRole {
   id?: string;
   userId: string;
   roleId: string;
-  assignedAt: Date = new Date();
+  assignedAt: Date;
   user?: User;
   role?: Role;
 
@@ -14,6 +14,7 @@ class UserRoleEntity implements UserRole {
     this.id = props.id;
     this.userId = props.userId;
     this.roleId = props.roleId;
+    this.assignedAt = props.assignedAt ?? new Date();
     this.user = props.user;
     this.role = props.role;
   };

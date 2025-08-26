@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from "../../prisma/client";
+import type { UserRole as UserRoleRecord } from "../../prisma/client";
 import UserRoleEntity from "../../entities/user-role.entity";
 import UserRoleRepository from "../user-role.interface";
 import {
@@ -15,6 +16,10 @@ import {
 } from "../../shared/types/repository.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { permissionSubsets, rolePermissionSubsets, roleSubsets, userRoleSubsets } from "../../shared/helpers/select-subset.helper";
+
+function toEntity(userRole: UserRoleRecord): UserRoleEntity {
+  return new UserRoleEntity(userRole);
+};
 
 export default class PrismaUserRoleRepository implements UserRoleRepository {
   private client;
@@ -46,7 +51,7 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
         undefined
     });
 
-    return res.map(item => new UserRoleEntity(item));
+    return res.map(item => toEntity(item));
   };
 
   findAllByUserId = async (
@@ -72,7 +77,7 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
         undefined
     });
 
-    return res.map(item => new UserRoleEntity(item));
+    return res.map(item => toEntity(item));
   };
 
   findAllUserRoleBasedPermissions = async (
@@ -102,7 +107,7 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
       },
     });
 
-    return res.map(item => new UserRoleEntity(item));
+    return res.map(item => toEntity(item));
   };
 
   findById = async (
@@ -122,7 +127,7 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
 
     if (!res) return null;
 
-    return new UserRoleEntity(res);
+    return toEntity(res);
   };
 
   findByUserIdAndRoleId = async (
@@ -143,7 +148,7 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
 
     if (!res) return null;
 
-    return new UserRoleEntity(res);
+    return toEntity(res);
   };
 
   create = async (
@@ -159,7 +164,7 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
       data: params
     });
 
-    return new UserRoleEntity(data);
+    return toEntity(data);
   };
 
   delete = async (

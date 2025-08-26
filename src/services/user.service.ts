@@ -52,6 +52,6 @@ export default class UserService {
     }
 
     option.params.password = hashPassword(option.params.password as string);
-    return await this.repository.create(option);;
+    return await this.repository.create(option);
   };
 };

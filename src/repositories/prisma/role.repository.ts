@@ -1,4 +1,5 @@
 import { PrismaClient } from "../../prisma/client";
+import type { Role as RoleRecord } from "../../prisma/client";
 import RoleEntity from "../../entities/role.entity";
 import RoleRepository from "../role.interface";
 import {
@@ -14,6 +15,10 @@ import {
 import { GenericObject } from "../../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { roleSubsets } from "../../shared/helpers/select-subset.helper";
+
+function toEntity(role: RoleRecord): RoleEntity {
+  return new RoleEntity(role);
+};
 
 export default class PrismaRoleRepository implements RoleRepository {
   private client;
@@ -46,7 +51,7 @@ export default class PrismaRoleRepository implements RoleRepository {
         undefined
     });
 
-    return res.map(item => new RoleEntity(item));
+    return res.map(item => toEntity(item));
   };
 
   findById = async (
@@ -67,7 +72,7 @@ export default class PrismaRoleRepository implements RoleRepository {
 
     if (!res) return null;
 
-    return new RoleEntity(res);
+    return toEntity(res);
   };
 
   findByOrganizationIdAndName = async (
@@ -89,7 +94,7 @@ export default class PrismaRoleRepository implements RoleRepository {
 
     if (!res) return null;
 
-    return new RoleEntity(res);
+    return toEntity(res);
   };
 
   create = async (
@@ -105,7 +110,7 @@ export default class PrismaRoleRepository implements RoleRepository {
       data: params
     });
 
-    return new RoleEntity(data);
+    return toEntity(data);
   };
 
   update = async (
@@ -125,7 +130,7 @@ export default class PrismaRoleRepository implements RoleRepository {
       }
     });
 
-    return new RoleEntity(data);
+    return toEntity(data);
   };
 
   softDelete = async (
@@ -143,7 +148,7 @@ export default class PrismaRoleRepository implements RoleRepository {
       }
     });
 
-    return new RoleEntity(data);
+    return toEntity(data);
   };
 
   softDeleteMany = async (

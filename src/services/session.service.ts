@@ -62,7 +62,7 @@ export default class SessionService {
       });
     }
 
-    return await this.repository.create(option);;
+    return await this.repository.create(option);
   };
 
   delete = async (id: string): Promise<SessionEntity> => {

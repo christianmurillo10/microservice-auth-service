@@ -6,11 +6,11 @@ import UserRole from "../models/user-role.model";
 
 class RoleEntity implements Role {
   id?: string;
-  name: string = "";
+  name: string;
   organizationId: string;
-  createdAt: Date = new Date();
-  updatedAt: Date = new Date();
-  deletedAt?: Date | null = null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
   organization?: Organization;
   rolePermissions?: RolePermission[];
   userRoles?: UserRole[];

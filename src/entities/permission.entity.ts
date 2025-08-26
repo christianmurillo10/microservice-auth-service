@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import Organization from "../models/organization.model";
 import Permission from "../models/permission.model";
 import RolePermission from "../models/role-permission.model";
@@ -8,21 +9,21 @@ class PermissionEntity implements Permission {
   action: string;
   resource: string;
   organizationId: string;
-  createdAt: Date = new Date();
-  updatedAt: Date = new Date();
-  deletedAt?: Date | null = null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
   organization?: Organization;
   rolePermissions?: RolePermission[];
   userPermissions?: UserPermission[];
 
   constructor(props: Permission) {
-    this.id = props.id;
+    this.id = props.id ?? uuidv4();
     this.action = props.action;
     this.resource = props.resource;
     this.organizationId = props.organizationId;
-    this.createdAt = props.createdAt;
-    this.updatedAt = props.updatedAt;
-    this.deletedAt = props.deletedAt;
+    this.createdAt = props.createdAt ?? new Date();
+    this.updatedAt = props.updatedAt ?? new Date();
+    this.deletedAt = props.deletedAt ?? null;
     this.organization = props.organization;
     this.rolePermissions = props.rolePermissions;
     this.userPermissions = props.userPermissions;

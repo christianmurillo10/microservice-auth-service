@@ -1,4 +1,5 @@
 import { PrismaClient } from "../../prisma/client";
+import type { Permission as PermissionRecord } from "../../prisma/client";
 import PermissionEntity from "../../entities/permission.entity";
 import PermissionRepository from "../permission.interface";
 import {
@@ -14,6 +15,10 @@ import {
 import { GenericObject } from "../../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { permissionSubsets } from "../../shared/helpers/select-subset.helper";
+
+function toEntity(permission: PermissionRecord): PermissionEntity {
+  return new PermissionEntity(permission);
+};
 
 export default class PrismaPermissionRepository implements PermissionRepository {
   private client;
@@ -46,7 +51,7 @@ export default class PrismaPermissionRepository implements PermissionRepository 
         undefined
     });
 
-    return res.map(item => new PermissionEntity(item));
+    return res.map(item => toEntity(item));
   };
 
   findById = async (
@@ -67,7 +72,7 @@ export default class PrismaPermissionRepository implements PermissionRepository 
 
     if (!res) return null;
 
-    return new PermissionEntity(res);
+    return toEntity(res);
   };
 
   findByOrganizationIdAndActionAndResource = async (
@@ -90,7 +95,7 @@ export default class PrismaPermissionRepository implements PermissionRepository 
 
     if (!res) return null;
 
-    return new PermissionEntity(res);
+    return toEntity(res);
   };
 
   create = async (
@@ -106,7 +111,7 @@ export default class PrismaPermissionRepository implements PermissionRepository 
       data: params
     });
 
-    return new PermissionEntity(data);
+    return toEntity(data);
   };
 
   update = async (
@@ -126,7 +131,7 @@ export default class PrismaPermissionRepository implements PermissionRepository 
       }
     });
 
-    return new PermissionEntity(data);
+    return toEntity(data);
   };
 
   softDelete = async (
@@ -144,7 +149,7 @@ export default class PrismaPermissionRepository implements PermissionRepository 
       }
     });
 
-    return new PermissionEntity(data);
+    return toEntity(data);
   };
 
   softDeleteMany = async (

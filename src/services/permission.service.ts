@@ -51,25 +51,19 @@ export default class PermissionService {
   };
 
   save = async (data: PermissionEntity): Promise<PermissionEntity> => {
-    let record: PermissionEntity;
-    let newData = new PermissionEntity(data);
-    let option = {
-      params: newData,
+    const option = {
+      params: data,
       exclude: ["deletedAt"]
     };
 
     if (data.id) {
-      // Update
-      record = await this.repository.update({
+      return await this.repository.update({
         id: data.id,
         ...option
       });
-    } else {
-      // Create
-      record = await this.repository.create(option);
     }
 
-    return record;
+    return await this.repository.create(option);;
   };
 
   delete = async (id: string): Promise<PermissionEntity> => {

@@ -6,7 +6,7 @@ class UserPermissionEntity implements UserPermission {
   id?: string;
   userId: string;
   permissionId: string;
-  grantedAt: Date = new Date();
+  grantedAt: Date;
   user?: User;
   permission?: Permission;
 
@@ -14,7 +14,7 @@ class UserPermissionEntity implements UserPermission {
     this.id = props.id;
     this.userId = props.userId;
     this.permissionId = props.permissionId;
-    this.grantedAt = props.grantedAt;
+    this.grantedAt = props.grantedAt ?? new Date();
     this.user = props.user;
     this.permission = props.permission;
   };

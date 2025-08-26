@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from "../../prisma/client";
+import type { UserPermission as UserPermissionRecord } from "../../prisma/client";
 import UserPermissionEntity from "../../entities/user-permission.entity";
 import UserPermissionRepository from "../user-permission.interface";
 import {
@@ -15,6 +16,10 @@ import {
 } from "../../shared/types/repository.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { permissionSubsets, userPermissionSubsets } from "../../shared/helpers/select-subset.helper";
+
+function toEntity(userPermission: UserPermissionRecord): UserPermissionEntity {
+  return new UserPermissionEntity(userPermission);
+};
 
 export default class PrismaUserPermissionRepository implements UserPermissionRepository {
   private client;
@@ -46,7 +51,7 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
         undefined
     });
 
-    return res.map(item => new UserPermissionEntity(item));
+    return res.map(item => toEntity(item));
   };
 
   findAllByUserId = async (
@@ -72,10 +77,10 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
         undefined
     });
 
-    return res.map(item => new UserPermissionEntity(item));
+    return res.map(item => toEntity(item));
   };
 
-  findAllUserBasedPermissions =   async (
+  findAllUserBasedPermissions = async (
     args: FindAllRoleOrUserBasedPermissionsArgs
   ): Promise<UserPermissionEntity[]> => {
     const res = await this.client.findMany({
@@ -93,7 +98,7 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
       },
     });
 
-    return res.map(item => new UserPermissionEntity(item));
+    return res.map(item => toEntity(item));
   };
 
   findById = async (
@@ -113,7 +118,7 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
 
     if (!res) return null;
 
-    return new UserPermissionEntity(res);
+    return toEntity(res);
   };
 
   findByUserIdAndPermissionId = async (
@@ -134,7 +139,7 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
 
     if (!res) return null;
 
-    return new UserPermissionEntity(res);
+    return toEntity(res);
   };
 
   create = async (
@@ -150,7 +155,7 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
       data: params
     });
 
-    return new UserPermissionEntity(data);
+    return toEntity(data);
   };
 
   delete = async (

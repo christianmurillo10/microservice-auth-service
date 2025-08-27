@@ -61,22 +61,23 @@ export default class OrganizationService {
   save = async (data: OrganizationEntity, file?: Express.Multer.File): Promise<OrganizationEntity> => {
     const uploadPath = setUploadPath(file, this.repository.logoPath);
     let record: OrganizationEntity;
-    let option = {
-      params: data,
-      exclude: ["deletedAt"]
-    };
+    const exclude = ["deletedAt"];
 
     if (data.id) {
       // Update
-      option.params.logoPath = uploadPath || data.logoPath || ""
+      data.logoPath = uploadPath || data.logoPath || "";
       record = await this.repository.update({
         id: data.id,
-        ...option
+        params: data,
+        exclude
       });
     } else {
       // Create
-      option.params.logoPath = uploadPath;
-      record = await this.repository.create(option);
+      data.logoPath = uploadPath;
+      record = await this.repository.create({
+        params: data,
+        exclude
+      });
     }
 
     if (!_.isUndefined(file) && record.logoPath) {

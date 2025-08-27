@@ -50,19 +50,20 @@ export default class RoleService {
   };
 
   save = async (data: RoleEntity): Promise<RoleEntity> => {
-    const option = {
-      params: data,
-      exclude: ["deletedAt"]
-    };
+    const exclude = ["deletedAt"];
 
     if (data.id) {
       return await this.repository.update({
         id: data.id,
-        ...option
+        params: data,
+        exclude
       });
     }
 
-    return await this.repository.create(option);
+    return await this.repository.create({
+      params: data,
+      exclude
+    });
   };
 
   delete = async (id: string): Promise<RoleEntity> => {

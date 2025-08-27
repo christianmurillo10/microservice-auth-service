@@ -39,19 +39,20 @@ export default class UserService {
   };
 
   save = async (data: UserEntity): Promise<UserEntity> => {
-    let option = {
-      params: data,
-      exclude: ["deletedAt"]
-    };
+    const exclude = ["deletedAt"];
 
     if (data.id) {
       return await this.repository.update({
         id: data.id,
-        ...option
+        params: data,
+        exclude
       });
     }
 
-    option.params.password = hashPassword(option.params.password as string);
-    return await this.repository.create(option);
+    data.password = hashPassword(data.password as string);
+    return await this.repository.create({
+      params: data,
+      exclude
+    });
   };
 };

@@ -28,21 +28,6 @@ export type GetAllRoleOrUserBasedPermissionsArgs = {
   userId: string
 };
 
-export type GetByIdArgs<I> = {
-  id: I,
-  condition?: GenericObject
-};
-
-export type GetByNameArgs = {
-  name: string,
-  condition?: GenericObject
-};
-
-export type GetByRefreshTokenArgs = {
-  refreshToken: string,
-  condition?: GenericObject
-};
-
 export type CountAllArgs = {
   condition?: GenericObject,
   query?: Query

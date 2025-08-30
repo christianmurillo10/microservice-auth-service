@@ -27,11 +27,6 @@ const authenticate = async (
     });
     const authenticateOutput = await authenticateService.execute();
 
-    if (authenticateOutput.organization) {
-      req.organization = authenticateOutput.organization;
-      req.body.organizationId = authenticateOutput.organization.id;
-    }
-
     req.auth = authenticateOutput.user;
     next();
   } catch (error) {

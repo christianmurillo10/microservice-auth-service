@@ -27,7 +27,6 @@ export const MESSAGE_DATA_NOT_LOGGED = "Please login to continue.";
 export const MESSAGE_DATA_TOKEN_EXPIRED = "Token expired, Please login to continue.";
 export const MESSAGE_DATA_NOT_IMPLEMENTED = "Not yet implemented.";
 export const MESSAGE_DATA_NOT_PERMITTED_TO_ACCESS_RESOURCE = "You do not have permission to access this resource.";
-export const MESSAGE_DATA_NOT_PERMITTED_TO_ACCESS_ACTION = "You do not have permission to access thiss action.";
 export const MESSAGE_DATA_NOT_AUTHORIZED = "Not authorized to perform this action.";
 export const MESSAGE_ERROR_SERVER = "Server error.";
 export const MESSAGE_ERROR_BAD_REQUEST = "Bad Request.";

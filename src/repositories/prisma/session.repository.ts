@@ -13,6 +13,7 @@ import {
 import { setSelectExclude } from "../../shared/helpers/common.helper";
 import { sessionSubsets } from "../../shared/helpers/select-subset.helper";
 import { UserAccessTypeValue } from "../../models/user.model";
+import { CreateSessionDTO, UpdateSessionDTO } from "../../dtos/session.dto";
 
 function toEntity(session: SessionRecord): SessionEntity {
   return new SessionEntity({
@@ -93,25 +94,23 @@ export default class PrismaSessionRepository implements SessionRepository {
   };
 
   create = async (
-    args: CreateArgs<SessionEntity>
+    args: CreateArgs<CreateSessionDTO>
   ): Promise<SessionEntity> => {
-    const { user, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
         ...sessionSubsets,
         ...exclude
       },
-      data: params
+      data: args.params
     });
 
     return toEntity(data);
   };
 
   update = async (
-    args: UpdateArgs<string, SessionEntity>
+    args: UpdateArgs<string, UpdateSessionDTO>
   ): Promise<SessionEntity> => {
-    const { user, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -120,7 +119,7 @@ export default class PrismaSessionRepository implements SessionRepository {
       },
       where: { id: args.id },
       data: {
-        ...params,
+        ...args.params,
         updatedAt: new Date(),
       }
     });

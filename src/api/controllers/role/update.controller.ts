@@ -21,7 +21,9 @@ const update = async (
     }
 
     const existingRole = await service.getById(id);
-    const newRole = await service.save({ ...existingRole, ...body });
+    const newRole = await service.update(id, {
+      name: body.name ?? existingRole.name
+    });
 
     apiResponse(res, {
       statusCode: 200,

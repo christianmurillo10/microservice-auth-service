@@ -60,7 +60,7 @@ export default class PermissionService {
   update = async (id: string, params: UpdatePermissionDTO): Promise<PermissionEntity> =>
     this.repository.update({
       id: id,
-      params: params,
+      params,
       exclude: ["deletedAt"]
     });
 

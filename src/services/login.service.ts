@@ -11,7 +11,6 @@ import UserService from "./user.service";
 import BuildUserPermissionsService from "./rbac/build-user-permissions.service";
 import { UserAccessTypeValue } from "../models/user.model";
 import UserKafkaProducer from "../events/producer/user.producer";
-import { CreateSessionDTO } from "../dtos/session.dto";
 
 type State = {
   input: {
@@ -71,15 +70,14 @@ export default class LoginService {
     accessType: UserAccessTypeValue,
     userId: string
   ) => {
-    const session: CreateSessionDTO = {
+    const sessionService = new SessionService();
+    return await sessionService.create({
       accessType: accessType,
       accessToken,
       refreshToken: uuidv4(),
       userId,
       refreshTokenExpiresAt: addDaysToDate(new Date(), 30)
-    };
-    const sessionService = new SessionService();
-    return await sessionService.create(session);
+    });
   };
 
   private userUpdates = async (): Promise<Output> => {

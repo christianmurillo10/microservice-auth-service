@@ -21,7 +21,11 @@ const update = async (
     }
 
     const existingOrganization = await service.getById(id);
-    const newOrganization = await service.save({ ...existingOrganization, ...body }, file);
+    const newOrganization = await service.update(id, {
+      name: body.name ?? existingOrganization.name,
+      logoPath: file ? await service.uploadLogo(file) : existingOrganization.logoPath,
+      isActive: body.isActive ?? existingOrganization.isActive
+    });
 
     apiResponse(res, {
       statusCode: 200,

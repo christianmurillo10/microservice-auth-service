@@ -25,7 +25,11 @@ const create = async (
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const newOrganization = await organizationService.save(body, file);
+    const newOrganization = await organizationService.create({
+      name: body.name,
+      logoPath: file ? await organizationService.uploadLogo(file) : null,
+      isActive: body.isActive ?? true
+    });
 
     apiResponse(res, {
       statusCode: 201,

@@ -50,16 +50,16 @@ export default class SessionService {
     return record;
   };
 
-  create = async (data: CreateSessionDTO): Promise<SessionEntity> =>
+  create = async (params: CreateSessionDTO): Promise<SessionEntity> =>
     this.repository.create({
-      params: data,
+      params,
       exclude: ["deletedAt"]
     });
 
-  update = async (id: string, data: UpdateSessionDTO): Promise<SessionEntity> =>
+  update = async (id: string, params: UpdateSessionDTO): Promise<SessionEntity> =>
     this.repository.update({
       id: id,
-      params: data,
+      params,
       exclude: ["deletedAt"]
     });
 

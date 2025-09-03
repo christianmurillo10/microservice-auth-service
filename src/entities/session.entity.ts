@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import Session from "../models/session.model";
 import User, { UserAccessTypeValue } from "../models/user.model";
 
@@ -15,7 +14,7 @@ class SessionEntity implements Session {
   user?: User;
 
   constructor(props: Session) {
-    this.id = props.id ?? uuidv4();
+    this.id = props.id;
     this.accessType = props.accessType;
     this.accessToken = props.accessToken;
     this.refreshToken = props.refreshToken;

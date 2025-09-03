@@ -1,6 +1,7 @@
 import _ from "lodash";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaOrganizationRepository from "../repositories/prisma/organization.repository";
+import { CreateOrganizationDTO, UpdateOrganizationDTO } from "../dtos/organization.dto";
 import OrganizationEntity from "../entities/organization.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllBetweenCreatedAtArgs } from "../shared/types/service.type";
@@ -58,34 +59,17 @@ export default class OrganizationService {
     return record;
   };
 
-  save = async (data: OrganizationEntity, file?: Express.Multer.File): Promise<OrganizationEntity> => {
-    const uploadPath = setUploadPath(file, this.repository.logoPath);
-    let record: OrganizationEntity;
-    const exclude = ["deletedAt"];
+  create = async (params: CreateOrganizationDTO): Promise<OrganizationEntity> =>
+    this.repository.create({
+      params,
+      exclude: ["deletedAt"]
+    });
 
-    if (data.id) {
-      // Update
-      data.logoPath = uploadPath || data.logoPath || "";
-      record = await this.repository.update({
-        id: data.id,
-        params: data,
-        exclude
-      });
-    } else {
-      // Create
-      data.logoPath = uploadPath;
-      record = await this.repository.create({
-        params: data,
-        exclude
-      });
-    }
-
-    if (!_.isUndefined(file) && record.logoPath) {
-      uploadFile(record.logoPath, file);
-    };
-
-    return record;
-  };
+  update = async (id: string, params: UpdateOrganizationDTO): Promise<OrganizationEntity> => this.repository.update({
+    id: id,
+    params,
+    exclude: ["deletedAt"]
+  });
 
   delete = async (id: string): Promise<OrganizationEntity> => {
     const record = await this.repository.softDelete({ id: id });
@@ -98,5 +82,11 @@ export default class OrganizationService {
 
   count = async (args: CountAllArgs): Promise<number> => {
     return await this.repository.count(args);
+  };
+
+  uploadLogo = async (file: Express.Multer.File): Promise<string> => {
+    const uploadPath = setUploadPath(file, this.repository.logoPath);
+    uploadFile(uploadPath, file);
+    return uploadPath;
   };
 };

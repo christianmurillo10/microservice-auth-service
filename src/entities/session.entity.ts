@@ -20,10 +20,10 @@ class SessionEntity implements Session {
     this.accessToken = props.accessToken;
     this.refreshToken = props.refreshToken;
     this.userId = props.userId;
-    this.refreshTokenExpiresAt = props.refreshTokenExpiresAt ?? new Date();
-    this.createdAt = props.createdAt ?? new Date();
-    this.updatedAt = props.updatedAt ?? new Date();
-    this.deletedAt = props.deletedAt ?? null;
+    this.refreshTokenExpiresAt = props.refreshTokenExpiresAt;
+    this.createdAt = props.createdAt;
+    this.updatedAt = props.updatedAt;
+    this.deletedAt = props.deletedAt;
     this.user = props.user;
   };
 

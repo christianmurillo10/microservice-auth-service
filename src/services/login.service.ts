@@ -1,6 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
 import UserEntity from "../entities/user.entity";
-import SessionEntity from "../entities/session.entity";
 import UserRequestHeaderEntity from "../entities/user-request-header.entity";
 import { MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS, MESSAGE_DATA_NOT_IMPLEMENTED } from "../shared/constants/message.constant";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
@@ -12,6 +11,7 @@ import UserService from "./user.service";
 import BuildUserPermissionsService from "./rbac/build-user-permissions.service";
 import { UserAccessTypeValue } from "../models/user.model";
 import UserKafkaProducer from "../events/producer/user.producer";
+import { CreateSessionDTO } from "../dtos/session.dto";
 
 type State = {
   input: {
@@ -71,17 +71,15 @@ export default class LoginService {
     accessType: UserAccessTypeValue,
     userId: string
   ) => {
-    const session = new SessionEntity({
+    const session: CreateSessionDTO = {
       accessType: accessType,
       accessToken,
       refreshToken: uuidv4(),
       userId,
-      refreshTokenExpiresAt: addDaysToDate(new Date(), 30),
-      createdAt: new Date(),
-      updatedAt: new Date()
-    });
+      refreshTokenExpiresAt: addDaysToDate(new Date(), 30)
+    };
     const sessionService = new SessionService();
-    return await sessionService.save(session);
+    return await sessionService.create(session);
   };
 
   private userUpdates = async (): Promise<Output> => {

@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { PrismaClient } from "../../prisma/client";
 import type { Session as SessionRecord } from "../../prisma/client";
 import SessionEntity from "../../entities/session.entity";
@@ -102,7 +103,12 @@ export default class PrismaSessionRepository implements SessionRepository {
         ...sessionSubsets,
         ...exclude
       },
-      data: args.params
+      data: {
+        ...args.params,
+        id: uuidv4(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      }
     });
 
     return toEntity(data);

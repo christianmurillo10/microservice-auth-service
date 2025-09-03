@@ -8,6 +8,7 @@ import { generateAccessToken } from "../shared/helpers/jwt.helper";
 import SessionService from "./session.service";
 import UserService from "./user.service";
 import BuildUserPermissionsService from "./rbac/build-user-permissions.service";
+import { UpdateSessionDTO } from "../dtos/session.dto";
 
 type State = {
   token: string,
@@ -96,11 +97,13 @@ export default class RefreshTokenService {
       expireInMinutes
     );
 
-    // Save data to session table
-    session.accessToken = accessToken;
-    session.refreshToken = uuidv4();
-    session.refreshTokenExpiresAt = addDaysToDate(new Date(), 30);
-    await this.sessionService.save(session);
+    // Update data to session table
+    const updatedSession: UpdateSessionDTO = {
+      accessToken: accessToken,
+      refreshToken: uuidv4(),
+      refreshTokenExpiresAt: addDaysToDate(new Date(), 30)
+    };
+    await this.sessionService.update(session.id!, updatedSession);
 
     return {
       userId: session.userId,

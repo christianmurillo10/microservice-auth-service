@@ -1,5 +1,6 @@
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaSessionRepository from "../repositories/prisma/session.repository";
+import { CreateSessionDTO, UpdateSessionDTO } from "../dtos/session.dto";
 import SessionEntity from "../entities/session.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 
@@ -49,22 +50,18 @@ export default class SessionService {
     return record;
   };
 
-  save = async (data: SessionEntity): Promise<SessionEntity> => {
-    const exclude = ["deletedAt"];
-
-    if (data.id) {
-      return await this.repository.update({
-        id: data.id,
-        params: data,
-        exclude
-      });
-    }
-
-    return await this.repository.create({
+  create = async (data: CreateSessionDTO): Promise<SessionEntity> =>
+    this.repository.create({
       params: data,
-      exclude
+      exclude: ["deletedAt"]
     });
-  };
+
+  update = async (id: string, data: UpdateSessionDTO): Promise<SessionEntity> =>
+    this.repository.update({
+      id: id,
+      params: data,
+      exclude: ["deletedAt"]
+    });
 
   delete = async (id: string): Promise<SessionEntity> => {
     return await this.repository.softDelete({ id: id });

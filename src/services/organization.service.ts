@@ -65,11 +65,12 @@ export default class OrganizationService {
       exclude: ["deletedAt"]
     });
 
-  update = async (id: string, params: UpdateOrganizationDTO): Promise<OrganizationEntity> => this.repository.update({
-    id: id,
-    params,
-    exclude: ["deletedAt"]
-  });
+  update = async (id: string, params: UpdateOrganizationDTO): Promise<OrganizationEntity> =>
+    this.repository.update({
+      id: id,
+      params,
+      exclude: ["deletedAt"]
+    });
 
   delete = async (id: string): Promise<OrganizationEntity> => {
     const record = await this.repository.softDelete({ id: id });

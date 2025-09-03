@@ -21,7 +21,10 @@ const update = async (
     }
 
     const existingPermission = await service.getById(id);
-    const newPermission = await service.save({ ...existingPermission, ...body });
+    const newPermission = await service.update(id, {
+      action: body.action ?? existingPermission.action,
+      resource: body.resource ?? existingPermission.resource
+    });
 
     apiResponse(res, {
       statusCode: 200,

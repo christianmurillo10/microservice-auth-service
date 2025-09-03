@@ -26,7 +26,11 @@ const create = async (
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const newPermission = await permissionService.save({ ...body, organizationId });
+    const newPermission = await permissionService.create({
+      action: body.action,
+      resource: body.resource,
+      organizationId
+    });
 
     apiResponse(res, {
       statusCode: 201,

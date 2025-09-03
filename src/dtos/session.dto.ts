@@ -9,10 +9,3 @@ export type CreateSessionDTO = {
 };
 
 export type UpdateSessionDTO = Partial<CreateSessionDTO>;
-
-export type SessionDTO = CreateSessionDTO & {
-  id: string;
-  createdAt: Date;
-  updatedAt: Date;
-  deletedAt?: Date | null;
-};

@@ -14,7 +14,7 @@ class UserRoleEntity implements UserRole {
     this.id = props.id;
     this.userId = props.userId;
     this.roleId = props.roleId;
-    this.assignedAt = props.assignedAt ?? new Date();
+    this.assignedAt = props.assignedAt;
     this.user = props.user;
     this.role = props.role;
   };

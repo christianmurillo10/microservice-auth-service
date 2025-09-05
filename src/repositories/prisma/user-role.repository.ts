@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { Prisma, PrismaClient } from "../../prisma/client";
 import type { UserRole as UserRoleRecord } from "../../prisma/client";
 import UserRoleEntity from "../../entities/user-role.entity";
@@ -16,6 +17,7 @@ import {
 } from "../../shared/types/repository.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { permissionSubsets, rolePermissionSubsets, roleSubsets, userRoleSubsets } from "../../shared/helpers/select-subset.helper";
+import { CreateUserRoleDto } from "../../dtos/user-role.dto";
 
 function toEntity(userRole: UserRoleRecord): UserRoleEntity {
   return new UserRoleEntity(userRole);
@@ -152,16 +154,19 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
   };
 
   create = async (
-    args: CreateArgs<UserRoleEntity>
+    args: CreateArgs<CreateUserRoleDto>
   ): Promise<UserRoleEntity> => {
-    const { user, role, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
         ...userRoleSubsets,
         ...exclude
       },
-      data: params
+      data: {
+        ...args.params,
+        id: uuidv4(),
+        assignedAt: new Date(),
+      }
     });
 
     return toEntity(data);
@@ -189,7 +194,7 @@ export default class PrismaUserRoleRepository implements UserRoleRepository {
   };
 
   syncCreateMany = (
-    args: CreateManyArgs<UserRoleEntity>,
+    args: CreateManyArgs<CreateUserRoleDto>,
   ): Prisma.PrismaPromise<Prisma.BatchPayload> => {
     return this.client.createMany({
       data: args.params

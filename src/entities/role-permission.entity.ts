@@ -14,7 +14,7 @@ class RolePermissionEntity implements RolePermission {
     this.id = props.id;
     this.roleId = props.roleId;
     this.permissionId = props.permissionId;
-    this.grantedAt = props.grantedAt ?? new Date();
+    this.grantedAt = props.grantedAt;
     this.role = props.role;
     this.permission = props.permission;
   };

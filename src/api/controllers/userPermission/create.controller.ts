@@ -33,7 +33,10 @@ const create = async (
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const newUserPermission = await userPermissionService.save({ ...body, userId });
+    const newUserPermission = await userPermissionService.create({
+      permissionId: body.permissionId,
+      userId
+    });
 
     // Rebuild user permissions cache
     const buildUserPermissionsService = new BuildUserPermissionsService({

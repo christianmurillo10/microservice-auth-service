@@ -14,7 +14,7 @@ class UserPermissionEntity implements UserPermission {
     this.id = props.id;
     this.userId = props.userId;
     this.permissionId = props.permissionId;
-    this.grantedAt = props.grantedAt ?? new Date();
+    this.grantedAt = props.grantedAt;
     this.user = props.user;
     this.permission = props.permission;
   };

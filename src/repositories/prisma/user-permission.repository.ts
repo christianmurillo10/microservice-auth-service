@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { Prisma, PrismaClient } from "../../prisma/client";
 import type { UserPermission as UserPermissionRecord } from "../../prisma/client";
 import UserPermissionEntity from "../../entities/user-permission.entity";
@@ -16,6 +17,7 @@ import {
 } from "../../shared/types/repository.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { permissionSubsets, userPermissionSubsets } from "../../shared/helpers/select-subset.helper";
+import { CreateUserPermissionDto } from "../../dtos/user-permission.dto";
 
 function toEntity(userPermission: UserPermissionRecord): UserPermissionEntity {
   return new UserPermissionEntity(userPermission);
@@ -143,16 +145,19 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
   };
 
   create = async (
-    args: CreateArgs<UserPermissionEntity>
+    args: CreateArgs<CreateUserPermissionDto>
   ): Promise<UserPermissionEntity> => {
-    const { user, permission, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
         ...userPermissionSubsets,
         ...exclude
       },
-      data: params
+      data: {
+        ...args.params,
+        id: uuidv4(),
+        grantedAt: new Date(),
+      }
     });
 
     return toEntity(data);
@@ -180,7 +185,7 @@ export default class PrismaUserPermissionRepository implements UserPermissionRep
   };
 
   syncCreateMany = (
-    args: CreateManyArgs<UserPermissionEntity>,
+    args: CreateManyArgs<CreateUserPermissionDto>,
   ): Prisma.PrismaPromise<Prisma.BatchPayload> => {
     return this.client.createMany({
       data: args.params

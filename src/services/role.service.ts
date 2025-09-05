@@ -4,7 +4,7 @@ import PrismaRoleRepository from "../repositories/prisma/role.repository";
 import RoleEntity from "../entities/role.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs } from "../shared/types/service.type";
-import { CreateRoleDto, UpdateRoleDto } from "../dtos/role.dto";
+import { CreateRoleDTO, UpdateRoleDTO } from "../dtos/role.dto";
 
 export default class RoleService {
   private repository: PrismaRoleRepository
@@ -50,13 +50,13 @@ export default class RoleService {
     return record;
   };
 
-  create = async (params: CreateRoleDto): Promise<RoleEntity> =>
+  create = async (params: CreateRoleDTO): Promise<RoleEntity> =>
     this.repository.create({
       params,
       exclude: ["deletedAt"]
     });
 
-  update = async (id: string, params: UpdateRoleDto): Promise<RoleEntity> =>
+  update = async (id: string, params: UpdateRoleDTO): Promise<RoleEntity> =>
     this.repository.update({
       id,
       params,

@@ -1,4 +1,4 @@
-import UserRequestHeader from "../entities/user.entity";
+import UserEntity from "../entities/user.entity";
 import {
   FindByIdArgs,
   FindByUsernameOrEmailArgs,
@@ -7,11 +7,11 @@ import {
 } from "../shared/types/repository.type";
 
 export default interface UserRepository {
-  findById: (args: FindByIdArgs<string>) => Promise<UserRequestHeader | null>;
+  findById: (args: FindByIdArgs<string>) => Promise<UserEntity | null>;
 
-  findByUsernameOrEmail: (args: FindByUsernameOrEmailArgs) => Promise<UserRequestHeader | null>;
+  findByUsernameOrEmail: (args: FindByUsernameOrEmailArgs) => Promise<UserEntity | null>;
 
-  create: (args: CreateArgs<UserRequestHeader>) => Promise<UserRequestHeader>;
+  create: (args: CreateArgs<UserEntity>) => Promise<UserEntity>;
 
-  update: (args: UpdateArgs<string, UserRequestHeader>) => Promise<UserRequestHeader>;
+  update: (args: UpdateArgs<string, UserEntity>) => Promise<UserEntity>;
 };

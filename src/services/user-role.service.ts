@@ -5,7 +5,7 @@ import PrismaUserRoleRepository from "../repositories/prisma/user-role.repositor
 import UserRoleEntity from "../entities/user-role.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllByUserIdArgs, GetAllRoleOrUserBasedPermissionsArgs } from "../shared/types/service.type";
-import { CreateUserRoleDto } from "../dtos/user-role.dto";
+import { CreateUserRoleDTO } from "../dtos/user-role.dto";
 
 export default class UserRoleService {
   private repository: PrismaUserRoleRepository;
@@ -61,7 +61,7 @@ export default class UserRoleService {
     return record;
   };
 
-  create = async (params: CreateUserRoleDto): Promise<UserRoleEntity> => {
+  create = async (params: CreateUserRoleDTO): Promise<UserRoleEntity> => {
     return await this.repository.create({ params });
   };
 

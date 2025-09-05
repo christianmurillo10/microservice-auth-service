@@ -1,3 +1,4 @@
+import { CreateSessionDTO, UpdateSessionDTO } from "../dtos/session.dto";
 import SessionEntity from "../entities/session.entity";
 import {
   FindByIdArgs,
@@ -11,7 +12,7 @@ export default interface SessionRepository {
 
   findByRefreshToken: (args: FindByRefreshTokenArgs) => Promise<SessionEntity | null>;
 
-  create: (args: CreateArgs<SessionEntity>) => Promise<SessionEntity>;
+  create: (args: CreateArgs<CreateSessionDTO>) => Promise<SessionEntity>;
 
-  update: (args: UpdateArgs<string, SessionEntity>) => Promise<SessionEntity>;
+  update: (args: UpdateArgs<string, UpdateSessionDTO>) => Promise<SessionEntity>;
 };

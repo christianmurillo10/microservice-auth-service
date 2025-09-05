@@ -5,7 +5,7 @@ import PrismaUserPermissionRepository from "../repositories/prisma/user-permissi
 import UserPermissionEntity from "../entities/user-permission.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllByUserIdArgs, GetAllRoleOrUserBasedPermissionsArgs } from "../shared/types/service.type";
-import { CreateUserPermissionDto } from "../dtos/user-permission.dto";
+import { CreateUserPermissionDTO } from "../dtos/user-permission.dto";
 
 export default class UserPermissionService {
   private repository: PrismaUserPermissionRepository;
@@ -61,7 +61,7 @@ export default class UserPermissionService {
     return record;
   };
 
-  create = async (params: CreateUserPermissionDto): Promise<UserPermissionEntity> => {
+  create = async (params: CreateUserPermissionDTO): Promise<UserPermissionEntity> => {
     return await this.repository.create({ params });
   };
 

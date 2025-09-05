@@ -1,4 +1,4 @@
-export type CreateRolePermissionDto = {
+export type CreateRolePermissionDTO = {
   roleId: string;
   permissionId: string;
 };

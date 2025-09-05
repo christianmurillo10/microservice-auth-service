@@ -11,6 +11,7 @@ import {
   FindByIdArgs,
   FindByRoleIdAndPermissionIdArgs
 } from "../shared/types/repository.type";
+import { CreateRolePermissionDTO } from "../dtos/role-permission.dto";
 
 export default interface RolePermissionRepository {
   findAll: (args: FindAllArgs) => Promise<RolePermissionEntity[]>;
@@ -21,13 +22,13 @@ export default interface RolePermissionRepository {
 
   findByRoleIdAndPermissionId: (args: FindByRoleIdAndPermissionIdArgs) => Promise<RolePermissionEntity | null>;
 
-  create: (args: CreateArgs<RolePermissionEntity>) => Promise<RolePermissionEntity>;
+  create: (args: CreateArgs<CreateRolePermissionDTO>) => Promise<RolePermissionEntity>;
 
   delete: (args: DeleteArgs<string>) => Promise<void>;
 
   count: (args?: CountArgs) => Promise<number>;
 
-  syncCreateMany: (args: CreateManyArgs<RolePermissionEntity>) => Prisma.PrismaPromise<Prisma.BatchPayload>;
+  syncCreateMany: (args: CreateManyArgs<CreateRolePermissionDTO>) => Prisma.PrismaPromise<Prisma.BatchPayload>;
 
   syncDeleteMany: (args: DeleteManyArgs<string>) => Prisma.PrismaPromise<Prisma.BatchPayload>;
 };

@@ -1,6 +1,6 @@
-export type CreateRoleDto = {
+export type CreateRoleDTO = {
   name: string;
   organizationId: string;
 };
 
-export type UpdateRoleDto = Partial<CreateRoleDto>;
+export type UpdateRoleDTO = Partial<CreateRoleDTO>;

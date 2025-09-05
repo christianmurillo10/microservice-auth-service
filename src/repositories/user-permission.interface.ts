@@ -12,6 +12,7 @@ import {
   FindByIdArgs,
   FindByUserIdAndPermissionIdArgs
 } from "../shared/types/repository.type";
+import { CreateUserPermissionDTO } from "../dtos/user-permission.dto";
 
 export default interface UserPermissionRepository {
   findAll: (args: FindAllArgs) => Promise<UserPermissionEntity[]>;
@@ -24,13 +25,13 @@ export default interface UserPermissionRepository {
 
   findByUserIdAndPermissionId: (args: FindByUserIdAndPermissionIdArgs) => Promise<UserPermissionEntity | null>;
 
-  create: (args: CreateArgs<UserPermissionEntity>) => Promise<UserPermissionEntity>;
+  create: (args: CreateArgs<CreateUserPermissionDTO>) => Promise<UserPermissionEntity>;
 
   delete: (args: DeleteArgs<string>) => Promise<void>;
 
   count: (args?: CountArgs) => Promise<number>;
 
-  syncCreateMany: (args: CreateManyArgs<UserPermissionEntity>) => Prisma.PrismaPromise<Prisma.BatchPayload>;
+  syncCreateMany: (args: CreateManyArgs<CreateUserPermissionDTO>) => Prisma.PrismaPromise<Prisma.BatchPayload>;
 
   syncDeleteMany: (args: DeleteManyArgs<string>) => Prisma.PrismaPromise<Prisma.BatchPayload>;
 };

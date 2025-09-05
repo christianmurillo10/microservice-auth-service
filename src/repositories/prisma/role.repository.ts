@@ -16,7 +16,7 @@ import {
 import { GenericObject } from "../../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { roleSubsets } from "../../shared/helpers/select-subset.helper";
-import { CreateRoleDto, UpdateRoleDto } from "../../dtos/role.dto";
+import { CreateRoleDTO, UpdateRoleDTO } from "../../dtos/role.dto";
 
 function toEntity(role: RoleRecord): RoleEntity {
   return new RoleEntity(role);
@@ -100,7 +100,7 @@ export default class PrismaRoleRepository implements RoleRepository {
   };
 
   create = async (
-    args: CreateArgs<CreateRoleDto>
+    args: CreateArgs<CreateRoleDTO>
   ): Promise<RoleEntity> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
@@ -120,7 +120,7 @@ export default class PrismaRoleRepository implements RoleRepository {
   };
 
   update = async (
-    args: UpdateArgs<string, UpdateRoleDto>
+    args: UpdateArgs<string, UpdateRoleDTO>
   ): Promise<RoleEntity> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({

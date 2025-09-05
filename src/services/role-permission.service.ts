@@ -5,7 +5,7 @@ import PrismaRolePermissionRepository from "../repositories/prisma/role-permissi
 import RolePermissionEntity from "../entities/role-permission.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllByRoleIdArgs } from "../shared/types/service.type";
-import { CreateRolePermissionDto } from "../dtos/role-permission.dto";
+import { CreateRolePermissionDTO } from "../dtos/role-permission.dto";
 
 export default class RolePermissionService {
   private repository: PrismaRolePermissionRepository;
@@ -55,7 +55,7 @@ export default class RolePermissionService {
     return record;
   };
 
-  create = async (params: CreateRolePermissionDto): Promise<RolePermissionEntity> => {
+  create = async (params: CreateRolePermissionDTO): Promise<RolePermissionEntity> => {
     return await this.repository.create({ params });
   };
 

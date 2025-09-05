@@ -16,7 +16,7 @@ import {
 } from "../../shared/types/repository.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { rolePermissionSubsets } from "../../shared/helpers/select-subset.helper";
-import { CreateRolePermissionDto } from "../../dtos/role-permission.dto";
+import { CreateRolePermissionDTO } from "../../dtos/role-permission.dto";
 
 function toEntity(rolePermission: RolePermissionRecord): RolePermissionEntity {
   return new RolePermissionEntity(rolePermission);
@@ -123,7 +123,7 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
   };
 
   create = async (
-    args: CreateArgs<CreateRolePermissionDto>
+    args: CreateArgs<CreateRolePermissionDTO>
   ): Promise<RolePermissionEntity> => {
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
@@ -163,7 +163,7 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
   };
 
   syncCreateMany = (
-    args: CreateManyArgs<CreateRolePermissionDto>,
+    args: CreateManyArgs<CreateRolePermissionDTO>,
   ): Prisma.PrismaPromise<Prisma.BatchPayload> => {
     return this.client.createMany({
       data: args.params

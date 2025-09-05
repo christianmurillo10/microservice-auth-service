@@ -10,6 +10,7 @@ import {
   UpdateArgs
 } from "../shared/types/repository.type";
 import { GenericObject } from "../shared/types/common.type";
+import { CreateRoleDTO, UpdateRoleDTO } from "../dtos/role.dto";
 
 export default interface RoleRepository {
   findAll: (args: FindAllArgs) => Promise<RoleEntity[]>;
@@ -18,9 +19,9 @@ export default interface RoleRepository {
 
   findByOrganizationIdAndName: (args: FindByOrganizationIdAndNameArgs) => Promise<RoleEntity | null>;
 
-  create: (args: CreateArgs<RoleEntity>) => Promise<RoleEntity>;
+  create: (args: CreateArgs<CreateRoleDTO>) => Promise<RoleEntity>;
 
-  update: (args: UpdateArgs<string, RoleEntity>) => Promise<RoleEntity>;
+  update: (args: UpdateArgs<string, UpdateRoleDTO>) => Promise<RoleEntity>;
 
   softDelete: (args: SoftDeleteArgs<string>) => Promise<RoleEntity>;
 

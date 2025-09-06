@@ -1,5 +1,17 @@
-import Session from "../models/session.model";
-import User, { UserAccessTypeValue } from "../models/user.model";
+import { User, UserAccessTypeValue } from "./user.entity";
+
+export interface Session {
+  id?: string;
+  accessType: UserAccessTypeValue;
+  accessToken: string;
+  refreshToken: string;
+  userId: string;
+  refreshTokenExpiresAt: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
+  user?: User;
+};
 
 class SessionEntity implements Session {
   id?: string;

@@ -1,7 +1,7 @@
 import { v4 as uuidv4 } from "uuid";
 import { PrismaClient } from "../../prisma/client";
 import type { User as UserRecord } from "../../prisma/client";
-import UserEntity from "../../entities/user.entity";
+import UserEntity, { UserAccessTypeValue } from "../../entities/user.entity";
 import UserRepository from "../user.interface";
 import {
   FindByIdArgs,
@@ -11,7 +11,6 @@ import {
 } from "../../shared/types/repository.type";
 import { setSelectExclude } from "../../shared/helpers/common.helper";
 import { userSubsets } from "../../shared/helpers/select-subset.helper";
-import { UserAccessTypeValue } from "../../models/user.model";
 import { CreateUserDTO, UpdateUserDTO } from "../../dtos/user.dto";
 
 function toEntity(user: UserRecord): UserEntity {

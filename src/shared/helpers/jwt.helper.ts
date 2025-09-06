@@ -1,5 +1,5 @@
+import { UserAccessTypeValue } from "../../entities/user.entity";
 import JWTEntity from "../../entities/jwt.entity";
-import { UserAccessTypeValue } from "../../models/user.model";
 
 export const generateAccessToken = (
   id: number,

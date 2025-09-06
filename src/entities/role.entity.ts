@@ -1,7 +1,18 @@
-import Organization from "../models/organization.model";
-import RolePermission from "../models/role-permission.model";
-import Role from "../models/role.model";
-import UserRole from "../models/user-role.model";
+import { Organization } from "./organization.entity";
+import { RolePermission } from "./role-permission.entity";
+import { UserRole } from "./user-role.entity";
+
+export interface Role {
+  id?: string;
+  name: string;
+  organizationId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
+  organization?: Organization;
+  rolePermissions?: RolePermission[];
+  userRoles?: UserRole[];
+};
 
 class RoleEntity implements Role {
   id?: string;

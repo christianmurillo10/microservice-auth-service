@@ -1,6 +1,14 @@
-import Permission from "../models/permission.model";
-import RolePermission from "../models/role-permission.model";
-import Role from "../models/role.model";
+import { Permission } from "./permission.entity";
+import { Role } from "./role.entity";
+
+export interface RolePermission {
+  id?: string;
+  roleId: string;
+  permissionId: string;
+  grantedAt: Date;
+  role?: Role;
+  permission?: Permission;
+};
 
 class RolePermissionEntity implements RolePermission {
   id?: string;

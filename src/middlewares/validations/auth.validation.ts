@@ -4,7 +4,7 @@ import _ from "lodash";
 import { validateInput } from "../../shared/helpers/common.helper";
 import { MESSAGE_INVALID_BODY } from "../../shared/constants/message.constant";
 import BadRequestException from "../../shared/exceptions/bad-request.exception";
-import { UserAccessType } from "../../models/user.model";
+import { UserAccessType } from "../../entities/user.entity";
 
 export const login = async (
   req: Request,

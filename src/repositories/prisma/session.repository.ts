@@ -13,8 +13,8 @@ import {
 } from "../../shared/types/repository.type";
 import { setSelectExclude } from "../../shared/helpers/common.helper";
 import { sessionSubsets } from "../../shared/helpers/select-subset.helper";
-import { UserAccessTypeValue } from "../../models/user.model";
 import { CreateSessionDTO, UpdateSessionDTO } from "../../dtos/session.dto";
+import { UserAccessTypeValue } from "../../entities/user.entity";
 
 function toEntity(session: SessionRecord): SessionEntity {
   return new SessionEntity({

@@ -1,10 +1,37 @@
 import { v4 as uuidv4 } from "uuid";
-import Organization from "../models/organization.model";
-import Session from "../models/session.model";
-import UserPermission from "../models/user-permission.model";
-import UserRole from "../models/user-role.model";
-import User, { UserAccessTypeValue } from "../models/user.model";
 import { comparePassword } from "../shared/utils/bcrypt";
+import { Organization } from "./organization.entity";
+import { Session } from "./session.entity";
+import { UserRole } from "./user-role.entity";
+import { UserPermission } from "./user-permission.entity";
+
+export enum UserAccessType {
+  Portal = "PORTAL",
+  Organization = "ORGANIZATION",
+  AppRecognized = "APP_RECOGNIZED"
+};
+
+export type UserAccessTypeValue = UserAccessType.Portal | UserAccessType.Organization | UserAccessType.AppRecognized;
+
+export interface User {
+  id?: string;
+  name: string;
+  username: string;
+  email: string;
+  password: string;
+  accessType: UserAccessTypeValue;
+  organizationId?: string | null;
+  isActive: boolean;
+  isLogged: boolean;
+  lastLoggedAt?: Date | null;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
+  organization?: Organization;
+  session?: Session[];
+  userRoles?: UserRole[];
+  userPermissions?: UserPermission[];
+};
 
 class UserEntity implements User {
   id?: string;

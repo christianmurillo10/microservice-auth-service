@@ -1,6 +1,14 @@
-import Permission from "../models/permission.model";
-import UserPermission from "../models/user-permission.model";
-import User from "../models/user.model";
+import { Permission } from "./permission.entity";
+import { User } from "./user.entity";
+
+export interface UserPermission {
+  id?: string;
+  userId: string;
+  permissionId: string;
+  grantedAt: Date;
+  user?: User;
+  permission?: Permission;
+};
 
 class UserPermissionEntity implements UserPermission {
   id?: string;

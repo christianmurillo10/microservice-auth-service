@@ -1,4 +1,4 @@
-import { UserAccessTypeValue } from "../models/user.model";
+import { UserAccessTypeValue } from "../entities/user.entity";
 
 export type CreateSessionDTO = {
   accessType: UserAccessTypeValue;

@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
-import UserEntity from "../entities/user.entity";
+import UserEntity, { UserAccessTypeValue } from "../entities/user.entity";
 import UserRequestHeaderEntity from "../entities/user-request-header.entity";
 import { MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS, MESSAGE_DATA_NOT_IMPLEMENTED } from "../shared/constants/message.constant";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
@@ -9,7 +9,6 @@ import { generateAccessToken } from "../shared/helpers/jwt.helper";
 import SessionService from "./session.service";
 import UserService from "./user.service";
 import BuildUserPermissionsService from "./rbac/build-user-permissions.service";
-import { UserAccessTypeValue } from "../models/user.model";
 import UserKafkaProducer from "../events/producer/user.producer";
 
 type State = {

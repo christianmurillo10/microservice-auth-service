@@ -1,6 +1,14 @@
-import Role from "../models/role.model";
-import UserRole from "../models/user-role.model";
-import User from "../models/user.model";
+import { Role } from "./role.entity";
+import { User } from "./user.entity";
+
+export interface UserRole {
+  id?: string;
+  userId: string;
+  roleId: string;
+  assignedAt: Date;
+  user?: User;
+  role?: Role;
+};
 
 class UserRoleEntity implements UserRole {
   id?: string;

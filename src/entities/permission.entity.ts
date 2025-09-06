@@ -1,7 +1,19 @@
-import Organization from "../models/organization.model";
-import Permission from "../models/permission.model";
-import RolePermission from "../models/role-permission.model";
-import UserPermission from "../models/user-permission.model";
+import { Organization } from "./organization.entity";
+import { RolePermission } from "./role-permission.entity";
+import { UserPermission } from "./user-permission.entity";
+
+export interface Permission {
+  id?: string;
+  action: string;
+  resource: string;
+  organizationId: string;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date | null;
+  organization?: Organization;
+  rolePermissions?: RolePermission[];
+  userPermissions?: UserPermission[];
+};
 
 class PermissionEntity implements Permission {
   id?: string;

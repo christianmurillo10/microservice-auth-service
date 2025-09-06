@@ -1,5 +1,4 @@
 import { v4 as uuidv4 } from "uuid";
-import { UserAccessTypeValue } from "../models/user.model";
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_TOKEN_EXPIRED } from "../shared/constants/message.constant";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 import NotFoundException from "../shared/exceptions/not-found.exception";
@@ -8,6 +7,7 @@ import { generateAccessToken } from "../shared/helpers/jwt.helper";
 import SessionService from "./session.service";
 import UserService from "./user.service";
 import BuildUserPermissionsService from "./rbac/build-user-permissions.service";
+import { UserAccessTypeValue } from "../entities/user.entity";
 
 type State = {
   token: string,

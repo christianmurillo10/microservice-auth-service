@@ -37,7 +37,7 @@ export default class UserUpdatedEventListenerService extends UserEventListenerSe
       ...existingUser,
       ...this.state.newDetails
     });
-    await this.userService.save(user)
+    await this.userService.update(user.id!, user)
       .catch(err => {
         console.log("Error on updating user", err);
       });

@@ -34,7 +34,7 @@ export default class UserPasswordChangedEventListenerService extends EventListen
     }
 
     user.changePassword(this.state.newDetails.password);
-    await this.userService.save(user)
+    await this.userService.update(user.id!, user)
       .catch(err => {
         console.log("Error on changing user password", err);
       });

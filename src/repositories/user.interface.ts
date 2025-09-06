@@ -1,3 +1,4 @@
+import { CreateUserDTO, UpdateUserDTO } from "../dtos/user.dto";
 import UserEntity from "../entities/user.entity";
 import {
   FindByIdArgs,
@@ -11,7 +12,7 @@ export default interface UserRepository {
 
   findByUsernameOrEmail: (args: FindByUsernameOrEmailArgs) => Promise<UserEntity | null>;
 
-  create: (args: CreateArgs<UserEntity>) => Promise<UserEntity>;
+  create: (args: CreateArgs<CreateUserDTO>) => Promise<UserEntity>;
 
-  update: (args: UpdateArgs<string, UserEntity>) => Promise<UserEntity>;
+  update: (args: UpdateArgs<string, UpdateUserDTO>) => Promise<UserEntity>;
 };

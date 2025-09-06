@@ -3,6 +3,7 @@ import PrismaUserRepository from "../repositories/prisma/user.repository";
 import UserEntity from "../entities/user.entity";
 import { hashPassword } from "../shared/utils/bcrypt";
 import NotFoundException from "../shared/exceptions/not-found.exception";
+import { CreateUserDTO, UpdateUserDTO } from "../dtos/user.dto";
 
 export default class UserService {
   private repository: PrismaUserRepository;
@@ -38,21 +39,19 @@ export default class UserService {
     return record;
   };
 
-  save = async (data: UserEntity): Promise<UserEntity> => {
-    const exclude = ["deletedAt"];
-
-    if (data.id) {
-      return await this.repository.update({
-        id: data.id,
-        params: data,
-        exclude
-      });
-    }
-
-    data.password = hashPassword(data.password as string);
-    return await this.repository.create({
-      params: data,
-      exclude
+  create = async (params: CreateUserDTO): Promise<UserEntity> =>
+    this.repository.create({
+      params: {
+        ...params,
+        password: hashPassword(params.password as string)
+      },
+      exclude: ["deletedAt"]
     });
-  };
+
+  update = async (id: string, params: UpdateUserDTO): Promise<UserEntity> =>
+    this.repository.update({
+      id,
+      params,
+      exclude: ["deletedAt"]
+    });
 };

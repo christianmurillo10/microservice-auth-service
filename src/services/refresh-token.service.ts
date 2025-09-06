@@ -77,8 +77,8 @@ export default class RefreshTokenService {
     const record = await this.getUser(session.userId);
 
     // User updates
-    record.markLoggedIn()
-    await this.userService.save(record);
+    record.markLoggedIn();
+    await this.userService.update(record.id!, record);
 
     // Build and cache permissions in Redis
     const buildUserPermissionsService = new BuildUserPermissionsService({

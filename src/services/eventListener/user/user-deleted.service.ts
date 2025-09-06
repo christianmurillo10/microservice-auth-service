@@ -34,7 +34,7 @@ export default class UserDeletedEventListenerService extends EventListenerAbstra
     }
 
     user.delete();
-    await this.userService.save(user)
+    await this.userService.update(user.id!, user)
       .catch(err => {
         console.log("Error on deleting user", err);
       });

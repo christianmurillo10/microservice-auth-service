@@ -95,8 +95,8 @@ export default class LoginService {
     };
 
     // User updates
-    record.markLoggedIn()
-    const newRecord = await userService.save(record);
+    record.markLoggedIn();
+    const newRecord = await userService.update(record.id!, record);
 
     // Build and cache permissions in Redis
     const buildUserPermissionsService = new BuildUserPermissionsService({

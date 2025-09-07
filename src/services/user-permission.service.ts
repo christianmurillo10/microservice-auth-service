@@ -1,11 +1,9 @@
-import { v4 as uuidv4 } from "uuid";
 import { PrismaClient } from "../prisma/client";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaUserPermissionRepository from "../repositories/prisma/user-permission.repository";
 import UserPermissionEntity from "../entities/user-permission.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllByUserIdArgs, GetAllRoleOrUserBasedPermissionsArgs } from "../shared/types/service.type";
-import { CreateUserPermissionDTO } from "../dtos/user-permission.dto";
 
 export default class UserPermissionService {
   private repository: PrismaUserPermissionRepository;
@@ -61,8 +59,8 @@ export default class UserPermissionService {
     return record;
   };
 
-  create = async (params: CreateUserPermissionDTO): Promise<UserPermissionEntity> => {
-    return await this.repository.create({ params });
+  save = async (data: UserPermissionEntity): Promise<UserPermissionEntity> => {
+    return await this.repository.create({ params: new UserPermissionEntity(data) });
   };
 
   delete = async (id: string): Promise<void> => {
@@ -80,7 +78,6 @@ export default class UserPermissionService {
     // Set toCreate data
     const newPermissionIds = permissionIds.filter(id => !existingPermissionIds.has(id));
     const toCreate: UserPermissionEntity[] = newPermissionIds.map(val => new UserPermissionEntity({
-      id: uuidv4(),
       userId,
       permissionId: val,
       grantedAt: new Date()

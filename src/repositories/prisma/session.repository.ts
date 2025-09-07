@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import { PrismaClient } from "../../prisma/client";
 import type { Session as SessionRecord } from "../../prisma/client";
 import SessionEntity from "../../entities/session.entity";
@@ -13,7 +12,6 @@ import {
 } from "../../shared/types/repository.type";
 import { setSelectExclude } from "../../shared/helpers/common.helper";
 import { sessionSubsets } from "../../shared/helpers/select-subset.helper";
-import { CreateSessionDTO, UpdateSessionDTO } from "../../dtos/session.dto";
 import { UserAccessTypeValue } from "../../entities/user.entity";
 
 function toEntity(session: SessionRecord): SessionEntity {
@@ -95,28 +93,25 @@ export default class PrismaSessionRepository implements SessionRepository {
   };
 
   create = async (
-    args: CreateArgs<CreateSessionDTO>
+    args: CreateArgs<SessionEntity>
   ): Promise<SessionEntity> => {
+    const { user, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
         ...sessionSubsets,
         ...exclude
       },
-      data: {
-        ...args.params,
-        id: uuidv4(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }
+      data: params
     });
 
     return toEntity(data);
   };
 
   update = async (
-    args: UpdateArgs<string, UpdateSessionDTO>
+    args: UpdateArgs<string, SessionEntity>
   ): Promise<SessionEntity> => {
+    const { user, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -125,7 +120,7 @@ export default class PrismaSessionRepository implements SessionRepository {
       },
       where: { id: args.id },
       data: {
-        ...args.params,
+        ...params,
         updatedAt: new Date(),
       }
     });

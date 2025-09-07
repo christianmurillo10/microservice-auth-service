@@ -12,7 +12,6 @@ import {
   FindByIdArgs,
   FindByUserIdAndRoleIdArgs
 } from "../shared/types/repository.type";
-import { CreateUserRoleDTO } from "../dtos/user-role.dto";
 
 export default interface UserRoleRepository {
   findAll: (args: FindAllArgs) => Promise<UserRoleEntity[]>;
@@ -25,13 +24,13 @@ export default interface UserRoleRepository {
 
   findByUserIdAndRoleId: (args: FindByUserIdAndRoleIdArgs) => Promise<UserRoleEntity | null>;
 
-  create: (args: CreateArgs<CreateUserRoleDTO>) => Promise<UserRoleEntity>;
+  create: (args: CreateArgs<UserRoleEntity>) => Promise<UserRoleEntity>;
 
   delete: (args: DeleteArgs<string>) => Promise<void>;
 
   count: (args?: CountArgs) => Promise<number>;
 
-  syncCreateMany: (args: CreateManyArgs<CreateUserRoleDTO>) => Prisma.PrismaPromise<Prisma.BatchPayload>;
+  syncCreateMany: (args: CreateManyArgs<UserRoleEntity>) => Prisma.PrismaPromise<Prisma.BatchPayload>;
 
   syncDeleteMany: (args: DeleteManyArgs<string>) => Prisma.PrismaPromise<Prisma.BatchPayload>;
 };

@@ -4,7 +4,6 @@ import PrismaPermissionRepository from "../repositories/prisma/permission.reposi
 import PermissionEntity from "../entities/permission.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs } from "../shared/types/service.type";
-import { CreatePermissionDTO, UpdatePermissionDTO } from "../dtos/permission.dto";
 
 export default class PermissionService {
   private repository: PrismaPermissionRepository
@@ -51,18 +50,22 @@ export default class PermissionService {
     return record;
   };
 
-  create = async (params: CreatePermissionDTO): Promise<PermissionEntity> =>
-    this.repository.create({
-      params,
-      exclude: ["deletedAt"]
-    });
+  save = async (data: PermissionEntity): Promise<PermissionEntity> => {
+    const exclude = ["deletedAt"];
 
-  update = async (id: string, params: UpdatePermissionDTO): Promise<PermissionEntity> =>
-    this.repository.update({
-      id: id,
-      params,
-      exclude: ["deletedAt"]
+    if (data.id) {
+      return await this.repository.update({
+        id: data.id,
+        params: data,
+        exclude
+      });
+    }
+
+    return await this.repository.create({
+      params: data,
+      exclude
     });
+  };
 
   delete = async (id: string): Promise<PermissionEntity> => {
     return await this.repository.softDelete({ id: id });

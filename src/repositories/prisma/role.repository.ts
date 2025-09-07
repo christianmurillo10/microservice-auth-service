@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import { PrismaClient } from "../../prisma/client";
 import type { Role as RoleRecord } from "../../prisma/client";
 import RoleEntity from "../../entities/role.entity";
@@ -16,7 +15,6 @@ import {
 import { GenericObject } from "../../shared/types/common.type";
 import { parseQueryFilters, setSelectExclude } from "../../shared/helpers/common.helper";
 import { roleSubsets } from "../../shared/helpers/select-subset.helper";
-import { CreateRoleDTO, UpdateRoleDTO } from "../../dtos/role.dto";
 
 function toEntity(role: RoleRecord): RoleEntity {
   return new RoleEntity(role);
@@ -100,28 +98,25 @@ export default class PrismaRoleRepository implements RoleRepository {
   };
 
   create = async (
-    args: CreateArgs<CreateRoleDTO>
+    args: CreateArgs<RoleEntity>
   ): Promise<RoleEntity> => {
+    const { organization, rolePermissions, userRoles, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.create({
       select: {
         ...roleSubsets,
         ...exclude
       },
-      data: {
-        ...args.params,
-        id: uuidv4(),
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      }
+      data: params
     });
 
     return toEntity(data);
   };
 
   update = async (
-    args: UpdateArgs<string, UpdateRoleDTO>
+    args: UpdateArgs<string, RoleEntity>
   ): Promise<RoleEntity> => {
+    const { organization, rolePermissions, userRoles, ...params } = args.params;
     const exclude = setSelectExclude(args.exclude!);
     const data = await this.client.update({
       select: {
@@ -130,7 +125,7 @@ export default class PrismaRoleRepository implements RoleRepository {
       },
       where: { id: args.id },
       data: {
-        ...args.params,
+        ...params,
         updatedAt: new Date(),
       }
     });

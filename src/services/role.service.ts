@@ -4,7 +4,6 @@ import PrismaRoleRepository from "../repositories/prisma/role.repository";
 import RoleEntity from "../entities/role.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs } from "../shared/types/service.type";
-import { CreateRoleDTO, UpdateRoleDTO } from "../dtos/role.dto";
 
 export default class RoleService {
   private repository: PrismaRoleRepository
@@ -50,18 +49,22 @@ export default class RoleService {
     return record;
   };
 
-  create = async (params: CreateRoleDTO): Promise<RoleEntity> =>
-    this.repository.create({
-      params,
-      exclude: ["deletedAt"]
-    });
+  save = async (data: RoleEntity): Promise<RoleEntity> => {
+    const exclude = ["deletedAt"];
 
-  update = async (id: string, params: UpdateRoleDTO): Promise<RoleEntity> =>
-    this.repository.update({
-      id,
-      params,
-      exclude: ["deletedAt"]
+    if (data.id) {
+      return await this.repository.update({
+        id: data.id,
+        params: data,
+        exclude
+      });
+    }
+
+    return await this.repository.create({
+      params: data,
+      exclude
     });
+  };
 
   delete = async (id: string): Promise<RoleEntity> => {
     return await this.repository.softDelete({ id: id });

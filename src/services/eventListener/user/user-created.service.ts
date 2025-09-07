@@ -18,7 +18,7 @@ export default class UserCreatedEventListenerService extends EventListenerAbstra
     };
 
     const user = new UserEntity(this.state.newDetails);
-    await this.userService.create(user)
+    await this.userService.save(user)
       .catch(err => {
         console.log("Error on creating user", err);
       });

@@ -1,4 +1,5 @@
 import { v4 as uuidv4 } from "uuid";
+import { UserAccessTypeValue } from "../entities/user.entity";
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_TOKEN_EXPIRED } from "../shared/constants/message.constant";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 import NotFoundException from "../shared/exceptions/not-found.exception";
@@ -7,7 +8,6 @@ import { generateAccessToken } from "../shared/helpers/jwt.helper";
 import SessionService from "./session.service";
 import UserService from "./user.service";
 import BuildUserPermissionsService from "./rbac/build-user-permissions.service";
-import { UserAccessTypeValue } from "../entities/user.entity";
 
 type State = {
   token: string,
@@ -78,7 +78,7 @@ export default class RefreshTokenService {
 
     // User updates
     record.markLoggedIn();
-    await this.userService.update(record.id!, record);
+    await this.userService.save(record);
 
     // Build and cache permissions in Redis
     const buildUserPermissionsService = new BuildUserPermissionsService({
@@ -96,19 +96,18 @@ export default class RefreshTokenService {
       expireInMinutes
     );
 
-    // Update data to session table
-    const updatedSession = await this.sessionService.update(session.id!, {
-      accessToken: accessToken,
-      refreshToken: uuidv4(),
-      refreshTokenExpiresAt: addDaysToDate(new Date(), 30)
-    });
+    // Save data to session table
+    session.accessToken = accessToken;
+    session.refreshToken = uuidv4();
+    session.refreshTokenExpiresAt = addDaysToDate(new Date(), 30);
+    await this.sessionService.save(session);
 
     return {
-      userId: updatedSession.userId,
+      userId: session.userId,
       organizationId: record.organizationId ?? undefined,
-      token: updatedSession.accessToken,
+      token: session.accessToken,
       expiration: accessTokenExpiryDate,
-      refreshToken: updatedSession.refreshToken
+      refreshToken: session.refreshToken
     };
   };
 };

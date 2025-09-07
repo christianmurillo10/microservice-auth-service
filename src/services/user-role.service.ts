@@ -1,11 +1,9 @@
-import { v4 as uuidv4 } from "uuid";
 import { PrismaClient } from "../prisma/client";
 import { MESSAGE_DATA_NOT_EXIST } from "../shared/constants/message.constant";
 import PrismaUserRoleRepository from "../repositories/prisma/user-role.repository";
 import UserRoleEntity from "../entities/user-role.entity";
 import NotFoundException from "../shared/exceptions/not-found.exception";
 import { CountAllArgs, GetAllArgs, GetAllByUserIdArgs, GetAllRoleOrUserBasedPermissionsArgs } from "../shared/types/service.type";
-import { CreateUserRoleDTO } from "../dtos/user-role.dto";
 
 export default class UserRoleService {
   private repository: PrismaUserRoleRepository;
@@ -61,8 +59,8 @@ export default class UserRoleService {
     return record;
   };
 
-  create = async (params: CreateUserRoleDTO): Promise<UserRoleEntity> => {
-    return await this.repository.create({ params });
+  save = async (data: UserRoleEntity): Promise<UserRoleEntity> => {
+    return await this.repository.create({ params: new UserRoleEntity(data) });
   };
 
   delete = async (id: string): Promise<void> => {
@@ -80,7 +78,6 @@ export default class UserRoleService {
     // Set toCreate data
     const newPermissionIds = roleIds.filter(id => !existingPermissionIds.has(id));
     const toCreate: UserRoleEntity[] = newPermissionIds.map(val => new UserRoleEntity({
-      id: uuidv4(),
       userId,
       roleId: val,
       assignedAt: new Date()

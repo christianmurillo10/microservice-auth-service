@@ -1,5 +1,6 @@
 import { v4 as uuidv4 } from "uuid";
 import UserEntity, { UserAccessTypeValue } from "../entities/user.entity";
+import SessionEntity from "../entities/session.entity";
 import UserRequestHeaderEntity from "../entities/user-request-header.entity";
 import { MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS, MESSAGE_DATA_NOT_IMPLEMENTED } from "../shared/constants/message.constant";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
@@ -69,14 +70,17 @@ export default class LoginService {
     accessType: UserAccessTypeValue,
     userId: string
   ) => {
-    const sessionService = new SessionService();
-    return await sessionService.create({
+    const session = new SessionEntity({
       accessType: accessType,
       accessToken,
       refreshToken: uuidv4(),
       userId,
-      refreshTokenExpiresAt: addDaysToDate(new Date(), 30)
+      refreshTokenExpiresAt: addDaysToDate(new Date(), 30),
+      createdAt: new Date(),
+      updatedAt: new Date()
     });
+    const sessionService = new SessionService();
+    return await sessionService.save(session);
   };
 
   private userUpdates = async (): Promise<Output> => {
@@ -95,7 +99,7 @@ export default class LoginService {
 
     // User updates
     record.markLoggedIn();
-    const newRecord = await userService.update(record.id!, record);
+    const newRecord = await userService.save(record);
 
     // Build and cache permissions in Redis
     const buildUserPermissionsService = new BuildUserPermissionsService({

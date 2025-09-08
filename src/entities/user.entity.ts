@@ -74,27 +74,33 @@ class UserEntity implements User {
 
   activate() {
     this.isActive = true;
+    this.updatedAt = new Date();
   };
 
   deactivate() {
     this.isActive = false;
+    this.updatedAt = new Date();
   };
 
   markLoggedIn() {
     this.isLogged = true;
     this.lastLoggedAt = new Date();
+    this.updatedAt = new Date();
   };
 
   markLoggedOut() {
     this.isLogged = false;
+    this.updatedAt = new Date();
   };
 
   setOrganization(orgId?: string | null) {
     this.organizationId = orgId ?? null;
+    this.updatedAt = new Date();
   };
 
   changePassword(newHash: string) {
     this.password = newHash;
+    this.updatedAt = new Date();
   };
 
   delete() {

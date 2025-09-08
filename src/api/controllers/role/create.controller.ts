@@ -26,10 +26,7 @@ const create = async (
       throw new ConflictException([MESSAGE_DATA_EXIST]);
     };
 
-    const newRole = await roleService.create({
-      name: body.name,
-      organizationId
-    });
+    const newRole = await roleService.save({ ...body, organizationId });
 
     apiResponse(res, {
       statusCode: 201,

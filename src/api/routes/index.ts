@@ -20,10 +20,10 @@ router.get("/", (_req: Request, res: Response) => {
 
 router.use("/auth", authRoute);
 router.use("/organizations", organizationRoute);
-router.use("/organizations/:organizationId/roles", roleRoute);
-router.use("/organizations/:organizationId/permissions", permissionRoute);
-router.use("/organizations/:organizationId/roles/:roleId/permissions", rolePermissionRoute);
-router.use("/organizations/:organizationId/users/:userId/permissions", userPermissionRoute);
-router.use("/organizations/:organizationId/users/:userId/roles", userRoleRoute);
+router.use("/roles", roleRoute);
+router.use("/permissions", permissionRoute);
+router.use("/roles/:roleId/permissions", rolePermissionRoute);
+router.use("/users/:userId/permissions", userPermissionRoute);
+router.use("/users/:userId/roles", userRoleRoute);
 
 export default router;

@@ -10,16 +10,13 @@ const authenticate = async (
 ): Promise<void> => {
   try {
     const { authorization } = req.headers;
-    const { organizationId } = req.params;
 
     if (!authorization) {
       throw new UnauthorizedException([MESSAGE_DATA_NOT_LOGGED]);
     };
 
-    const authenticateService = new AuthenticateService({
-      token: authorization.split(" ")[1],
-      organizationId: organizationId
-    });
+    const token = authorization.split(" ")[1];
+    const authenticateService = new AuthenticateService(token);
     const authenticateOutput = await authenticateService.execute();
 
     req.auth = authenticateOutput.user;

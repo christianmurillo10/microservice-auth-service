@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import { comparePassword } from "../shared/utils/bcrypt";
 import { Organization } from "./organization.entity";
 import { Session } from "./session.entity";
@@ -23,6 +22,7 @@ export interface User {
   organizationId?: string | null;
   isActive: boolean;
   isLogged: boolean;
+  isSuperAdmin: boolean;
   lastLoggedAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
@@ -43,6 +43,7 @@ class UserEntity implements User {
   organizationId?: string | null;
   isActive: boolean;
   isLogged: boolean;
+  isSuperAdmin: boolean;
   lastLoggedAt?: Date | null;
   createdAt: Date;
   updatedAt: Date;
@@ -53,19 +54,20 @@ class UserEntity implements User {
   userPermissions?: UserPermission[];
 
   constructor(props: User) {
-    this.id = props.id ?? uuidv4();
+    this.id = props.id;
     this.name = props.name;
     this.username = props.username;
     this.email = props.email;
     this.password = props.password;
     this.accessType = props.accessType;
-    this.organizationId = props.organizationId ?? null;
-    this.isActive = props.isActive ?? true;
-    this.isLogged = props.isLogged ?? false;
-    this.lastLoggedAt = props.lastLoggedAt ?? null;
-    this.createdAt = props.createdAt ?? new Date();
-    this.updatedAt = props.updatedAt ?? new Date();
-    this.deletedAt = props.deletedAt ?? null;
+    this.organizationId = props.organizationId;
+    this.isActive = props.isActive;
+    this.isLogged = props.isLogged;
+    this.isSuperAdmin = props.isSuperAdmin;
+    this.lastLoggedAt = props.lastLoggedAt;
+    this.createdAt = props.createdAt;
+    this.updatedAt = props.updatedAt;
+    this.deletedAt = props.deletedAt;
     this.organization = props.organization;
     this.session = props.session;
     this.userRoles = props.userRoles;

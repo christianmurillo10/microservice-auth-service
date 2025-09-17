@@ -10,17 +10,23 @@ const authorize = (action: string, resource: string) =>
     next: NextFunction
   ) => {
     try {
-      const authId = req.auth.id;
-      const organizationId = req.auth.organizationId;
-      if (!authId || !organizationId) {
+      const { id, organizationId, isSuperAdmin } = req.auth;
+
+      // Super admin bypass all permission
+      if (isSuperAdmin === true) return next();
+
+      // Validate user id and organization id
+      if (!id || !organizationId) {
         throw new UnauthorizedException([MESSAGE_DATA_NOT_AUTHORIZED]);
       }
 
-      const cache = await redisConfig.get(`user_permissions:${authId}`);
+      // Check permission from redis cache
+      const cache = await redisConfig.get(`user_permissions:${id}`);
       if (!cache) {
         throw new UnauthorizedException([MESSAGE_DATA_NOT_AUTHORIZED]);
       }
 
+      // Parse permissions and check
       const permissions: Record<string, string[]> = JSON.parse(cache);
       if (!permissions || !permissions[resource] || !permissions[resource].includes(action)) {
         throw new UnauthorizedException([MESSAGE_DATA_NOT_AUTHORIZED]);

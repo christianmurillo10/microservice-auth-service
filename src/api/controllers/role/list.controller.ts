@@ -18,7 +18,6 @@ const list = async (
       condition: { organizationId: params.organizationId },
       query
     });
-    const roleCount = role.length;
     const allRoleCount = await roleService.count({ query });
     let message = MESSAGE_DATA_FIND_ALL;
 
@@ -32,7 +31,7 @@ const list = async (
       data: role,
       pagination: getPagination(
         allRoleCount,
-        roleCount,
+        role.length,
         Number(query.page ?? 1),
         Number(query.pageSize ?? 10)
       )

@@ -15,7 +15,6 @@ const list = async (
   try {
     const { query } = req;
     const rolePermission = await rolePermissionService.getAll({ query });
-    const rolePermissionCount = rolePermission.length;
     const allRolePermissionCount = await rolePermissionService.count({ query });
     let message = MESSAGE_DATA_FIND_ALL;
 
@@ -29,7 +28,7 @@ const list = async (
       data: rolePermission,
       pagination: getPagination(
         allRolePermissionCount,
-        rolePermissionCount,
+        rolePermission.length,
         Number(query.page ?? 1),
         Number(query.pageSize ?? 10)
       )

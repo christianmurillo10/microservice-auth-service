@@ -15,7 +15,6 @@ const listcontroller = async (
   try {
     const { query } = req;
     const organization = await organizationService.getAll({ query });
-    const organizationCount = organization.length;
     const allOrganizationCount = await organizationService.count({ query });
     let message = MESSAGE_DATA_FIND_ALL;
 
@@ -29,7 +28,7 @@ const listcontroller = async (
       data: organization,
       pagination: getPagination(
         allOrganizationCount,
-        organizationCount,
+        organization.length,
         Number(query.page ?? 1),
         Number(query.pageSize ?? 10)
       )

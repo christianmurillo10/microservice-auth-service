@@ -18,7 +18,6 @@ const list = async (
       condition: { organizationId: params.organizationId },
       query
     });
-    const permissionCount = permission.length;
     const allPermissionCount = await permissionService.count({ query });
     let message = MESSAGE_DATA_FIND_ALL;
 
@@ -32,7 +31,7 @@ const list = async (
       data: permission,
       pagination: getPagination(
         allPermissionCount,
-        permissionCount,
+        permission.length,
         Number(query.page ?? 1),
         Number(query.pageSize ?? 10)
       )

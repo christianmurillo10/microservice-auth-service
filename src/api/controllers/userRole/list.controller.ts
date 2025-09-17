@@ -15,7 +15,6 @@ const list = async (
   try {
     const { query } = req;
     const userRole = await userRoleService.getAll({ query });
-    const userRoleCount = userRole.length;
     const allUserRoleCount = await userRoleService.count({ query });
     let message = MESSAGE_DATA_FIND_ALL;
 
@@ -29,7 +28,7 @@ const list = async (
       data: userRole,
       pagination: getPagination(
         allUserRoleCount,
-        userRoleCount,
+        userRole.length,
         Number(query.page ?? 1),
         Number(query.pageSize ?? 10)
       )

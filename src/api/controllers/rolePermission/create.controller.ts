@@ -9,7 +9,7 @@ import ConflictException from "../../../shared/exceptions/conflict.exception";
 
 const rolePermissionService = new RolePermissionService();
 
-const create = async (
+const createController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -45,4 +45,4 @@ const create = async (
   };
 };
 
-export default create;
+export default createController;

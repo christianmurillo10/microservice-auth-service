@@ -7,7 +7,7 @@ import UserRoleService from "../../../services/user-role.service";
 
 const userRoleService = new UserRoleService();
 
-const list = async (
+const listController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -39,4 +39,4 @@ const list = async (
   };
 };
 
-export default list;
+export default listController;

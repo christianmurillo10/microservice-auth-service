@@ -7,7 +7,7 @@ import RolePermissionService from "../../../services/role-permission.service";
 
 const rolePermissionService = new RolePermissionService();
 
-const sync = async (
+const syncController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -32,4 +32,4 @@ const sync = async (
   };
 };
 
-export default sync;
+export default syncController;

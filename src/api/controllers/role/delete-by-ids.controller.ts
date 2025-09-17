@@ -6,7 +6,7 @@ import RoleService from "../../../services/role.service";
 
 const roleService = new RoleService();
 
-const deleteByIds = async (
+const deleteByIdsController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -25,4 +25,4 @@ const deleteByIds = async (
   };
 };
 
-export default deleteByIds;
+export default deleteByIdsController;

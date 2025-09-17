@@ -4,7 +4,7 @@ import { MESSAGE_DATA_SIGNED_IN } from "../../../shared/constants/message.consta
 import { ERROR_ON_LOGIN } from "../../../shared/constants/error.constant";
 import LoginService from "../../../services/login.service";
 
-const login = async (
+const loginController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -26,4 +26,4 @@ const login = async (
   };
 };
 
-export default login;
+export default loginController;

@@ -7,7 +7,7 @@ import BadRequestException from "../../../shared/exceptions/bad-request.exceptio
 
 const service = new PermissionService();
 
-const update = async (
+const updateController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -34,4 +34,4 @@ const update = async (
   };
 };
 
-export default update;
+export default updateController;

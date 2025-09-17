@@ -7,7 +7,7 @@ import OrganizationService from "../../../services/organization.service";
 
 const organizationService = new OrganizationService();
 
-const listcontroller = async (
+const listController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -39,4 +39,4 @@ const listcontroller = async (
   };
 };
 
-export default listcontroller;
+export default listController;

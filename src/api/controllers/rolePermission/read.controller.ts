@@ -7,7 +7,7 @@ import BadRequestException from "../../../shared/exceptions/bad-request.exceptio
 
 const rolePermissionService = new RolePermissionService();
 
-const read = async (
+const readController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -33,4 +33,4 @@ const read = async (
   };
 };
 
-export default read;
+export default readController;

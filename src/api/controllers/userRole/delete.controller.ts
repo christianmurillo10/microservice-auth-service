@@ -8,7 +8,7 @@ import BadRequestException from "../../../shared/exceptions/bad-request.exceptio
 
 const userRoleService = new UserRoleService();
 
-const remove = async (
+const removeController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -41,4 +41,4 @@ const remove = async (
   };
 };
 
-export default remove;
+export default removeController;

@@ -5,7 +5,7 @@ import { ERROR_ON_LOGOUT } from "../../../shared/constants/error.constant";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 import LogoutService from "../../../services/logout.service";
 
-const logout = async (
+const logoutController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -32,4 +32,4 @@ const logout = async (
   };
 };
 
-export default logout;
+export default logoutController;

@@ -8,7 +8,7 @@ import BuildUserPermissionsService from "../../../services/rbac/build-user-permi
 
 const userRoleService = new UserRoleService();
 
-const sync = async (
+const syncController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -40,4 +40,4 @@ const sync = async (
   };
 };
 
-export default sync;
+export default syncController;

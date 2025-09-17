@@ -7,7 +7,7 @@ import PermissionService from "../../../services/permission.service";
 
 const permissionService = new PermissionService();
 
-const list = async (
+const listController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -42,4 +42,4 @@ const list = async (
   };
 };
 
-export default list;
+export default listController;

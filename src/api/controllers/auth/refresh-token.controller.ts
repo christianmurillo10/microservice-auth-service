@@ -5,7 +5,7 @@ import { ERROR_ON_REFRESH_TOKEN } from "../../../shared/constants/error.constant
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 import RefreshTokenService from "../../../services/refresh-token.service";
 
-const refreshToken = async (
+const refreshTokenController = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -35,4 +35,4 @@ const refreshToken = async (
   };
 };
 
-export default refreshToken;
+export default refreshTokenController;

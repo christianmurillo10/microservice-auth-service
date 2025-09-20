@@ -14,8 +14,8 @@ const createController = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { params, body } = req;
-    const { organizationId } = params;
+    const { body, auth } = req;
+    const organizationId = auth.organizationId!;
     const existingPermission = await permissionService.getByOrganizationIdAndActionAndResource(organizationId, body.action, body.resource)
       .catch(err => {
         if (err instanceof NotFoundException) return null;

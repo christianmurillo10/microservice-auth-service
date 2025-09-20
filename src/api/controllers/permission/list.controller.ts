@@ -13,11 +13,9 @@ const listController = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { params, query } = req;
-    const permission = await permissionService.getAll({
-      condition: { organizationId: params.organizationId },
-      query
-    });
+    const { query, auth } = req;
+    const condition = auth.organizationId ? { organizationId: auth.organizationId } : undefined;
+    const permission = await permissionService.getAll({ condition, query });
     const allPermissionCount = await permissionService.count({ query });
     let message = MESSAGE_DATA_FIND_ALL;
 

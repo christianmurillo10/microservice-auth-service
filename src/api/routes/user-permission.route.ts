@@ -1,11 +1,8 @@
 import { Router } from "express";
 import authenticate from "../../middlewares/authenticate.middleware";
 import authorize from "../../middlewares/authorize.middleware";
-import {
-  list as listValidation,
-  create as createValidation,
-  sync as syncValidation,
-} from "../../middlewares/validations/user-permission.validation";
+import { validateBody, validateQuery } from "../../middlewares/validate.middleware";
+import { createSchema, listSchema, syncSchema } from "../../validations/user-permission.validation";
 import * as UserPermissionController from "../controllers/userPermission";
 
 const router = Router({ mergeParams: true });
@@ -14,7 +11,7 @@ router.get(
   "/",
   authenticate,
   authorize("list", "user-permission"),
-  listValidation,
+  validateQuery(listSchema),
   UserPermissionController.list
 );
 
@@ -22,7 +19,7 @@ router.post(
   "/",
   authenticate,
   authorize("create", "user-permission"),
-  createValidation,
+  validateBody(createSchema),
   UserPermissionController.create
 );
 
@@ -44,7 +41,7 @@ router.put(
   "/sync",
   authenticate,
   authorize("sync", "user-permission"),
-  syncValidation,
+  validateBody(syncSchema),
   UserPermissionController.sync
 );
 

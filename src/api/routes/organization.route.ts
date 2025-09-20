@@ -2,12 +2,8 @@ import { Router } from "express";
 import multer from "multer";
 import authenticate from "../../middlewares/authenticate.middleware";
 import authorize from "../../middlewares/authorize.middleware";
-import {
-  list as listValidation,
-  create as createValidation,
-  update as updateValidation,
-  deleteByIds as deleteByIdsValidation
-} from "../../middlewares/validations/organization.validation";
+import { validateBody, validateQuery } from "../../middlewares/validate.middleware";
+import { createSchema, deleteByIdsSchema, listSchema, updateSchema } from "../../validations/organization.validation";
 import * as OrganizationController from "../controllers/organization";
 
 const upload = multer();
@@ -17,7 +13,7 @@ router.get(
   "/",
   authenticate,
   authorize("list", "organization"),
-  listValidation,
+  validateQuery(listSchema),
   OrganizationController.list
 );
 
@@ -26,7 +22,7 @@ router.post(
   authenticate,
   authorize("create", "organization"),
   upload.single("logo"),
-  createValidation,
+  validateBody(createSchema),
   OrganizationController.create
 );
 
@@ -42,7 +38,7 @@ router.put(
   authenticate,
   authorize("update", "organization"),
   upload.single("logo"),
-  updateValidation,
+  validateBody(updateSchema),
   OrganizationController.update
 );
 
@@ -57,7 +53,7 @@ router.post(
   "/delete-by-ids",
   authenticate,
   authorize("delete", "organization"),
-  deleteByIdsValidation,
+  validateBody(deleteByIdsSchema),
   OrganizationController.deleteByIds
 );
 

@@ -1,14 +1,12 @@
 import { Router } from "express";
-import {
-  login as loginValidation,
-  refreshToken as refreshTokenValidation
-} from "../../middlewares/validations/auth.validation";
+import { validateBody } from "../../middlewares/validate.middleware";
+import { loginSchema, refreshTokenSchema } from "../../validations/auth.validation";
 import * as AuthController from "../controllers/auth";
 
 const router = Router({ mergeParams: true });
 
-router.post("/login", loginValidation, AuthController.login);
+router.post("/login", validateBody(loginSchema), AuthController.login);
 router.post("/logout", AuthController.logout);
-router.post("/refresh-token", refreshTokenValidation, AuthController.refreshToken);
+router.post("/refresh-token", validateBody(refreshTokenSchema), AuthController.refreshToken);
 
 export default router;

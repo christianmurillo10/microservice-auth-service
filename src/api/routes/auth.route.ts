@@ -1,6 +1,6 @@
 import { Router } from "express";
 import { validateBody } from "../../middlewares/validate.middleware";
-import { loginSchema, refreshTokenSchema } from "../../validations/auth.validation";
+import { loginSchema, refreshTokenSchema } from "../../validations/auth.schema";
 import * as AuthController from "../controllers/auth";
 
 const router = Router({ mergeParams: true });

@@ -3,7 +3,7 @@ import multer from "multer";
 import authenticate from "../../middlewares/authenticate.middleware";
 import authorize from "../../middlewares/authorize.middleware";
 import { validateBody, validateQuery } from "../../middlewares/validate.middleware";
-import { createSchema, deleteByIdsSchema, listSchema, updateSchema } from "../../validations/organization.validation";
+import { createSchema, deleteByIdsSchema, listSchema, updateSchema } from "../../validations/organization.schema";
 import * as OrganizationController from "../controllers/organization";
 
 const upload = multer();

@@ -2,7 +2,7 @@ import { Router } from "express";
 import authenticate from "../../middlewares/authenticate.middleware";
 import authorize from "../../middlewares/authorize.middleware";
 import { validateBody, validateQuery } from "../../middlewares/validate.middleware";
-import { createSchema, listSchema, syncSchema } from "../../validations/user-role.validation";
+import { createSchema, listSchema, syncSchema } from "../../validations/user-role.schema";
 import * as UserRoleController from "../controllers/userRole";
 
 const router = Router({ mergeParams: true });

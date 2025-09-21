@@ -2,7 +2,7 @@ import { Router } from "express";
 import authenticate from "../../middlewares/authenticate.middleware";
 import authorize from "../../middlewares/authorize.middleware";
 import { validateBody, validateQuery } from "../../middlewares/validate.middleware";
-import { createSchema, deleteByIdsSchema, listSchema, updateSchema } from "../../validations/permission.validation";
+import { createSchema, deleteByIdsSchema, listSchema, updateSchema } from "../../validations/permission.schema";
 import * as PermissionController from "../controllers/permission";
 
 const router = Router({ mergeParams: true });

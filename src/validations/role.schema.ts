@@ -1,31 +1,31 @@
-import joi from "joi";
+import Joi from "joi";
 
-export const createSchema = joi.object({
-  name: joi.string().label("Name").max(100).required(),
+export const createSchema = Joi.object({
+  name: Joi.string().label("Name").max(100).required(),
 });
 
-export const updateSchema = joi.object({
-  name: joi.string().label("Name").max(100).empty(),
+export const updateSchema = Joi.object({
+  name: Joi.string().label("Name").max(100).empty(),
 });
 
-export const listSchema = joi.object({
-  filters: joi.object({
-    createdAt: joi.date().label("Date Created").empty(),
-    updatedAt: joi.date().label("Last Modified").empty(),
-    name: joi.string().label("Name").max(100).empty(),
+export const listSchema = Joi.object({
+  filters: Joi.object({
+    createdAt: Joi.date().label("Date Created").empty(),
+    updatedAt: Joi.date().label("Last Modified").empty(),
+    name: Joi.string().label("Name").max(100).empty(),
   }).label("Filters").empty(),
-  sorting: joi.object({
-    createdAt: joi.string().label("Date Created").valid("asc", "desc").empty(),
-    updatedAt: joi.string().label("Last Modified").valid("asc", "desc").empty(),
-    name: joi.string().label("Name").valid("asc", "desc").empty(),
+  sorting: Joi.object({
+    createdAt: Joi.string().label("Date Created").valid("asc", "desc").empty(),
+    updatedAt: Joi.string().label("Last Modified").valid("asc", "desc").empty(),
+    name: Joi.string().label("Name").valid("asc", "desc").empty(),
   }).label("Sorting").empty(),
-  page: joi.number().min(1).label("Page").empty(),
-  pageSize: joi.number().min(1).label("Page Size").empty(),
+  page: Joi.number().min(1).label("Page").empty(),
+  pageSize: Joi.number().min(1).label("Page Size").empty(),
 });
 
-export const deleteByIdsSchema = joi.object({
-  ids: joi.array()
-    .items(joi.string())
+export const deleteByIdsSchema = Joi.object({
+  ids: Joi.array()
+    .items(Joi.string())
     .min(1)
     .label("IDs")
     .required(),

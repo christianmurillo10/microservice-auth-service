@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import request from "supertest";
-import app from "../app";
+import app from "../../app";
 
 describe("Auth Service", () => {
   it("should login seeded admin", async () => {

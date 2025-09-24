@@ -10,8 +10,7 @@ const loginController = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { userRequestHeader } = req;
-    const { body } = req;
+    const { body, userRequestHeader } = req;
     const loginService = new LoginService({ input: body, userRequestHeader });
     const data = await loginService.execute();
 

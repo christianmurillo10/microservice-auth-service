@@ -1,9 +1,9 @@
-import { describe, it, expect, beforeAll } from "vitest";
+import { describe, it, expect } from "vitest";
 import request from "supertest";
 import app from "../../app";
 
 describe("Auth - E2E", () => {
-  let header = {};
+  let headers = {};
   let refreshToken = "";
 
   it("should login seeded admin", async () => {
@@ -13,9 +13,7 @@ describe("Auth - E2E", () => {
     expect(res.status).toBe(200);
     expect(res.body.data.token).toBeTruthy();
 
-    header = {
-      "authorization": `Bearer ${res.body.data.token}`
-    };
+    headers = { "authorization": `Bearer ${res.body.data.token}` };
     refreshToken = res.body.data.refreshToken;
   });
 
@@ -26,7 +24,7 @@ describe("Auth - E2E", () => {
     expect(res.status).toBe(400);
   });
 
-  it("should fail logout without header authorization", async () => {
+  it("should fail logout without headers authorization", async () => {
     const res = await request(app).post("/auth/logout");
     expect(res.status).toBe(400);
   });
@@ -34,18 +32,16 @@ describe("Auth - E2E", () => {
   it("should refresh token", async () => {
     const res = await request(app)
       .post("/auth/refresh-token")
-      .set(header)
+      .set(headers)
       .send({ refreshToken });
     expect(res.status).toBe(200);
     expect(res.body.data.token).toBeTruthy();
 
-    header = {
-      "authorization": `Bearer ${res.body.data.token}`
-    };
+    headers = { "authorization": `Bearer ${res.body.data.token}` };
     refreshToken = res.body.data.refreshToken;
   });
 
-  it("should fail refresh token without header authorization", async () => {
+  it("should fail refresh token without headers authorization", async () => {
     const res = await request(app)
       .post("/auth/refresh-token")
       .send({ refreshToken });
@@ -55,7 +51,7 @@ describe("Auth - E2E", () => {
   it("should fail refresh token with empty refreshToken body", async () => {
     const res = await request(app)
       .post("/auth/refresh-token")
-      .set(header)
+      .set(headers)
       .send({ refreshToken: "" });
     expect(res.status).toBe(400);
   });
@@ -63,7 +59,7 @@ describe("Auth - E2E", () => {
   it("should fail refresh token with not found refreshToken body", async () => {
     const res = await request(app)
       .post("/auth/refresh-token")
-      .set(header)
+      .set(headers)
       .send({ refreshToken: "not_found" });
     expect(res.status).toBe(404);
   });
@@ -71,7 +67,7 @@ describe("Auth - E2E", () => {
   it("should logout", async () => {
     const res = await request(app)
       .post("/auth/logout")
-      .set(header);
+      .set(headers);
     expect(res.status).toBe(200);
   });
 });

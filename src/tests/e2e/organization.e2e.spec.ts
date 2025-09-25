@@ -25,7 +25,7 @@ describe("Organization - E2E", () => {
     id = res.body.data.id;
   });
 
-  it("should fail create organization if name exist", async () => {
+  it("should fail create organization if duplicate", async () => {
     const res = await request(app)
       .post("/organizations")
       .set(headers)

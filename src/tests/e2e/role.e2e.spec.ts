@@ -25,7 +25,7 @@ describe("Role - E2E", () => {
     id = res.body.data.id;
   });
 
-  it("should fail create role if name exist", async () => {
+  it("should fail create role if duplicate", async () => {
     const res = await request(app)
       .post("/roles")
       .set(headers)

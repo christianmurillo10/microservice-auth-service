@@ -25,7 +25,7 @@ describe("Permission - E2E", () => {
     id = res.body.data.id;
   });
 
-  it("should fail create permission if action and resource exist", async () => {
+  it("should fail create permission if duplicate", async () => {
     const res = await request(app)
       .post("/permissions")
       .set(headers)

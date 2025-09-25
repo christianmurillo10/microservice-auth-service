@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll } from "vitest";
 import request from "supertest";
 import app from "../../app";
 
-describe("Organization - E2E", () => {
+describe("Role - E2E", () => {
   const noutFoundId = "not-found-id";
   let id = "";
   let headers = {};
@@ -15,64 +15,64 @@ describe("Organization - E2E", () => {
     headers = { "authorization": `Bearer ${res.body.data.token}` };
   });
 
-  it("should create organization", async () => {
+  it("should create role", async () => {
     const res = await request(app)
-      .post("/organizations")
+      .post("/roles")
       .set(headers)
-      .send({ name: "Test Organization" });
+      .send({ name: "Test Role" });
     expect(res.status).toBe(201);
 
     id = res.body.data.id;
   });
 
-  it("should fail create organization if name exist", async () => {
+  it("should fail create role if name exist", async () => {
     const res = await request(app)
-      .post("/organizations")
+      .post("/roles")
       .set(headers)
-      .send({ name: "Test Organization" });
+      .send({ name: "Test Role" });
     expect(res.status).toBe(409);
   });
 
-  it("should update organization", async () => {
+  it("should update role", async () => {
     const res = await request(app)
-      .put(`/organizations/${id}`)
+      .put(`/roles/${id}`)
       .set(headers)
-      .send({ name: "Test Organization - updated" });
+      .send({ name: "Test Role - updated" });
     expect(res.status).toBe(200);
   });
 
-  it("should fail update organization if id not found", async () => {
+  it("should fail update role if id not found", async () => {
     const res = await request(app)
-      .put(`/organizations/${noutFoundId}`)
+      .put(`/roles/${noutFoundId}`)
       .set(headers)
-      .send({ name: "Test Organization - updated" });
+      .send({ name: "Test Role - updated" });
     expect(res.status).toBe(404);
   });
 
-  it("should read organization", async () => {
+  it("should read role", async () => {
     const res = await request(app)
-      .get(`/organizations/${id}`)
+      .get(`/roles/${id}`)
       .set(headers);
     expect(res.status).toBe(200);
   });
 
-  it("should fail read organization if id not found", async () => {
+  it("should fail read role if id not found", async () => {
     const res = await request(app)
-      .get(`/organizations/${noutFoundId}`)
+      .get(`/roles/${noutFoundId}`)
       .set(headers);
     expect(res.status).toBe(404);
   });
 
-  it("should list organizations", async () => {
+  it("should list roles", async () => {
     const res = await request(app)
-      .get("/organizations")
+      .get("/roles")
       .set(headers);
     expect(res.status).toBe(200);
   });
 
-  it("should delete organization", async () => {
+  it("should delete role", async () => {
     const res = await request(app)
-      .delete(`/organizations/${id}`)
+      .delete(`/roles/${id}`)
       .set(headers);
     expect(res.status).toBe(200);
   });

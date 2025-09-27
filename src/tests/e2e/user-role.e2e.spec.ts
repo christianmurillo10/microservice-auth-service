@@ -2,11 +2,11 @@ import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import request from "supertest";
 import app from "../../app";
 
-describe("User Permission - E2E", () => {
+describe("User Role - E2E", () => {
   const noutFoundId = "not-found-id";
   let id = "";
   let userId = "";
-  let permissionId = "";
+  let roleId = "";
   let headers = {};
 
   beforeAll(async () => {
@@ -17,72 +17,72 @@ describe("User Permission - E2E", () => {
     headers = { "authorization": `Bearer ${res.body.data.token}` };
     userId = res.body.data.userId;
 
-    // Create and set permissionId
-    const resPermission = await request(app)
-      .post("/permissions")
+    // Create and set roleId
+    const resRole = await request(app)
+      .post("/roles")
       .set(headers)
-      .send({ action: "test-action for user permission", resource: "test-resource for user permission" });
-    permissionId = resPermission.body.data.id;
+      .send({ name: "Test Role for user role" });
+    roleId = resRole.body.data.id;
   });
 
-  it("should create user permission", async () => {
+  it("should create user role", async () => {
     const res = await request(app)
-      .post(`/users/${userId}/permissions`)
+      .post(`/users/${userId}/roles`)
       .set(headers)
-      .send({ permissionId });
+      .send({ roleId });
     expect(res.status).toBe(201);
 
     id = res.body.data.id;
   });
 
-  it("should fail create user permission if duplicate", async () => {
+  it("should fail create user role if duplicate", async () => {
     const res = await request(app)
-      .post(`/users/${userId}/permissions`)
+      .post(`/users/${userId}/roles`)
       .set(headers)
-      .send({ permissionId });
+      .send({ roleId });
     expect(res.status).toBe(409);
   });
 
-  it("should sync user permission", async () => {
+  it("should sync user role", async () => {
     const res = await request(app)
-      .put(`/users/${userId}/permissions/sync`)
+      .put(`/users/${userId}/roles/sync`)
       .set(headers)
-      .send({ permissionIds: [permissionId] });
+      .send({ roleIds: [roleId] });
     expect(res.status).toBe(200);
   });
 
-  it("should read user permission", async () => {
+  it("should read user role", async () => {
     const res = await request(app)
-      .get(`/users/${userId}/permissions/${id}`)
+      .get(`/users/${userId}/roles/${id}`)
       .set(headers);
     expect(res.status).toBe(200);
   });
 
-  it("should fail read user permission if id not found", async () => {
+  it("should fail read user role if id not found", async () => {
     const res = await request(app)
-      .get(`/users/${userId}/permissions/${noutFoundId}`)
+      .get(`/users/${userId}/roles/${noutFoundId}`)
       .set(headers);
     expect(res.status).toBe(404);
   });
 
-  it("should list user permissions", async () => {
+  it("should list user roles", async () => {
     const res = await request(app)
-      .get(`/users/${userId}/permissions`)
+      .get(`/users/${userId}/roles`)
       .set(headers);
     expect(res.status).toBe(200);
   });
 
-  it("should delete user permission", async () => {
+  it("should delete user role", async () => {
     const res = await request(app)
-      .delete(`/users/${userId}/permissions/${id}`)
+      .delete(`/users/${userId}/roles/${id}`)
       .set(headers);
     expect(res.status).toBe(200);
   });
 
   afterAll(async () => {
-    // Delete created permission
+    // Delete created role
     await request(app)
-      .delete(`/permissions/${permissionId}`)
+      .delete(`/roles/${roleId}`)
       .set(headers);
   });
 });

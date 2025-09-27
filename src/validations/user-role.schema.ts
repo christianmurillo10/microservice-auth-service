@@ -20,7 +20,7 @@ export const listSchema = Joi.object({
 });
 
 export const syncSchema = Joi.object({
-  permissionIds: Joi.array()
+  roleIds: Joi.array()
     .items(Joi.string())
     .min(1)
     .label("Role IDs")

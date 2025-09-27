@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
 import { MESSAGE_DATA_DELETED, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
-import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
 import RolePermissionService from "../../../services/role-permission.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 
@@ -28,7 +27,6 @@ const removeController = async (
       data: newRolePermission
     });
   } catch (error) {
-    console.error(`${ERROR_ON_DELETE}: `, error);
     next(error);
   };
 };

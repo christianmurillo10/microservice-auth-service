@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
 import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
-import { ERROR_ON_CREATE } from "../../../shared/constants/error.constant";
 import RolePermissionService from "../../../services/role-permission.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
@@ -40,7 +39,6 @@ const createController = async (
       data: newRolePermission
     });
   } catch (error) {
-    console.error(`${ERROR_ON_CREATE}: `, error);
     next(error);
   };
 };

@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
 import { MESSAGE_DATA_CREATED, MESSAGE_DATA_EXIST } from "../../../shared/constants/message.constant";
-import { ERROR_ON_CREATE } from "../../../shared/constants/error.constant";
 import OrganizationService from "../../../services/organization.service";
 import NotFoundException from "../../../shared/exceptions/not-found.exception";
 import ConflictException from "../../../shared/exceptions/conflict.exception";
@@ -33,7 +32,6 @@ const createController = async (
       data: newOrganization
     });
   } catch (error) {
-    console.error(`${ERROR_ON_CREATE}: `, error);
     next(error);
   };
 };

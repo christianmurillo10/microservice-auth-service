@@ -1,10 +1,1 @@
-export const ERROR_ON_CREATE = "Error on create";
-export const ERROR_ON_UPDATE = "Error on update";
-export const ERROR_ON_DELETE = "Error on delete";
-export const ERROR_ON_SYNC = "Error on sync";
-export const ERROR_ON_LIST = "Error on list";
-export const ERROR_ON_READ = "Error on read";
-export const ERROR_ON_LOGIN = "Error on login";
-export const ERROR_ON_LOGOUT = "Error on logout";
-export const ERROR_ON_REFRESH_TOKEN = "Error on refresh token";
 export const ERROR_ON_SERVER = "Something went wrong, please contact administrator.";

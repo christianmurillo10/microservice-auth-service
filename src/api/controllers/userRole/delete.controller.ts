@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
 import { MESSAGE_DATA_DELETED, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
-import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
 import UserRoleService from "../../../services/user-role.service";
 import BuildUserPermissionsService from "../../../services/rbac/build-user-permissions.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
@@ -36,7 +35,6 @@ const removeController = async (
       data: newUserRole
     });
   } catch (error) {
-    console.error(`${ERROR_ON_DELETE}: `, error);
     next(error);
   };
 };

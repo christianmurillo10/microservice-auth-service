@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
 import { MESSAGE_DATA_FIND_ALL, MESSAGE_DATA_NOT_FOUND } from "../../../shared/constants/message.constant";
-import { ERROR_ON_LIST } from "../../../shared/constants/error.constant";
 import { getPagination } from "../../../shared/helpers/common.helper";
 import UserRoleService from "../../../services/user-role.service";
 
@@ -34,7 +33,6 @@ const listController = async (
       )
     });
   } catch (error) {
-    console.error(`${ERROR_ON_LIST}: `, error);
     next(error);
   };
 };

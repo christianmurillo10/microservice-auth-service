@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
 import { MESSAGE_DATA_SYNCED, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
-import { ERROR_ON_SYNC } from "../../../shared/constants/error.constant";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 import UserRoleService from "../../../services/user-role.service";
 import BuildUserPermissionsService from "../../../services/rbac/build-user-permissions.service";
@@ -35,7 +34,6 @@ const syncController = async (
       message: MESSAGE_DATA_SYNCED
     });
   } catch (error) {
-    console.error(`${ERROR_ON_SYNC}: `, error);
     next(error);
   };
 };

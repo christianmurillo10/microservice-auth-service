@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
 import { MESSAGE_DATA_UPDATED, MESSAGE_INVALID_PARAMETER } from "../../../shared/constants/message.constant";
-import { ERROR_ON_UPDATE } from "../../../shared/constants/error.constant";
 import PermissionService from "../../../services/permission.service";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 
@@ -29,7 +28,6 @@ const updateController = async (
       data: newPermission
     });
   } catch (error) {
-    console.error(`${ERROR_ON_UPDATE}: `, error);
     next(error);
   };
 };

@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
 import { MESSAGE_DATA_DELETED } from "../../../shared/constants/message.constant";
-import { ERROR_ON_DELETE } from "../../../shared/constants/error.constant";
 import PermissionService from "../../../services/permission.service";
 
 const permissionService = new PermissionService();
@@ -20,7 +19,6 @@ const deleteByIdsController = async (
       message: MESSAGE_DATA_DELETED
     });
   } catch (error) {
-    console.error(`${ERROR_ON_DELETE}: `, error);
     next(error);
   };
 };

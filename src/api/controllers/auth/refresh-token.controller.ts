@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import { apiResponse } from "../../../shared/utils/api-response";
 import { MESSAGE_DATA_NOT_EXIST, MESSAGE_DATA_REFRESH_TOKEN } from "../../../shared/constants/message.constant";
-import { ERROR_ON_REFRESH_TOKEN } from "../../../shared/constants/error.constant";
 import BadRequestException from "../../../shared/exceptions/bad-request.exception";
 import RefreshTokenService from "../../../services/refresh-token.service";
 
@@ -30,7 +29,6 @@ const refreshTokenController = async (
       data
     });
   } catch (error) {
-    console.error(`${ERROR_ON_REFRESH_TOKEN}: `, error);
     next(error);
   };
 };

@@ -13,7 +13,7 @@ const up = async () => {
     data: [
       {
         id: "bb7a2d33-edc8-4bcf-8f32-d56a0ed5bb55",
-        name: "Superadmin",
+        name: "Microservice",
         isActive: true,
         createdAt: new Date(),
         updatedAt: new Date()

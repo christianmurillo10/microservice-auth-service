@@ -39,9 +39,7 @@ export const apiErrorResponse = (
     errors = err.errors;
   };
 
-  if (statusCode === 500) {
-    console.log(err);
-  };
+  console.log(err);
 
   return apiResponse(res, {
     statusCode: statusCode,

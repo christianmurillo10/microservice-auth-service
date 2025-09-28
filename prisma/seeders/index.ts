@@ -1,9 +1,12 @@
 import { PrismaClient } from "../../src/prisma/client";
+import organizations from "./organizations";
 import users from "./users";
 
 const prisma = new PrismaClient();
 
 async function main() {
+  await organizations.down();
+  await organizations.up();
   await users.down();
   await users.up();
 };

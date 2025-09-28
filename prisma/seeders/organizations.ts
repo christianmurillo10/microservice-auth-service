@@ -4,22 +4,17 @@ const prisma = new PrismaClient();
 
 const down = async () => {
   await prisma.$executeRaw`SET FOREIGN_KEY_CHECKS = 0`;
-  await prisma.$executeRaw`TRUNCATE users`;
+  await prisma.$executeRaw`TRUNCATE organizations`;
   await prisma.$executeRaw`SET FOREIGN_KEY_CHECKS = 1`;
 };
 
 const up = async () => {
-  await prisma.user.createMany({
+  await prisma.organization.createMany({
     data: [
       {
-        id: "76ace7de-9bd4-4479-87f5-1f9903bd3a27",
+        id: "bb7a2d33-edc8-4bcf-8f32-d56a0ed5bb55",
         name: "Superadmin",
-        username: "superadmin",
-        email: "superadmin@email.com",
-        password: "$2a$12$FzZC/3mX23SoxT5y1QJxz.lWQCu9FEXQ6yBg9iHqptzMF8DfdpGlK",
-        accessType: "PORTAL",
-        organizationId: "bb7a2d33-edc8-4bcf-8f32-d56a0ed5bb55",
-        isSuperAdmin: true,
+        isActive: true,
         createdAt: new Date(),
         updatedAt: new Date()
       }

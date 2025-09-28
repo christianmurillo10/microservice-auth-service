@@ -13,6 +13,8 @@
     "db-generate": "prisma generate",
     "prisma": "prisma",
     "test": "vitest run",
+    "test:e2e": "vitest run src/tests/e2e",
+    "test:unit": "vitest run src/tests/unit",
     "test:watch": "vitest"
   },
   "repository": {

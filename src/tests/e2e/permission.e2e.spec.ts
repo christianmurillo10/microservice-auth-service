@@ -8,7 +8,6 @@ const prisma = new PrismaClient();
 const noutFoundId = "not-found-id";
 let server: http.Server;
 let id = "";
-let organizationId = "";
 let headers = {};
 
 describe("Permission - E2E", () => {
@@ -32,7 +31,7 @@ describe("Permission - E2E", () => {
     const res = await request(server)
       .post("/permissions")
       .set(headers)
-      .send({ action: "test-action", resource: "test-resource", organizationId });
+      .send({ action: "test-action", resource: "test-resource" });
     expect(res.status).toBe(201);
 
     id = res.body.data.id;

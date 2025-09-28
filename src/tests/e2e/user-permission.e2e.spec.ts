@@ -20,7 +20,6 @@ describe("User Permission - E2E", () => {
     const res = await request(server)
       .post("/auth/login")
       .send({ email: "superadmin@email.com", password: "password" });
-
     headers = { "authorization": `Bearer ${res.body.data.token}` };
     userId = res.body.data.userId;
 

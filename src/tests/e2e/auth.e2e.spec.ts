@@ -1,10 +1,12 @@
 import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import request from "supertest";
 import http from "http";
+import { PrismaClient } from "../../prisma/client";
 import app from "../../app";
 
+const prisma = new PrismaClient();
 let server: http.Server;
-let headers = {};
+let token = "";
 let refreshToken = "";
 
 describe("Auth - E2E", () => {
@@ -13,6 +15,7 @@ describe("Auth - E2E", () => {
   });
 
   afterAll(async () => {
+    await prisma.$disconnect();
     server.close();
   });
 
@@ -23,7 +26,7 @@ describe("Auth - E2E", () => {
     expect(res.status).toBe(200);
     expect(res.body.data.token).toBeTruthy();
 
-    headers = { "authorization": `Bearer ${res.body.data.token}` };
+    token = res.body.data.token;
     refreshToken = res.body.data.refreshToken;
   });
 
@@ -42,12 +45,12 @@ describe("Auth - E2E", () => {
   it("should refresh token", async () => {
     const res = await request(server)
       .post("/auth/refresh-token")
-      .set(headers)
+      .set("Authorization", `Bearer ${token}`)
       .send({ refreshToken });
     expect(res.status).toBe(200);
     expect(res.body.data.token).toBeTruthy();
 
-    headers = { "authorization": `Bearer ${res.body.data.token}` };
+    token = res.body.data.token;
     refreshToken = res.body.data.refreshToken;
   });
 
@@ -61,7 +64,7 @@ describe("Auth - E2E", () => {
   it("should fail refresh token with empty refreshToken body", async () => {
     const res = await request(server)
       .post("/auth/refresh-token")
-      .set(headers)
+      .set("Authorization", `Bearer ${token}`)
       .send({ refreshToken: "" });
     expect(res.status).toBe(400);
   });
@@ -69,7 +72,7 @@ describe("Auth - E2E", () => {
   it("should fail refresh token with not found refreshToken body", async () => {
     const res = await request(server)
       .post("/auth/refresh-token")
-      .set(headers)
+      .set("Authorization", `Bearer ${token}`)
       .send({ refreshToken: "not_found" });
     expect(res.status).toBe(404);
   });
@@ -77,7 +80,7 @@ describe("Auth - E2E", () => {
   it("should logout", async () => {
     const res = await request(server)
       .post("/auth/logout")
-      .set(headers);
+      .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(200);
   });
 });

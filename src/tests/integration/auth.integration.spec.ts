@@ -1,11 +1,17 @@
-import { describe, it, expect } from "vitest";
+import { describe, it, expect, afterAll } from "vitest";
 import request from "supertest";
+import { PrismaClient } from "../../prisma/client";
 import app from "../../app";
 
-let headers = {};
+const prisma = new PrismaClient();
+let token = "";
 let refreshToken = "";
 
 describe("Auth - Integration", () => {
+  afterAll(async () => {
+    await prisma.$disconnect();
+  });
+
   it("should login seeded admin", async () => {
     const res = await request(app)
       .post("/auth/login")
@@ -13,7 +19,7 @@ describe("Auth - Integration", () => {
     expect(res.status).toBe(200);
     expect(res.body.data.token).toBeTruthy();
 
-    headers = { "authorization": `Bearer ${res.body.data.token}` };
+    token = res.body.data.token;
     refreshToken = res.body.data.refreshToken;
   });
 
@@ -32,12 +38,12 @@ describe("Auth - Integration", () => {
   it("should refresh token", async () => {
     const res = await request(app)
       .post("/auth/refresh-token")
-      .set(headers)
+      .set("Authorization", `Bearer ${token}`)
       .send({ refreshToken });
     expect(res.status).toBe(200);
     expect(res.body.data.token).toBeTruthy();
 
-    headers = { "authorization": `Bearer ${res.body.data.token}` };
+    token = res.body.data.token;
     refreshToken = res.body.data.refreshToken;
   });
 
@@ -51,7 +57,7 @@ describe("Auth - Integration", () => {
   it("should fail refresh token with empty refreshToken body", async () => {
     const res = await request(app)
       .post("/auth/refresh-token")
-      .set(headers)
+      .set("Authorization", `Bearer ${token}`)
       .send({ refreshToken: "" });
     expect(res.status).toBe(400);
   });
@@ -59,7 +65,7 @@ describe("Auth - Integration", () => {
   it("should fail refresh token with not found refreshToken body", async () => {
     const res = await request(app)
       .post("/auth/refresh-token")
-      .set(headers)
+      .set("Authorization", `Bearer ${token}`)
       .send({ refreshToken: "not_found" });
     expect(res.status).toBe(404);
   });
@@ -67,7 +73,7 @@ describe("Auth - Integration", () => {
   it("should logout", async () => {
     const res = await request(app)
       .post("/auth/logout")
-      .set(headers);
+      .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(200);
   });
 });

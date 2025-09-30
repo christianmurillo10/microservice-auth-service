@@ -7,8 +7,8 @@ import { PrismaClient } from "../../prisma/client";
 const prisma = new PrismaClient();
 const noutFoundId = "not-found-id";
 let server: http.Server;
+let token = "";
 let id = "";
-let headers = {};
 
 describe("Permission - E2E", () => {
   beforeAll(async () => {
@@ -18,7 +18,7 @@ describe("Permission - E2E", () => {
     const res = await request(server)
       .post("/auth/login")
       .send({ email: "superadmin@email.com", password: "password" });
-    headers = { "authorization": `Bearer ${res.body.data.token}` };
+    token = res.body.data.token;
   });
 
   afterAll(async () => {
@@ -30,7 +30,7 @@ describe("Permission - E2E", () => {
   it("should create permission", async () => {
     const res = await request(server)
       .post("/permissions")
-      .set(headers)
+      .set("Authorization", `Bearer ${token}`)
       .send({ action: "test-action", resource: "test-resource" });
     expect(res.status).toBe(201);
 
@@ -40,7 +40,7 @@ describe("Permission - E2E", () => {
   it("should fail create permission if duplicate", async () => {
     const res = await request(server)
       .post("/permissions")
-      .set(headers)
+      .set("Authorization", `Bearer ${token}`)
       .send({ action: "test-action", resource: "test-resource" });
     expect(res.status).toBe(409);
   });
@@ -48,7 +48,7 @@ describe("Permission - E2E", () => {
   it("should update permission", async () => {
     const res = await request(server)
       .put(`/permissions/${id}`)
-      .set(headers)
+      .set("Authorization", `Bearer ${token}`)
       .send({ action: "test-action", resource: "test-resource" });
     expect(res.status).toBe(200);
   });
@@ -56,7 +56,7 @@ describe("Permission - E2E", () => {
   it("should fail update permission if id not found", async () => {
     const res = await request(server)
       .put(`/permissions/${noutFoundId}`)
-      .set(headers)
+      .set("Authorization", `Bearer ${token}`)
       .send({ action: "test-action", resource: "test-resource" });
     expect(res.status).toBe(404);
   });
@@ -64,28 +64,28 @@ describe("Permission - E2E", () => {
   it("should read permission", async () => {
     const res = await request(server)
       .get(`/permissions/${id}`)
-      .set(headers);
+      .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(200);
   });
 
   it("should fail read permission if id not found", async () => {
     const res = await request(server)
       .get(`/permissions/${noutFoundId}`)
-      .set(headers);
+      .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(404);
   });
 
   it("should list permissions", async () => {
     const res = await request(server)
       .get("/permissions")
-      .set(headers);
+      .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(200);
   });
 
   it("should delete permission", async () => {
     const res = await request(server)
       .delete(`/permissions/${id}`)
-      .set(headers);
+      .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(200);
   });
 });

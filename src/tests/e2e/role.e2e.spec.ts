@@ -7,8 +7,8 @@ import { PrismaClient } from "../../prisma/client";
 const prisma = new PrismaClient();
 const noutFoundId = "not-found-id";
 let server: http.Server;
+let token = "";
 let id = "";
-let headers = {};
 
 describe("Role - E2E", () => {
   beforeAll(async () => {
@@ -18,7 +18,7 @@ describe("Role - E2E", () => {
     const res = await request(server)
       .post("/auth/login")
       .send({ email: "superadmin@email.com", password: "password" });
-    headers = { "authorization": `Bearer ${res.body.data.token}` };
+    token = res.body.data.token;
   });
 
   afterAll(async () => {
@@ -30,7 +30,7 @@ describe("Role - E2E", () => {
   it("should create role", async () => {
     const res = await request(server)
       .post("/roles")
-      .set(headers)
+      .set("Authorization", `Bearer ${token}`)
       .send({ name: "Test Role" });
     expect(res.status).toBe(201);
 
@@ -40,7 +40,7 @@ describe("Role - E2E", () => {
   it("should fail create role if duplicate", async () => {
     const res = await request(server)
       .post("/roles")
-      .set(headers)
+      .set("Authorization", `Bearer ${token}`)
       .send({ name: "Test Role" });
     expect(res.status).toBe(409);
   });
@@ -48,7 +48,7 @@ describe("Role - E2E", () => {
   it("should update role", async () => {
     const res = await request(server)
       .put(`/roles/${id}`)
-      .set(headers)
+      .set("Authorization", `Bearer ${token}`)
       .send({ name: "Test Role - updated" });
     expect(res.status).toBe(200);
   });
@@ -56,7 +56,7 @@ describe("Role - E2E", () => {
   it("should fail update role if id not found", async () => {
     const res = await request(server)
       .put(`/roles/${noutFoundId}`)
-      .set(headers)
+      .set("Authorization", `Bearer ${token}`)
       .send({ name: "Test Role - updated" });
     expect(res.status).toBe(404);
   });
@@ -64,28 +64,28 @@ describe("Role - E2E", () => {
   it("should read role", async () => {
     const res = await request(server)
       .get(`/roles/${id}`)
-      .set(headers);
+      .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(200);
   });
 
   it("should fail read role if id not found", async () => {
     const res = await request(server)
       .get(`/roles/${noutFoundId}`)
-      .set(headers);
+      .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(404);
   });
 
   it("should list roles", async () => {
     const res = await request(server)
       .get("/roles")
-      .set(headers);
+      .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(200);
   });
 
   it("should delete role", async () => {
     const res = await request(server)
       .delete(`/roles/${id}`)
-      .set(headers);
+      .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(200);
   });
 });

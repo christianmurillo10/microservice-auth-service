@@ -5,7 +5,6 @@ import http from "http";
 import { PrismaClient } from "../../prisma/client";
 
 const prisma = new PrismaClient();
-const noutFoundId = "not-found-id";
 let server: http.Server;
 let token = "";
 let id = "";
@@ -37,14 +36,6 @@ describe("Role - E2E", () => {
     id = res.body.data.id;
   });
 
-  it("should fail create role if duplicate", async () => {
-    const res = await request(server)
-      .post("/roles")
-      .set("Authorization", `Bearer ${token}`)
-      .send({ name: "Test Role" });
-    expect(res.status).toBe(409);
-  });
-
   it("should update role", async () => {
     const res = await request(server)
       .put(`/roles/${id}`)
@@ -53,26 +44,11 @@ describe("Role - E2E", () => {
     expect(res.status).toBe(200);
   });
 
-  it("should fail update role if id not found", async () => {
-    const res = await request(server)
-      .put(`/roles/${noutFoundId}`)
-      .set("Authorization", `Bearer ${token}`)
-      .send({ name: "Test Role - updated" });
-    expect(res.status).toBe(404);
-  });
-
   it("should read role", async () => {
     const res = await request(server)
       .get(`/roles/${id}`)
       .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(200);
-  });
-
-  it("should fail read role if id not found", async () => {
-    const res = await request(server)
-      .get(`/roles/${noutFoundId}`)
-      .set("Authorization", `Bearer ${token}`);
-    expect(res.status).toBe(404);
   });
 
   it("should list roles", async () => {

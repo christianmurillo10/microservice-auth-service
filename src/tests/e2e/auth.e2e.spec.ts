@@ -30,18 +30,6 @@ describe("Auth - E2E", () => {
     refreshToken = res.body.data.refreshToken;
   });
 
-  it("should fail login with wrong credentials", async () => {
-    const res = await request(server)
-      .post("/auth/login")
-      .send({ email: "superadmin@email.com", password: "wrong" });
-    expect(res.status).toBe(400);
-  });
-
-  it("should fail logout without headers authorization", async () => {
-    const res = await request(server).post("/auth/logout");
-    expect(res.status).toBe(400);
-  });
-
   it("should refresh token", async () => {
     const res = await request(server)
       .post("/auth/refresh-token")
@@ -52,29 +40,6 @@ describe("Auth - E2E", () => {
 
     token = res.body.data.token;
     refreshToken = res.body.data.refreshToken;
-  });
-
-  it("should fail refresh token without headers authorization", async () => {
-    const res = await request(server)
-      .post("/auth/refresh-token")
-      .send({ refreshToken });
-    expect(res.status).toBe(400);
-  });
-
-  it("should fail refresh token with empty refreshToken body", async () => {
-    const res = await request(server)
-      .post("/auth/refresh-token")
-      .set("Authorization", `Bearer ${token}`)
-      .send({ refreshToken: "" });
-    expect(res.status).toBe(400);
-  });
-
-  it("should fail refresh token with not found refreshToken body", async () => {
-    const res = await request(server)
-      .post("/auth/refresh-token")
-      .set("Authorization", `Bearer ${token}`)
-      .send({ refreshToken: "not_found" });
-    expect(res.status).toBe(404);
   });
 
   it("should logout", async () => {

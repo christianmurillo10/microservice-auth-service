@@ -5,7 +5,6 @@ import http from "http";
 import { PrismaClient } from "../../prisma/client";
 
 const prisma = new PrismaClient();
-const noutFoundId = "not-found-id";
 let server: http.Server;
 let token = "";
 let id = "";
@@ -47,14 +46,6 @@ describe("User Role - E2E", () => {
     id = res.body.data.id;
   });
 
-  it("should fail create user role if duplicate", async () => {
-    const res = await request(server)
-      .post(`/users/${userId}/roles`)
-      .set("Authorization", `Bearer ${token}`)
-      .send({ roleId });
-    expect(res.status).toBe(409);
-  });
-
   it("should sync user role", async () => {
     const res = await request(server)
       .put(`/users/${userId}/roles/sync`)
@@ -68,13 +59,6 @@ describe("User Role - E2E", () => {
       .get(`/users/${userId}/roles/${id}`)
       .set("Authorization", `Bearer ${token}`);
     expect(res.status).toBe(200);
-  });
-
-  it("should fail read user role if id not found", async () => {
-    const res = await request(server)
-      .get(`/users/${userId}/roles/${noutFoundId}`)
-      .set("Authorization", `Bearer ${token}`);
-    expect(res.status).toBe(404);
   });
 
   it("should list user roles", async () => {

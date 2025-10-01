@@ -16,7 +16,7 @@ let id = "";
 describe("Role - Integration", () => {
   beforeAll(async () => {
     const organization = await createOrganization();
-    const user = await createUser({ organizationId: organization.id });
+    const user = await createUser(organization.id);
     const { accessToken } = getAccessToken(
       user.id as unknown as number,
       user.email,

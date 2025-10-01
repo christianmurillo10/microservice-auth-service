@@ -5,7 +5,19 @@ import { hashPassword } from "../../shared/utils/bcrypt";
 
 const prisma = new PrismaClient();
 
-export const createUser = async () => {
+export const createOrganization = async () => {
+  return await prisma.organization.create({
+    data: {
+      id: uuidv4(),
+      name: faker.company.name(),
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    }
+  });
+}
+
+export const createUser = async (overrides?: Record<string, unknown>) => {
   return await prisma.user.create({
     data: {
       id: uuidv4(),
@@ -18,7 +30,8 @@ export const createUser = async () => {
       isActive: true,
       isSuperAdmin: true,
       createdAt: new Date(),
-      updatedAt: new Date()
+      updatedAt: new Date(),
+      ...overrides
     }
   });
 };

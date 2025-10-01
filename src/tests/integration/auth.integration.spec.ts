@@ -1,7 +1,7 @@
 import { describe, it, expect, afterAll } from "vitest";
 import request from "supertest";
-import { PrismaClient } from "../../prisma/client";
 import app from "../../app";
+import { PrismaClient } from "../../prisma/client";
 
 const prisma = new PrismaClient();
 let token = "";

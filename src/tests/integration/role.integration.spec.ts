@@ -2,23 +2,39 @@ import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import request from "supertest";
 import app from "../../app";
 import { PrismaClient } from "../../prisma/client";
+import { createOrganization, createUser } from "../mocks/prisma.mock";
+import { getAccessToken } from "../../shared/helpers/common.helper";
+import { UserAccessTypeValue } from "../../entities/user.entity";
 
 const prisma = new PrismaClient();
 const noutFoundId = "not-found-id";
 let token = "";
+let organizationId = "";
+let userId = "";
 let id = "";
 
 describe("Role - Integration", () => {
   beforeAll(async () => {
-    // Login as admin and set headers
-    const res = await request(app)
-      .post("/auth/login")
-      .send({ email: "superadmin@email.com", password: "password" });
-    token = res.body.data.token;
+    const organization = await createOrganization();
+    const user = await createUser({ organizationId: organization.id });
+    const { accessToken } = getAccessToken(
+      user.id as unknown as number,
+      user.email,
+      user.accessType as UserAccessTypeValue,
+      organization.id as unknown as number,
+      new Date(),
+      5
+    );
+
+    token = accessToken;
+    organizationId = organization.id;
+    userId = user.id;
   });
 
   afterAll(async () => {
     await prisma.role.delete({ where: { id } });
+    await prisma.user.delete({ where: { id: userId } });
+    await prisma.organization.delete({ where: { id: organizationId } });
     await prisma.$disconnect();
   });
 

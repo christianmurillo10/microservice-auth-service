@@ -5,8 +5,7 @@ import UserRequestHeaderEntity from "../entities/user-request-header.entity";
 import { MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS, MESSAGE_DATA_NOT_IMPLEMENTED } from "../shared/constants/message.constant";
 import BadRequestException from "../shared/exceptions/bad-request.exception";
 import NotFoundException from "../shared/exceptions/not-found.exception";
-import { addDaysToDate, addMinutesToDate } from "../shared/helpers/common.helper";
-import { generateAccessToken } from "../shared/helpers/jwt.helper";
+import { addDaysToDate, getAccessToken } from "../shared/helpers/common.helper";
 import SessionService from "./session.service";
 import UserService from "./user.service";
 import BuildUserPermissionsService from "./rbac/build-user-permissions.service";
@@ -43,26 +42,6 @@ export default class LoginService {
       if (error instanceof NotFoundException) throw new BadRequestException([MESSAGE_DATA_INVALID_LOGIN_CREDENTIALS]);
       throw error;
     }
-  };
-
-  private getAccessToken = (
-    id: number,
-    email: string,
-    accessType: UserAccessTypeValue,
-    subject: number,
-    loggedDate: Date,
-    expireInMinutes: number
-  ) => {
-    const accessTokenExpiryDate = addMinutesToDate(loggedDate, expireInMinutes);
-    const accessTokenExpiry = accessTokenExpiryDate.getTime() / 1000;
-    const accessToken = generateAccessToken(
-      id,
-      email,
-      accessType,
-      subject,
-      accessTokenExpiry
-    );
-    return { accessTokenExpiryDate, accessToken };
   };
 
   private createSession = async (
@@ -109,7 +88,7 @@ export default class LoginService {
     await buildUserPermissionsService.execute();
 
     // Generate access token and create session
-    const { accessTokenExpiryDate, accessToken } = this.getAccessToken(
+    const { accessTokenExpiryDate, accessToken } = getAccessToken(
       newRecord.id as unknown as number,
       newRecord.email,
       newRecord.accessType,

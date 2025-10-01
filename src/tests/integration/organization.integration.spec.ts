@@ -2,21 +2,34 @@ import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import request from "supertest";
 import { PrismaClient } from "../../prisma/client";
 import app from "../../app";
+import { createUser } from "../mocks/prisma.mock";
+import { UserAccessTypeValue } from "../../entities/user.entity";
+import { getAccessToken } from "../../shared/helpers/common.helper";
 
 const prisma = new PrismaClient();
 const noutFoundId = "not-found-id";
 let token = "";
+let userId = "";
 let id = "";
 
 describe("Organization - Integration", () => {
   beforeAll(async () => {
-    const res = await request(app)
-      .post("/auth/login")
-      .send({ email: "superadmin@email.com", password: "password" });
-    token = res.body.data.token;
+    const seededUser = await createUser();
+    const { accessToken } = getAccessToken(
+      seededUser.id as unknown as number,
+      seededUser.email,
+      seededUser.accessType as UserAccessTypeValue,
+      0,
+      new Date(),
+      5
+    );
+
+    token = accessToken;
+    userId = seededUser.id;
   });
 
   afterAll(async () => {
+    await prisma.user.delete({ where: { id: userId } });
     await prisma.organization.delete({ where: { id } });
     await prisma.$disconnect();
   });

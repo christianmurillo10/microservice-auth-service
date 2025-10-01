@@ -1,10 +1,8 @@
 import { v4 as uuidv4 } from "uuid";
-import { UserAccessTypeValue } from "../entities/user.entity";
 import { MESSAGE_DATA_INVALID_TOKEN, MESSAGE_DATA_TOKEN_EXPIRED } from "../shared/constants/message.constant";
 import UnauthorizedException from "../shared/exceptions/unauthorized.exception";
 import NotFoundException from "../shared/exceptions/not-found.exception";
-import { addDaysToDate, addMinutesToDate } from "../shared/helpers/common.helper";
-import { generateAccessToken } from "../shared/helpers/jwt.helper";
+import { addDaysToDate, getAccessToken } from "../shared/helpers/common.helper";
 import SessionService from "./session.service";
 import UserService from "./user.service";
 import BuildUserPermissionsService from "./rbac/build-user-permissions.service";
@@ -42,25 +40,6 @@ export default class RefreshTokenService {
     }
   };
 
-  private getAccessToken = (
-    id: number,
-    email: string,
-    accessType: UserAccessTypeValue,
-    subject: number,
-    expireInMinutes: number
-  ) => {
-    const accessTokenExpiryDate = addMinutesToDate(new Date(), expireInMinutes);
-    const accessTokenExpiry = accessTokenExpiryDate.getTime() / 1000;
-    const accessToken = generateAccessToken(
-      id,
-      email,
-      accessType,
-      subject,
-      accessTokenExpiry
-    );
-    return { accessTokenExpiryDate, accessToken };
-  };
-
   execute = async (): Promise<Output> => {
     const session = await this.sessionService.getByRefreshToken(this.state.refreshToken);
     if (session.accessToken !== this.state.token) {
@@ -88,11 +67,12 @@ export default class RefreshTokenService {
     await buildUserPermissionsService.execute();
 
     // Generate Access Token
-    const { accessTokenExpiryDate, accessToken } = this.getAccessToken(
+    const { accessTokenExpiryDate, accessToken } = getAccessToken(
       record.id as unknown as number,
       record.email,
       session.accessType,
       record.organizationId as unknown as number,
+      new Date(),
       expireInMinutes
     );
 

@@ -1,4 +1,6 @@
+import { UserAccessTypeValue } from "../../entities/user.entity";
 import { GenericObject, Pagination } from "../types/common.type";
+import { generateAccessToken } from "./jwt.helper";
 
 export const parseQueryFilters = <T>(data: T): GenericObject => {
   return data
@@ -73,4 +75,24 @@ export const getPagination = (
     hasNextPage: page < totalPages,
     hasPreviousPage: page > 1
   };
+};
+
+export const getAccessToken = (
+  id: number,
+  email: string,
+  accessType: UserAccessTypeValue,
+  subject: number,
+  loggedDate: Date,
+  expireInMinutes: number
+) => {
+  const accessTokenExpiryDate = addMinutesToDate(loggedDate, expireInMinutes);
+  const accessTokenExpiry = accessTokenExpiryDate.getTime() / 1000;
+  const accessToken = generateAccessToken(
+    id,
+    email,
+    accessType,
+    subject,
+    accessTokenExpiry
+  );
+  return { accessTokenExpiryDate, accessToken };
 };

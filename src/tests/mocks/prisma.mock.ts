@@ -60,3 +60,36 @@ export const createPermission = async (organizationId: string) => {
     }
   });
 };
+
+export const createUserRole = async (userId: string, roleId: string) => {
+  return await prisma.userRole.create({
+    data: {
+      id: uuidv4(),
+      userId,
+      roleId,
+      assignedAt: new Date()
+    }
+  });
+};
+
+export const createRolePermission = async (roleId: string, permissionId: string) => {
+  return await prisma.rolePermission.create({
+    data: {
+      id: uuidv4(),
+      roleId,
+      permissionId,
+      grantedAt: new Date()
+    }
+  });
+};
+
+export const createUserPermission = async (userId: string, permissionId: string) => {
+  return await prisma.userPermission.create({
+    data: {
+      id: uuidv4(),
+      userId,
+      permissionId,
+      grantedAt: new Date()
+    }
+  });
+};

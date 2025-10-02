@@ -2,40 +2,46 @@ import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import request from "supertest";
 import app from "../../app";
 import { PrismaClient } from "../../prisma/client";
+import { createOrganization, createPermission, createRole, createUser } from "../mocks/prisma.mock";
+import { getAccessToken } from "../../shared/helpers/common.helper";
+import { UserAccessTypeValue } from "../../entities/user.entity";
 
 const prisma = new PrismaClient();
 const noutFoundId = "not-found-id";
 let token = "";
+let organizationId = "";
+let userId = "";
 let id = "";
 let roleId = "";
 let permissionId = "";
 
 describe("Role Permission - Integration", () => {
   beforeAll(async () => {
-    // Login as admin and set headers
-    const res = await request(app)
-      .post("/auth/login")
-      .send({ email: "superadmin@email.com", password: "password" });
-    token = res.body.data.token;
+    const organization = await createOrganization();
+    const user = await createUser(organization.id);
+    const role = await createRole(organization.id);
+    const permission = await createPermission(organization.id);
+    const { accessToken } = getAccessToken(
+      user.id as unknown as number,
+      user.email,
+      user.accessType as UserAccessTypeValue,
+      organization.id as unknown as number,
+      new Date(),
+      5
+    );
 
-    // Create and set roleId
-    const resRole = await request(app)
-      .post("/roles")
-      .set("Authorization", `Bearer ${token}`)
-      .send({ name: "Test Role for role permission" });
-    roleId = resRole.body.data.id;
-
-    // Create and set permissionId
-    const resPermission = await request(app)
-      .post("/permissions")
-      .set("Authorization", `Bearer ${token}`)
-      .send({ action: "test-action for role permission", resource: "test-resource for role permission" });
-    permissionId = resPermission.body.data.id;
+    token = accessToken;
+    organizationId = organization.id;
+    userId = user.id;
+    roleId = role.id;
+    permissionId = permission.id;
   });
 
   afterAll(async () => {
     await prisma.role.delete({ where: { id: roleId } });
     await prisma.permission.delete({ where: { id: permissionId } });
+    await prisma.user.delete({ where: { id: userId } });
+    await prisma.organization.delete({ where: { id: organizationId } });
     await prisma.$disconnect();
   });
 

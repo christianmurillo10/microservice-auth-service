@@ -2,33 +2,42 @@ import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import request from "supertest";
 import app from "../../app";
 import { PrismaClient } from "../../prisma/client";
+import { createOrganization, createRole, createUser } from "../mocks/prisma.mock";
+import { getAccessToken } from "../../shared/helpers/common.helper";
+import { UserAccessTypeValue } from "../../entities/user.entity";
 
 const prisma = new PrismaClient();
 const noutFoundId = "not-found-id";
 let token = "";
-let id = "";
+let organizationId = "";
 let userId = "";
+let id = "";
 let roleId = "";
 
 describe("User Role - Integration", () => {
   beforeAll(async () => {
-    // Login as admin and set headers
-    const res = await request(app)
-      .post("/auth/login")
-      .send({ email: "superadmin@email.com", password: "password" });
-    token = res.body.data.token;
-    userId = res.body.data.userId;
+    const organization = await createOrganization();
+    const user = await createUser(organization.id);
+    const role = await createRole(organization.id);
+    const { accessToken } = getAccessToken(
+      user.id as unknown as number,
+      user.email,
+      user.accessType as UserAccessTypeValue,
+      organization.id as unknown as number,
+      new Date(),
+      5
+    );
 
-    // Create and set roleId
-    const resRole = await request(app)
-      .post("/roles")
-      .set("Authorization", `Bearer ${token}`)
-      .send({ name: "Test Role for user role" });
-    roleId = resRole.body.data.id;
+    token = accessToken;
+    organizationId = organization.id;
+    userId = user.id;
+    roleId = role.id;
   });
 
   afterAll(async () => {
     await prisma.role.delete({ where: { id: roleId } });
+    await prisma.user.delete({ where: { id: userId } });
+    await prisma.organization.delete({ where: { id: organizationId } });
     await prisma.$disconnect();
   });
 

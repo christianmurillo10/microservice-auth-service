@@ -4,8 +4,8 @@ import SessionEntity from "../../../entities/session.entity";
 import { UserAccessType } from "../../../entities/user.entity";
 
 describe("Session Entity", () => {
-  it("should activate organization", async () => {
-    const organization = new SessionEntity({
+  it("should activate session", async () => {
+    const session = new SessionEntity({
       id: uuidv4(),
       accessType: UserAccessType.Portal,
       accessToken: "access-token",
@@ -15,6 +15,6 @@ describe("Session Entity", () => {
       createdAt: new Date(),
       updatedAt: new Date()
     });
-    expect(organization.isRefreshExpired(new Date(Date.now() + 1000 * 60 * 60))).toBe(true);
+    expect(session.isRefreshExpired(new Date(Date.now() + 1000 * 60 * 60))).toBe(true);
   });
 });

@@ -95,11 +95,6 @@ class UserEntity implements User {
     this.updatedAt = new Date();
   };
 
-  setOrganization(orgId?: string | null) {
-    this.organizationId = orgId ?? null;
-    this.updatedAt = new Date();
-  };
-
   changePassword(newHash: string) {
     this.password = newHash;
     this.updatedAt = new Date();

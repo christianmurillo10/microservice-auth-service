@@ -100,4 +100,24 @@ describe("User Entity", () => {
     user.changePassword(newPassword);
     expect(user.checkPassword(newPassword)).toBe(false);
   });
+
+  it("should soft delete user", async () => {
+    const user = new UserEntity({
+      id: uuidv4(),
+      name: faker.person.fullName(),
+      username: faker.internet.username(),
+      email: faker.internet.email(),
+      password: faker.internet.password(),
+      accessType: UserAccessType.Portal,
+      organizationId: null,
+      isActive: true,
+      isLogged: false,
+      isSuperAdmin: false,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+
+    user.delete();
+    expect(user.deletedAt).toBeInstanceOf(Date);
+  });
 });

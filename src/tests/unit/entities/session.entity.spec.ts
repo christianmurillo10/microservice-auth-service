@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import SessionEntity from "../../../entities/session.entity";
 import { UserAccessType } from "../../../entities/user.entity";
 
-describe("Session Entity", () => {
+describe("Session Entity - Unit", () => {
   it("should activate session", async () => {
     const session = new SessionEntity({
       id: uuidv4(),

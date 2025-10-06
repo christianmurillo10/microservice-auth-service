@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { faker } from "@faker-js/faker";
 import OrganizationEntity from "../../../entities/organization.entity";
 
-describe("Organization Entity", () => {
+describe("Organization Entity - Unit", () => {
   it("should activate organization", async () => {
     const organization = new OrganizationEntity({
       id: uuidv4(),

@@ -1,4 +1,5 @@
-import { Prisma, PrismaClient } from "../../prisma/client";
+import { Prisma } from "../../prisma/client";
+import prismaConfig from "../../config/prisma.config";
 import type { RolePermission as RolePermissionRecord } from "../../prisma/client";
 import RolePermissionEntity from "../../entities/role-permission.entity";
 import RolePermissionRepository from "../role-permission.interface";
@@ -24,8 +25,7 @@ export default class PrismaRolePermissionRepository implements RolePermissionRep
   private client;
 
   constructor() {
-    const prisma = new PrismaClient();
-    this.client = prisma.rolePermission;
+    this.client = prismaConfig.rolePermission;
   };
 
   findAll = async (

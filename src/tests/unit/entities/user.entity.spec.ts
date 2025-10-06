@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from "uuid";
 import { fa, faker } from "@faker-js/faker";
 import UserEntity, { UserAccessType } from "../../../entities/user.entity";
 
-describe("User Entity", () => {
+describe("User Entity - Unit", () => {
   it("should activate user", async () => {
     const user = new UserEntity({
       id: uuidv4(),

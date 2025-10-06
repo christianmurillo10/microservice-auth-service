@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../prisma/client";
+import prismaConfig from "../../config/prisma.config";
 import type { User as UserRecord } from "../../prisma/client";
 import UserEntity, { UserAccessTypeValue } from "../../entities/user.entity";
 import UserRepository from "../user.interface";
@@ -22,8 +22,7 @@ export default class PrismaUserRepository implements UserRepository {
   private client;
 
   constructor() {
-    const prisma = new PrismaClient();
-    this.client = prisma.user;
+    this.client = prismaConfig.user;
   };
 
   findById = async (

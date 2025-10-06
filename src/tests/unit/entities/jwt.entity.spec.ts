@@ -5,7 +5,7 @@ import { UserAccessType } from "../../../entities/user.entity";
 
 let token: string;
 
-describe("JWT Entity", () => {
+describe("JWT Entity - Unit", () => {
   it("should encode jwt token", async () => {
     const jwt = new JWTEntity({
       id: faker.number.int(),

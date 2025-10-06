@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../prisma/client";
+import prismaConfig from "../../config/prisma.config";
 import type { Role as RoleRecord } from "../../prisma/client";
 import RoleEntity from "../../entities/role.entity";
 import RoleRepository from "../role.interface";
@@ -24,8 +24,7 @@ export default class PrismaRoleRepository implements RoleRepository {
   private client;
 
   constructor() {
-    const prisma = new PrismaClient();
-    this.client = prisma.role;
+    this.client = prismaConfig.role;
   };
 
   findAll = async (

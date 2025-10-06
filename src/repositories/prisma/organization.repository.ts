@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../prisma/client";
+import prismaConfig from "../../config/prisma.config";
 import type { Organization as OrganizationRecord } from "../../prisma/client";
 import OrganizationEntity from "../../entities/organization.entity";
 import OrganizationRepository from "../organization.interface";
@@ -27,8 +27,7 @@ export default class PrismaOrganizationRepository implements OrganizationReposit
   readonly logoPath = "public/images/organization/";
 
   constructor() {
-    const prisma = new PrismaClient();
-    this.client = prisma.organization;
+    this.client = prismaConfig.organization;
   };
 
   findAll = async (

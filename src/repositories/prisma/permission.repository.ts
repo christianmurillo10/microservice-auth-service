@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../prisma/client";
+import prismaConfig from "../../config/prisma.config";
 import type { Permission as PermissionRecord } from "../../prisma/client";
 import PermissionEntity from "../../entities/permission.entity";
 import PermissionRepository from "../permission.interface";
@@ -24,8 +24,7 @@ export default class PrismaPermissionRepository implements PermissionRepository 
   private client;
 
   constructor() {
-    const prisma = new PrismaClient();
-    this.client = prisma.permission;
+    this.client = prismaConfig.permission;
   };
 
   findAll = async (

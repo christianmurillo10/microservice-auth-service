@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../prisma/client";
+import prismaConfig from "../../config/prisma.config";
 import type { Session as SessionRecord } from "../../prisma/client";
 import SessionEntity from "../../entities/session.entity";
 import SessionRepository from "../session.interface";
@@ -25,8 +25,7 @@ export default class PrismaSessionRepository implements SessionRepository {
   private client;
 
   constructor() {
-    const prisma = new PrismaClient();
-    this.client = prisma.session;
+    this.client = prismaConfig.session;
   };
 
   findById = async (

@@ -46,4 +46,20 @@ export const setupPrismaMock = () => ({
     updateMany: mockPrismaUpdateMany,
     count: mockPrismaCount,
   },
+  permission: {
+    create: mockPrismaCreate,
+    update: mockPrismaUpdate,
+    findMany: mockPrismaFindAll,
+    findFirst: mockPrismaFindFirst,
+    updateMany: mockPrismaUpdateMany,
+    count: mockPrismaCount,
+  },
+  role: {
+    create: mockPrismaCreate,
+    update: mockPrismaUpdate,
+    findMany: mockPrismaFindAll,
+    findFirst: mockPrismaFindFirst,
+    updateMany: mockPrismaUpdateMany,
+    count: mockPrismaCount,
+  },
 });

@@ -10,6 +10,11 @@ export const mockPrismaUpdate = vi.fn(async (args: any) => ({
   ...args.data,
 }));
 
+export const mockPrismaDelete = vi.fn(async (args: any) => ({
+  id: args.where?.id ?? "mocked-id",
+  deletedAt: null,
+}));
+
 export const mockPrismaFindAll = vi.fn(async (args?: any) => {
   const count = args?.take ?? 3;
   return Array.from({ length: count }).map((_, i) => ({
@@ -28,6 +33,10 @@ export const mockPrismaFindFirst = vi.fn(async (args?: any) => {
     }
   );
 });
+
+export const mockPrismaCreateMany = vi.fn(async (_args?: any) => ({
+  count: 1,
+}));
 
 export const mockPrismaUpdateMany = vi.fn(async (_args?: any) => ({
   count: 1,
@@ -59,6 +68,15 @@ export const setupPrismaMock = () => ({
     update: mockPrismaUpdate,
     findMany: mockPrismaFindAll,
     findFirst: mockPrismaFindFirst,
+    updateMany: mockPrismaUpdateMany,
+    count: mockPrismaCount,
+  },
+  rolePermission: {
+    create: mockPrismaCreate,
+    delete: mockPrismaDelete,
+    findMany: mockPrismaFindAll,
+    findFirst: mockPrismaFindFirst,
+    createMany: mockPrismaCreateMany,
     updateMany: mockPrismaUpdateMany,
     count: mockPrismaCount,
   },

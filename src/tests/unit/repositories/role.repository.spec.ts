@@ -62,7 +62,7 @@ describe("Role Repository - Unit", () => {
     expect(result?.id).toBe(basedata.id);
   });
 
-  it("should find role by organizationId, action and resource", async () => {
+  it("should find role by organizationId and name", async () => {
     const result = await repo.findByOrganizationIdAndName({
       organizationId: basedata.organizationId,
       name: basedata.name
@@ -80,7 +80,7 @@ describe("Role Repository - Unit", () => {
   });
 
   it("should count roles", async () => {
-    const result = await prisma.role.count();
+    const result = await repo.count();
     expect(prisma.role.count).toHaveBeenCalled();
     expect(result).toBeGreaterThan(0);
   });

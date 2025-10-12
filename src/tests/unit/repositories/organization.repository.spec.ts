@@ -75,7 +75,7 @@ describe("Organization Repository - Unit", () => {
   });
 
   it("should count organizations", async () => {
-    const result = await prisma.organization.count();
+    const result = await repo.count();
     expect(prisma.organization.count).toHaveBeenCalled();
     expect(result).toBeGreaterThan(0);
   });

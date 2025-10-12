@@ -83,7 +83,7 @@ describe("Permission Repository - Unit", () => {
   });
 
   it("should count permissions", async () => {
-    const result = await prisma.permission.count();
+    const result = await repo.count();
     expect(prisma.permission.count).toHaveBeenCalled();
     expect(result).toBeGreaterThan(0);
   });

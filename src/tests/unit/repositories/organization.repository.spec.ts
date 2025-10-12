@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { v4 as uuidv4 } from "uuid";
 import { faker } from "@faker-js/faker";
 import { setupPrismaMock } from "../../mocks/prisma.helper";
 import PrismaOrganizationRepository from "../../../repositories/prisma/organization.repository";
@@ -17,7 +16,7 @@ import prisma from "../../../config/prisma.config";
 describe("Organization Repository - Unit", () => {
   let repo: PrismaOrganizationRepository;
   const basedata = {
-    id: uuidv4(),
+    id: faker.string.uuid(),
     name: faker.company.name(),
     isActive: false,
     createdAt: new Date(),

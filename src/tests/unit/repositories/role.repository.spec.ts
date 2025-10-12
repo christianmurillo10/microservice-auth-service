@@ -1,5 +1,4 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { v4 as uuidv4 } from "uuid";
 import { faker } from "@faker-js/faker";
 import { setupPrismaMock } from "../../mocks/prisma.helper";
 import PrismaRoleRepository from "../../../repositories/prisma/role.repository";
@@ -17,7 +16,7 @@ import prisma from "../../../config/prisma.config";
 describe("Role Repository - Unit", () => {
   let repo: PrismaRoleRepository;
   const basedata = {
-    id: uuidv4(),
+    id: faker.string.uuid(),
     name: faker.word.sample(),
     organizationId: "",
     createdAt: new Date(),

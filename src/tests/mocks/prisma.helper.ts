@@ -98,4 +98,11 @@ export const setupPrismaMock = () => ({
     updateMany: mockPrismaUpdateMany,
     count: mockPrismaCount,
   },
+  session: {
+    create: mockPrismaCreate,
+    update: mockPrismaUpdate,
+    findMany: mockPrismaFindAll,
+    findFirst: mockPrismaFindFirst,
+    updateMany: mockPrismaUpdateMany,
+  },
 });

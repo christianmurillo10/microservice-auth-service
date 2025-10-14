@@ -5,9 +5,8 @@ import PrismaPermissionRepository from "../../../repositories/prisma/permission.
 import PermissionEntity from "../../../entities/permission.entity";
 
 vi.mock("../../../prisma/client", () => {
-  return {
-    PrismaClient: vi.fn(() => setupPrismaMock()),
-  };
+  const prisma = setupPrismaMock(["permission"]);
+  return { PrismaClient: vi.fn(() => prisma), prisma };
 });
 
 // Import after mocking

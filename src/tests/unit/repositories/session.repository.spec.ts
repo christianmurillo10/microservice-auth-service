@@ -5,9 +5,8 @@ import PrismaSessionRepository from "../../../repositories/prisma/session.reposi
 import SessionEntity from "../../../entities/session.entity";
 
 vi.mock("../../../prisma/client", () => {
-  return {
-    PrismaClient: vi.fn(() => setupPrismaMock()),
-  };
+  const prisma = setupPrismaMock(["session"]);
+  return { PrismaClient: vi.fn(() => prisma), prisma };
 });
 
 // Import after mocking
@@ -41,7 +40,7 @@ describe("Session Repository - Unit", () => {
   });
 
   it("should update session", async () => {
-    const newUserId = faker.string.alphanumeric(32);
+    const newUserId = faker.string.uuid();
     const result = await repo.update({
       id: basedata.id,
       params: new SessionEntity({

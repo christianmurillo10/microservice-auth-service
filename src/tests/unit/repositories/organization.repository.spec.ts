@@ -5,9 +5,8 @@ import PrismaOrganizationRepository from "../../../repositories/prisma/organizat
 import OrganizationEntity from "../../../entities/organization.entity";
 
 vi.mock("../../../prisma/client", () => {
-  return {
-    PrismaClient: vi.fn(() => setupPrismaMock()),
-  };
+  const prisma = setupPrismaMock(["organization"]);
+  return { PrismaClient: vi.fn(() => prisma), prisma };
 });
 
 // Import after mocking

@@ -5,9 +5,8 @@ import PrismaUserRoleRepository from "../../../repositories/prisma/user-role.rep
 import UserRoleEntity from "../../../entities/user-role.entity";
 
 vi.mock("../../../prisma/client", () => {
-  return {
-    PrismaClient: vi.fn(() => setupPrismaMock()),
-  };
+  const prisma = setupPrismaMock(["userRole"]);
+  return { PrismaClient: vi.fn(() => prisma), prisma };
 });
 
 // Import after mocking

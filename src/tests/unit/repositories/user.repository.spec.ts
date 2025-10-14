@@ -46,7 +46,6 @@ describe("User Repository - Unit", () => {
         }),
       }),
     );
-
     expect(result.email).toBe(basedata.email);
     expect(result.isActive).toBe(true);
   });
@@ -67,7 +66,6 @@ describe("User Repository - Unit", () => {
         where: { id: basedata.id },
       }),
     );
-
     expect(result.name).toBe(newName);
   });
 
@@ -79,7 +77,6 @@ describe("User Repository - Unit", () => {
         where: expect.objectContaining({ id: basedata.id }),
       }),
     );
-
     expect(result?.id).toBe(basedata.id);
   });
 

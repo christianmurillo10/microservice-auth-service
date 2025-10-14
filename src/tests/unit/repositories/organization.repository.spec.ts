@@ -31,7 +31,14 @@ describe("Organization Repository - Unit", () => {
     const result = await repo.create({
       params: new OrganizationEntity(basedata)
     });
-    expect(prisma.organization.create).toHaveBeenCalled();
+
+    expect(prisma.organization.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          name: basedata.name,
+        }),
+      }),
+    );
     expect(result.name).toBe(basedata.name);
   });
 
@@ -43,37 +50,59 @@ describe("Organization Repository - Unit", () => {
         isActive: true
       })
     });
-    expect(prisma.organization.update).toHaveBeenCalled();
+
+    expect(prisma.organization.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: basedata.id },
+      }),
+    );
     expect(result.isActive).toBe(true);
   });
 
   it("should return all organizations", async () => {
     const result = await repo.findAll({});
-    expect(prisma.organization.findMany).toHaveBeenCalled();
+    
+    expect(result).toBeInstanceOf(Array);
     expect(result.length).toBeGreaterThan(0);
   });
 
   it("should find organization by id", async () => {
     const result = await repo.findById({ id: basedata.id });
-    expect(prisma.organization.findFirst).toHaveBeenCalled();
+
+    expect(prisma.organization.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ id: basedata.id }),
+      }),
+    );
     expect(result?.id).toBe(basedata.id);
   });
 
   it("should find organization by name", async () => {
     const result = await repo.findByName({ name: basedata.name });
-    expect(prisma.organization.findFirst).toHaveBeenCalled();
+
+    expect(prisma.organization.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ name: basedata.name }),
+      }),
+    );
     expect(result?.name).toBe(basedata.name);
   });
 
   it("should delete organization", async () => {
     const result = await repo.softDelete({ id: basedata.id });
-    expect(prisma.organization.update).toHaveBeenCalled();
+
+    expect(prisma.organization.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: basedata.id },
+      }),
+    );
     expect(result.deletedAt).toBeInstanceOf(Date);
     expect(result.deletedAt).toBeDefined();
   });
 
   it("should count organizations", async () => {
     const result = await repo.count();
+    
     expect(prisma.organization.count).toHaveBeenCalled();
     expect(result).toBeGreaterThan(0);
   });

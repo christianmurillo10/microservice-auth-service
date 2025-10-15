@@ -31,7 +31,14 @@ describe("Role Repository - Unit", () => {
     const result = await repo.create({
       params: new RoleEntity(basedata)
     });
-    expect(prisma.role.create).toHaveBeenCalled();
+
+    expect(prisma.role.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          name: basedata.name,
+        }),
+      }),
+    );
     expect(result.name).toBe(basedata.name);
   });
 
@@ -44,19 +51,31 @@ describe("Role Repository - Unit", () => {
         name: newName
       })
     });
-    expect(prisma.role.update).toHaveBeenCalled();
+
+    expect(prisma.role.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: basedata.id },
+      }),
+    );
     expect(result.name).toBe(newName);
   });
 
   it("should return all roles", async () => {
     const result = await repo.findAll({});
+
     expect(prisma.role.findMany).toHaveBeenCalled();
+    expect(result).toBeInstanceOf(Array);
     expect(result.length).toBeGreaterThan(0);
   });
 
   it("should find role by id", async () => {
     const result = await repo.findById({ id: basedata.id });
-    expect(prisma.role.findFirst).toHaveBeenCalled();
+
+    expect(prisma.role.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ id: basedata.id }),
+      }),
+    );
     expect(result?.id).toBe(basedata.id);
   });
 
@@ -65,20 +84,34 @@ describe("Role Repository - Unit", () => {
       organizationId: basedata.organizationId,
       name: basedata.name
     });
-    expect(prisma.role.findFirst).toHaveBeenCalled();
+
+    expect(prisma.role.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          organizationId: basedata.organizationId,
+          name: basedata.name
+        }),
+      }),
+    );
     expect(result?.organizationId).toBe(basedata.organizationId);
     expect(result?.name).toBe(basedata.name);
   });
 
   it("should delete role", async () => {
     const result = await repo.softDelete({ id: basedata.id });
-    expect(prisma.role.update).toHaveBeenCalled();
+
+    expect(prisma.role.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: basedata.id },
+      }),
+    );
     expect(result.deletedAt).toBeInstanceOf(Date);
     expect(result.deletedAt).toBeDefined();
   });
 
   it("should count roles", async () => {
     const result = await repo.count();
+    
     expect(prisma.role.count).toHaveBeenCalled();
     expect(result).toBeGreaterThan(0);
   });

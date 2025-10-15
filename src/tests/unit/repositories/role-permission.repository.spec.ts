@@ -30,7 +30,14 @@ describe("Role Permission Repository - Unit", () => {
     const result = await repo.create({
       params: new RolePermissionEntity(basedata)
     });
-    expect(prisma.rolePermission.create).toHaveBeenCalled();
+
+    expect(prisma.rolePermission.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          permissionId: basedata.permissionId,
+        }),
+      }),
+    );
     expect(result.permissionId).toBe(basedata.permissionId);
   });
 
@@ -42,13 +49,20 @@ describe("Role Permission Repository - Unit", () => {
 
   it("should return all role permissions by roleId", async () => {
     const result = await repo.findAllByRoleId({ roleId: basedata.roleId });
+    
     expect(prisma.rolePermission.findMany).toHaveBeenCalled();
+    expect(result).toBeInstanceOf(Array);
     expect(result.length).toBeGreaterThan(0);
   });
 
   it("should find role permission by id", async () => {
     const result = await repo.findById({ id: basedata.id });
-    expect(prisma.rolePermission.findFirst).toHaveBeenCalled();
+
+    expect(prisma.rolePermission.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ id: basedata.id }),
+      }),
+    );
     expect(result?.id).toBe(basedata.id);
   });
 
@@ -57,18 +71,28 @@ describe("Role Permission Repository - Unit", () => {
       roleId: basedata.roleId,
       permissionId: basedata.permissionId
     });
-    expect(prisma.rolePermission.findFirst).toHaveBeenCalled();
+
+    expect(prisma.rolePermission.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          roleId: basedata.roleId,
+          permissionId: basedata.permissionId
+        }),
+      }),
+    );
     expect(result?.roleId).toBe(basedata.roleId);
     expect(result?.permissionId).toBe(basedata.permissionId);
   });
 
   it("should delete role permission", async () => {
     await repo.delete({ id: basedata.id });
+
     expect(prisma.rolePermission.delete).toHaveBeenCalled();
   });
 
   it("should count role permissions", async () => {
     const result = await repo.count();
+    
     expect(prisma.rolePermission.count).toHaveBeenCalled();
     expect(result).toBeGreaterThan(0);
   });

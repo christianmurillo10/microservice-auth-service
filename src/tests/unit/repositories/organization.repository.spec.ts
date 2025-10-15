@@ -62,6 +62,7 @@ describe("Organization Repository - Unit", () => {
   it("should return all organizations", async () => {
     const result = await repo.findAll({});
     
+    expect(prisma.organization.findMany).toHaveBeenCalled();
     expect(result).toBeInstanceOf(Array);
     expect(result.length).toBeGreaterThan(0);
   });
@@ -102,7 +103,7 @@ describe("Organization Repository - Unit", () => {
 
   it("should count organizations", async () => {
     const result = await repo.count();
-    
+
     expect(prisma.organization.count).toHaveBeenCalled();
     expect(result).toBeGreaterThan(0);
   });

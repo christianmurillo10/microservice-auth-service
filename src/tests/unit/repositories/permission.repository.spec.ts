@@ -32,7 +32,14 @@ describe("Permission Repository - Unit", () => {
     const result = await repo.create({
       params: new PermissionEntity(basedata)
     });
-    expect(prisma.permission.create).toHaveBeenCalled();
+
+    expect(prisma.permission.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          action: basedata.action,
+        }),
+      }),
+    );
     expect(result.action).toBe(basedata.action);
   });
 
@@ -45,19 +52,31 @@ describe("Permission Repository - Unit", () => {
         action: newAction
       })
     });
-    expect(prisma.permission.update).toHaveBeenCalled();
+
+    expect(prisma.permission.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: basedata.id },
+      }),
+    );
     expect(result.action).toBe(newAction);
   });
 
   it("should return all permissions", async () => {
     const result = await repo.findAll({});
+
     expect(prisma.permission.findMany).toHaveBeenCalled();
+    expect(result).toBeInstanceOf(Array);
     expect(result.length).toBeGreaterThan(0);
   });
 
   it("should find permission by id", async () => {
     const result = await repo.findById({ id: basedata.id });
-    expect(prisma.permission.findFirst).toHaveBeenCalled();
+
+    expect(prisma.permission.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ id: basedata.id }),
+      }),
+    );
     expect(result?.id).toBe(basedata.id);
   });
 
@@ -67,7 +86,16 @@ describe("Permission Repository - Unit", () => {
       action: basedata.action,
       resource: basedata.resource
     });
-    expect(prisma.permission.findFirst).toHaveBeenCalled();
+
+    expect(prisma.permission.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          organizationId: basedata.organizationId,
+          action: basedata.action,
+          resource: basedata.resource
+        }),
+      }),
+    );
     expect(result?.organizationId).toBe(basedata.organizationId);
     expect(result?.action).toBe(basedata.action);
     expect(result?.resource).toBe(basedata.resource);
@@ -75,13 +103,19 @@ describe("Permission Repository - Unit", () => {
 
   it("should delete permission", async () => {
     const result = await repo.softDelete({ id: basedata.id });
-    expect(prisma.permission.update).toHaveBeenCalled();
+
+    expect(prisma.permission.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: basedata.id },
+      }),
+    );
     expect(result.deletedAt).toBeInstanceOf(Date);
     expect(result.deletedAt).toBeDefined();
   });
 
   it("should count permissions", async () => {
     const result = await repo.count();
+    
     expect(prisma.permission.count).toHaveBeenCalled();
     expect(result).toBeGreaterThan(0);
   });

@@ -43,7 +43,9 @@ describe("Role Permission Repository - Unit", () => {
 
   it("should return all role permissions", async () => {
     const result = await repo.findAll({});
+
     expect(prisma.rolePermission.findMany).toHaveBeenCalled();
+    expect(result).toBeInstanceOf(Array);
     expect(result.length).toBeGreaterThan(0);
   });
 
@@ -92,7 +94,7 @@ describe("Role Permission Repository - Unit", () => {
 
   it("should count role permissions", async () => {
     const result = await repo.count();
-    
+
     expect(prisma.rolePermission.count).toHaveBeenCalled();
     expect(result).toBeGreaterThan(0);
   });

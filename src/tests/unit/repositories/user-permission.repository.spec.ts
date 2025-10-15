@@ -30,25 +30,41 @@ describe("User Permission Repository - Unit", () => {
     const result = await repo.create({
       params: new UserPermissionEntity(basedata)
     });
-    expect(prisma.userPermission.create).toHaveBeenCalled();
+    
+    expect(prisma.userPermission.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          permissionId: basedata.permissionId,
+        }),
+      }),
+    );
     expect(result.permissionId).toBe(basedata.permissionId);
   });
 
   it("should return all user permissions", async () => {
     const result = await repo.findAll({});
+
     expect(prisma.userPermission.findMany).toHaveBeenCalled();
+    expect(result).toBeInstanceOf(Array);
     expect(result.length).toBeGreaterThan(0);
   });
 
   it("should return all user permissions by userId", async () => {
     const result = await repo.findAllByUserId({ userId: basedata.userId });
+    
     expect(prisma.userPermission.findMany).toHaveBeenCalled();
+    expect(result).toBeInstanceOf(Array);
     expect(result.length).toBeGreaterThan(0);
   });
 
   it("should find user permission by id", async () => {
     const result = await repo.findById({ id: basedata.id });
-    expect(prisma.userPermission.findFirst).toHaveBeenCalled();
+
+    expect(prisma.userPermission.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ id: basedata.id }),
+      }),
+    );
     expect(result?.id).toBe(basedata.id);
   });
 
@@ -57,18 +73,28 @@ describe("User Permission Repository - Unit", () => {
       userId: basedata.userId,
       permissionId: basedata.permissionId
     });
-    expect(prisma.userPermission.findFirst).toHaveBeenCalled();
+
+    expect(prisma.userPermission.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          userId: basedata.userId,
+          permissionId: basedata.permissionId
+        }),
+      }),
+    );
     expect(result?.userId).toBe(basedata.userId);
     expect(result?.permissionId).toBe(basedata.permissionId);
   });
 
   it("should delete user permission", async () => {
     await repo.delete({ id: basedata.id });
+
     expect(prisma.userPermission.delete).toHaveBeenCalled();
   });
 
   it("should count user permissions", async () => {
     const result = await repo.count();
+    
     expect(prisma.userPermission.count).toHaveBeenCalled();
     expect(result).toBeGreaterThan(0);
   });

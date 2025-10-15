@@ -35,7 +35,14 @@ describe("Session Repository - Unit", () => {
     const result = await repo.create({
       params: new SessionEntity(basedata)
     });
-    expect(prisma.session.create).toHaveBeenCalled();
+
+    expect(prisma.session.create).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          accessToken: basedata.accessToken,
+        }),
+      }),
+    );
     expect(result.accessToken).toBe(basedata.accessToken);
   });
 
@@ -48,30 +55,51 @@ describe("Session Repository - Unit", () => {
         userId: newUserId
       })
     });
-    expect(prisma.session.update).toHaveBeenCalled();
+
+    expect(prisma.session.update).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: { id: basedata.id },
+      }),
+    );
     expect(result.userId).toBe(newUserId);
   });
 
   it("should find session by id", async () => {
     const result = await repo.findById({ id: basedata.id });
-    expect(prisma.session.findFirst).toHaveBeenCalled();
+
+    expect(prisma.session.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ id: basedata.id }),
+      }),
+    );
     expect(result?.id).toBe(basedata.id);
   });
 
   it("should find session by accessToken", async () => {
     const result = await repo.findByAccessToken({ accessToken: basedata.accessToken });
-    expect(prisma.session.findFirst).toHaveBeenCalled();
+
+    expect(prisma.session.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ accessToken: basedata.accessToken }),
+      }),
+    );
     expect(result?.accessToken).toBe(basedata.accessToken);
   });
 
   it("should find session by refreshToken", async () => {
     const result = await repo.findByRefreshToken({ refreshToken: basedata.refreshToken });
-    expect(prisma.session.findFirst).toHaveBeenCalled();
+
+    expect(prisma.session.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({ refreshToken: basedata.refreshToken }),
+      }),
+    );
     expect(result?.refreshToken).toBe(basedata.refreshToken);
   });
 
   it("should delete session", async () => {
     const result = await repo.softDelete({ id: basedata.id });
+    
     expect(prisma.session.update).toHaveBeenCalled();
     expect(result.deletedAt).toBeInstanceOf(Date);
     expect(result.deletedAt).toBeDefined();

@@ -1,8 +1,5 @@
 import { vi } from "vitest";
 
-/**
- * Common reusable Prisma mock implementations
- */
 export const mockPrismaCreate = vi.fn(async (args: any) => ({
   id: args?.data?.id ?? "mocked-id",
   ...args?.data,
@@ -31,6 +28,22 @@ export const mockPrismaFindMany = vi.fn(async (args?: any) => {
 });
 
 export const mockPrismaFindFirst = vi.fn(async (args?: any) => {
+  if (args?.where && args?.where?.id === "not-found") {
+    return null;
+  }
+
+  if (args?.where && args?.where?.OR) {
+    return Object.fromEntries(
+      args?.where?.OR.map((item: any) => {
+        const [key, val] = Object.entries(item)[0];
+        const value = (val && typeof val === "object" && "equals" in val)
+          ? (val as any).equals
+          : undefined;
+        return [key, value];
+      })
+    );
+  }
+
   return (
     args?.where ?? {
       id: "mock-first-id",

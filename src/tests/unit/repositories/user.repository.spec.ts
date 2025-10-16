@@ -80,24 +80,41 @@ describe("User Repository - Unit", () => {
     expect(result?.id).toBe(basedata.id);
   });
 
-  // it("should find a user by username or email", async () => {
-  //   const result = await repo.findByUsernameOrEmail({
-  //     username: basedata.username,
-  //     email: basedata.email,
-  //   });
+  it("should find a user by username or email with username value", async () => {
+    const result = await repo.findByUsernameOrEmail({
+      username: basedata.username,
+      email: basedata.username,
+    });
 
-  //   expect(prisma.user.findFirst).toHaveBeenCalledWith(
-  //     expect.objectContaining({
-  //       where: expect.objectContaining({
-  //         OR: [
-  //           { username: { equals: basedata.username } },
-  //           { email: { equals: basedata.email } },
-  //         ],
-  //       }),
-  //     }),
-  //   );
+    expect(prisma.user.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          OR: [
+            { username: { equals: basedata.username } },
+            { email: { equals: basedata.username } },
+          ],
+        }),
+      }),
+    );
+    expect(result?.username).toBe(basedata.username);
+  });
 
-  //   expect(result?.username).toBe(basedata.username);
-  //   expect(result?.email).toBe(basedata.email);
-  // });
+  it("should find a user by username or email with email value", async () => {
+    const result = await repo.findByUsernameOrEmail({
+      username: basedata.email,
+      email: basedata.email,
+    });
+
+    expect(prisma.user.findFirst).toHaveBeenCalledWith(
+      expect.objectContaining({
+        where: expect.objectContaining({
+          OR: [
+            { username: { equals: basedata.email } },
+            { email: { equals: basedata.email } },
+          ],
+        }),
+      }),
+    );
+    expect(result?.email).toBe(basedata.email);
+  });
 });

@@ -2,7 +2,7 @@ import { describe, it, expect, beforeAll, afterAll } from "vitest";
 import request from "supertest";
 import app from "../../app";
 import { PrismaClient } from "../../prisma/client";
-import { createUser } from "../mocks/prisma.mock";
+import { createUser } from "../factories/user.factory";
 import { UserAccessTypeValue } from "../../entities/user.entity";
 import { getAccessToken } from "../../shared/helpers/common.helper";
 

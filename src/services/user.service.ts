@@ -7,8 +7,8 @@ import NotFoundException from "../shared/exceptions/not-found.exception";
 export default class UserService {
   private repository: PrismaUserRepository;
 
-  constructor() {
-    this.repository = new PrismaUserRepository();
+  constructor(repository?: PrismaUserRepository) {
+    this.repository = repository ?? new PrismaUserRepository();
   };
 
   getById = async (id: string): Promise<UserEntity> => {

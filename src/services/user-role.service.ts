@@ -9,8 +9,8 @@ export default class UserRoleService {
   private repository: PrismaUserRoleRepository;
   private prisma: PrismaClient;
 
-  constructor() {
-    this.repository = new PrismaUserRoleRepository();
+  constructor(repository?: PrismaUserRoleRepository) {
+    this.repository = repository ?? new PrismaUserRoleRepository();
     this.prisma = new PrismaClient();
   };
 

@@ -9,8 +9,8 @@ export default class RolePermissionService {
   private repository: PrismaRolePermissionRepository;
   private prisma: PrismaClient;
 
-  constructor() {
-    this.repository = new PrismaRolePermissionRepository();
+  constructor(repository?: PrismaRolePermissionRepository) {
+    this.repository = repository ?? new PrismaRolePermissionRepository();
     this.prisma = new PrismaClient();
   };
 

@@ -9,8 +9,8 @@ import { setUploadPath, uploadFile } from "../shared/helpers/upload.helper";
 export default class OrganizationService {
   private repository: PrismaOrganizationRepository;
 
-  constructor() {
-    this.repository = new PrismaOrganizationRepository();
+  constructor(repository?: PrismaOrganizationRepository) {
+    this.repository = repository ?? new PrismaOrganizationRepository();
   };
 
   getAll = async (args?: GetAllArgs): Promise<OrganizationEntity[]> => {

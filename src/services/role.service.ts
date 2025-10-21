@@ -8,8 +8,8 @@ import { CountAllArgs, GetAllArgs } from "../shared/types/service.type";
 export default class RoleService {
   private repository: PrismaRoleRepository
 
-  constructor() {
-    this.repository = new PrismaRoleRepository();
+  constructor(repository?: PrismaRoleRepository) {
+    this.repository = repository ?? new PrismaRoleRepository();
   };
 
   getAll = async (args?: GetAllArgs): Promise<RoleEntity[]> => {

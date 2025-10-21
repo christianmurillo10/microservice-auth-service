@@ -8,8 +8,8 @@ import { CountAllArgs, GetAllArgs } from "../shared/types/service.type";
 export default class PermissionService {
   private repository: PrismaPermissionRepository
 
-  constructor() {
-    this.repository = new PrismaPermissionRepository();
+  constructor(repository?: PrismaPermissionRepository) {
+    this.repository = repository ?? new PrismaPermissionRepository();
   };
 
   getAll = async (args?: GetAllArgs): Promise<PermissionEntity[]> => {

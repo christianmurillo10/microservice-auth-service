@@ -6,8 +6,8 @@ import NotFoundException from "../shared/exceptions/not-found.exception";
 export default class SessionService {
   private repository: PrismaSessionRepository;
 
-  constructor() {
-    this.repository = new PrismaSessionRepository();
+  constructor(repository?: PrismaSessionRepository) {
+    this.repository = repository ?? new PrismaSessionRepository();
   };
 
   getById = async (id: string): Promise<SessionEntity> => {

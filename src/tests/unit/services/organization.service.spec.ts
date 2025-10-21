@@ -9,9 +9,7 @@ const mockRepoInstance = {
   findById: vi.fn(),
   findByName: vi.fn(),
   findAll: vi.fn(),
-  findAllBetweenCreatedAt: vi.fn(),
   softDelete: vi.fn(),
-  softDeleteMany: vi.fn(),
   count: vi.fn(),
 };
 
@@ -55,7 +53,7 @@ describe("Organization Service - Unit", () => {
 
   it("should update organization", async () => {
     const updatedEntity = new OrganizationEntity({
-      ...organizationFactory(),
+      ...fakeOrganization,
       id: uuidv4()
     });
     mockRepoInstance.update.mockResolvedValue(updatedEntity);

@@ -23,7 +23,7 @@ export default class UserRoleService {
     return record;
   };
 
-  getAllByUsereId = async (args: GetAllByUserIdArgs): Promise<UserRoleEntity[]> => {
+  getAllByUserId = async (args: GetAllByUserIdArgs): Promise<UserRoleEntity[]> => {
     const record = await this.repository.findAllByUserId({
       userId: args.userId,
       condition: args.condition,

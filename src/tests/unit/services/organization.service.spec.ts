@@ -19,7 +19,7 @@ vi.mock("../../../repositories/prisma/organization.repository", () => {
   };
 });
 
-// 3️⃣ Import after mocking
+// Import after mocking
 import PrismaOrganizationRepository from "../../../repositories/prisma/organization.repository";
 import OrganizationService from "../../../services/organization.service";
 

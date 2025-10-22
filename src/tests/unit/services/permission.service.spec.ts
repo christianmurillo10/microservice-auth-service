@@ -19,7 +19,7 @@ vi.mock("../../../repositories/prisma/permission.repository", () => {
   };
 });
 
-// 3️⃣ Import after mocking
+// Import after mocking
 import PrismaPermissionRepository from "../../../repositories/prisma/permission.repository";
 import PermissionService from "../../../services/permission.service";
 
